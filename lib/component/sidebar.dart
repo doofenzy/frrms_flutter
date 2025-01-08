@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 250, // Set the width of the sidebar
-      color: Colors.white,
+    return Drawer(
       child: Column(
         children: [
-          Container(
+          HoverContainer(
             margin: const EdgeInsets.all(2.0), // Add margin here
             child: ListTile(
               leading: Icon(Icons.dashboard, color: Colors.teal),
@@ -21,7 +19,7 @@ class Sidebar extends StatelessWidget {
               },
             ),
           ),
-          Container(
+          HoverContainer(
             margin: const EdgeInsets.all(2.0), // Add margin here
             child: ListTile(
               leading: Icon(Icons.person, color: Colors.teal),
@@ -34,7 +32,7 @@ class Sidebar extends StatelessWidget {
               },
             ),
           ),
-          Container(
+          HoverContainer(
             margin: const EdgeInsets.all(2.0), // Add margin here
             child: ListTile(
               leading: Icon(Icons.fire_truck, color: Colors.teal),
@@ -47,7 +45,7 @@ class Sidebar extends StatelessWidget {
               },
             ),
           ),
-          Container(
+          HoverContainer(
             margin: const EdgeInsets.all(2.0), // Add margin here
             child: ListTile(
               leading: Icon(Icons.warning, color: Colors.teal),
@@ -60,7 +58,7 @@ class Sidebar extends StatelessWidget {
               },
             ),
           ),
-          Container(
+          HoverContainer(
             margin: const EdgeInsets.all(2.0), // Add margin here
             child: ListTile(
               leading: Icon(Icons.stacked_bar_chart_sharp, color: Colors.teal),
@@ -74,6 +72,36 @@ class Sidebar extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class HoverContainer extends StatefulWidget {
+  final Widget child;
+
+  const HoverContainer(
+      {super.key, required this.child, required EdgeInsets margin});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _HoverContainerState createState() => _HoverContainerState();
+}
+
+class _HoverContainerState extends State<HoverContainer> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: Container(
+        margin: const EdgeInsets.all(2.0),
+        color: _isHovered
+            ? Colors.grey[300]
+            : Colors.transparent, // Change color on hover
+        child: widget.child,
       ),
     );
   }

@@ -1,49 +1,46 @@
 import 'package:flutter/material.dart';
 
-class Sidebar extends StatelessWidget {
+class HeaderWidget extends StatelessWidget {
+  final String imagePath;
+  final double height;
+
+  const HeaderWidget({
+    super.key,
+    required this.imagePath,
+    this.height = 80.0, // Default height value
+  });
+
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: Column(
+    return Container(
+      width:
+          double.infinity, // Makes the header span the full width of the screen
+      height: height, // Sets the height dynamically
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      decoration: const BoxDecoration(
+        color: Colors.white70,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
         children: [
-          // Add header here
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.teal,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.account_circle,
-                  size: 80,
-                  color: Colors.white,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Welcome, User!',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ],
-            ),
+          IconButton(
+            icon: const Icon(Icons.menu, color: Colors.black),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
           ),
-          Container(
-            margin: const EdgeInsets.all(2.0), // Add margin here
-            child: ListTile(
-              leading: Icon(Icons.dashboard, color: Colors.teal),
-              title: Text(
-                'Dashboard',
-                style: TextStyle(color: Colors.teal),
-              ),
-              onTap: () {
-                // Handle navigation
-              },
-            ),
+          const SizedBox(width: 8.0),
+          Image.asset(
+            imagePath,
+            height:
+                height * 0.6, // Adjust the logo height relative to the header
           ),
-          // ... other ListTiles
         ],
       ),
     );
