@@ -1,77 +1,63 @@
 import 'package:flutter/material.dart';
 
 class Sidebar extends StatelessWidget {
+  const Sidebar({super.key, required this.onItemTapped});
+
+  final void Function(int index) onItemTapped;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
         children: [
-          HoverContainer(
-            margin: const EdgeInsets.all(2.0), // Add margin here
-            child: ListTile(
-              leading: Icon(Icons.dashboard, color: Colors.teal),
-              title: Text(
-                'Dashboard',
-                style: TextStyle(color: Colors.teal),
-              ),
-              onTap: () {
-                // Handle navigation
-              },
-            ),
+          _buildSidebarItem(
+            context,
+            icon: Icons.dashboard,
+            title: 'Dashboard',
+            index: 0,
           ),
-          HoverContainer(
-            margin: const EdgeInsets.all(2.0), // Add margin here
-            child: ListTile(
-              leading: Icon(Icons.person, color: Colors.teal),
-              title: Text(
-                'Profiling',
-                style: TextStyle(color: Colors.teal),
-              ),
-              onTap: () {
-                // Handle navigation
-              },
-            ),
+          _buildSidebarItem(
+            context,
+            icon: Icons.person,
+            title: 'Profiling',
+            index: 1,
           ),
-          HoverContainer(
-            margin: const EdgeInsets.all(2.0), // Add margin here
-            child: ListTile(
-              leading: Icon(Icons.fire_truck, color: Colors.teal),
-              title: Text(
-                'Relief Operation',
-                style: TextStyle(color: Colors.teal),
-              ),
-              onTap: () {
-                // Handle navigation
-              },
-            ),
+          _buildSidebarItem(
+            context,
+            icon: Icons.fire_truck,
+            title: 'Relief Operation',
+            index: 2,
           ),
-          HoverContainer(
-            margin: const EdgeInsets.all(2.0), // Add margin here
-            child: ListTile(
-              leading: Icon(Icons.warning, color: Colors.teal),
-              title: Text(
-                'Evacuation Management',
-                style: TextStyle(color: Colors.teal),
-              ),
-              onTap: () {
-                // Handle navigation
-              },
-            ),
+          _buildSidebarItem(
+            context,
+            icon: Icons.warning,
+            title: 'Evacuation Management',
+            index: 3,
           ),
-          HoverContainer(
-            margin: const EdgeInsets.all(2.0), // Add margin here
-            child: ListTile(
-              leading: Icon(Icons.stacked_bar_chart_sharp, color: Colors.teal),
-              title: Text(
-                'Risk Management',
-                style: TextStyle(color: Colors.teal),
-              ),
-              onTap: () {
-                // Handle navigation
-              },
-            ),
+          _buildSidebarItem(
+            context,
+            icon: Icons.stacked_bar_chart_sharp,
+            title: 'Risk Management',
+            index: 4,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSidebarItem(BuildContext context,
+      {required IconData icon, required String title, required int index}) {
+    return HoverContainer(
+      child: ListTile(
+        leading: Icon(icon, color: Colors.teal),
+        title: Text(
+          title,
+          style: TextStyle(color: Colors.teal),
+        ),
+        onTap: () {
+          Navigator.pop(context); // Close the drawer
+          onItemTapped(index); // Notify the parent about the tapped item
+        },
       ),
     );
   }
@@ -80,11 +66,9 @@ class Sidebar extends StatelessWidget {
 class HoverContainer extends StatefulWidget {
   final Widget child;
 
-  const HoverContainer(
-      {super.key, required this.child, required EdgeInsets margin});
+  const HoverContainer({super.key, required this.child});
 
   @override
-  // ignore: library_private_types_in_public_api
   _HoverContainerState createState() => _HoverContainerState();
 }
 
@@ -97,7 +81,6 @@ class _HoverContainerState extends State<HoverContainer> {
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: Container(
-        margin: const EdgeInsets.all(2.0),
         color: _isHovered
             ? Colors.grey[300]
             : Colors.transparent, // Change color on hover

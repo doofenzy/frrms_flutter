@@ -1,16 +1,10 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 
-class Evacuationmanagement extends StatelessWidget {
+class EvacuationManagement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          'Screen One',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
+    return Center(
+      child: Text('This is the evac Screen', style: TextStyle(fontSize: 24)),
     );
   }
 }
