@@ -25,21 +25,52 @@ class EvacuationManagement extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Evacuation Management'),
+        title: Row(
+          children: [
+            // Search input field with a fixed width
+            SizedBox(
+              width: 400, // Adjust the width as needed
+              child: TextField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Search...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.2),
+                ),
+                onChanged: (value) {
+                  print('Search query: $value');
+                  // Add search filtering logic here
+                },
+              ),
+            ),
+          ],
+        ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
+          // Rectangle button with plus logo and text
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue, // Button color
+              foregroundColor: Colors.white, // Text and icon color
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0), // Rectangle shape
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            ),
             onPressed: () {
-              print('Settings button pressed');
+              print('Rectangle button pressed');
             },
+            icon: Icon(Icons.add, size: 18.0), // Plus logo
+            label: Text(
+              'Add Calamity', // Button text
+              style: TextStyle(fontSize: 16.0),
+            ),
           ),
         ],
-        leading: IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            print('Search button pressed');
-          },
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
