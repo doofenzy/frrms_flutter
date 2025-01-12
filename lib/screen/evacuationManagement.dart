@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../context/dropDownField.dart';
+import '../context/dateField.dart';
 
 class EvacuationManagement extends StatelessWidget {
   @override
@@ -9,6 +11,7 @@ class EvacuationManagement extends StatelessWidget {
         'ID': '001',
         'Date & Time': '01/01/24 - 11:11:11 AM',
         'Type of Calamity': 'Flood',
+        'Calamity Name': 'Typhoon Odette',
         'Security Level': 'Severe',
         'Cause of Calamity': 'Heavy Rains',
         'Evacuation Alert Level Issued': 'Mandatory Evacuation',
@@ -19,6 +22,7 @@ class EvacuationManagement extends StatelessWidget {
         'ID': '001',
         'Date & Time': '01/01/24 - 11:11:11 AM',
         'Type of Calamity': 'Flood',
+        'Calamity Name': 'Typhoon Odette',
         'Security Level': 'Severe',
         'Cause of Calamity': 'Heavy Rains',
         'Evacuation Alert Level Issued': 'Mandatory Evacuation',
@@ -29,6 +33,7 @@ class EvacuationManagement extends StatelessWidget {
         'ID': '001',
         'Date & Time': '01/01/24 - 11:11:11 AM',
         'Type of Calamity': 'Flood',
+        'Calamity Name': 'Typhoon Odette',
         'Security Level': 'Severe',
         'Cause of Calamity': 'Heavy Rains',
         'Evacuation Alert Level Issued': 'Mandatory Evacuation',
@@ -111,45 +116,54 @@ class EvacuationManagement extends StatelessWidget {
 // Table with 2 rows and 3 columns
                                 Table(
                                   border: TableBorder.all(
-                                    color: Colors.grey, // Table border color
-                                    width: 1.0, // Table border width
+                                    color: Colors
+                                        .transparent, // Table border color
                                   ),
                                   columnWidths: const {
-                                    0: FlexColumnWidth(
-                                        1), // Adjust width for each column
+                                    0: FlexColumnWidth(1),
                                     1: FlexColumnWidth(1),
                                     2: FlexColumnWidth(1),
                                   },
                                   children: [
-                                    // Row 1
                                     TableRow(
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: TextField(
                                             decoration: InputDecoration(
-                                              labelText: 'Type of Calamity',
+                                              labelText: 'Calamity Name',
                                               border: OutlineInputBorder(),
                                             ),
                                           ),
                                         ),
+                                        SizedBox(), // Empty cell
+                                        SizedBox(), // Empty cell
+                                      ],
+                                    ),
+                                    // Row 1
+                                    TableRow(
+                                      children: [
+                                        Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: DatePickerField()),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              labelText: 'Date & Time',
-                                              hintText: 'MM/DD/YY - HH:MM:SS',
-                                              border: OutlineInputBorder(),
-                                            ),
+                                          child: DropdownField(
+                                            label: 'Type of Calamity',
+                                            items: ['Flood', 'Typhoon'],
                                           ),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              labelText: 'Security Level',
-                                              border: OutlineInputBorder(),
-                                            ),
+                                          child: DropdownField(
+                                            label: 'Severity Level',
+                                            items: [
+                                              'Minor Flooding',
+                                              'Moderate Flooding'
+                                                  'Major Flooding',
+                                              'Severe Flooding',
+                                              'Catastrophic Flooding',
+                                            ],
                                           ),
                                         ),
                                       ],
@@ -159,30 +173,37 @@ class EvacuationManagement extends StatelessWidget {
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              labelText: 'Cause of Calamity',
-                                              border: OutlineInputBorder(),
-                                            ),
+                                          child: DropdownField(
+                                            label: 'Cause of Flood',
+                                            items: [
+                                              'Heavy Rainfall',
+                                              'River Overflow',
+                                              'Urban Drainage Overflow',
+                                              'Typhoon',
+                                            ],
                                           ),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              labelText:
-                                                  'Evacuation Alert Level Issued',
-                                              border: OutlineInputBorder(),
-                                            ),
+                                          child: DropdownField(
+                                            label:
+                                                'Evacuation Alert Level Issued',
+                                            items: [
+                                              'Pre Evacuation',
+                                              'Mandatory Evacuation',
+                                            ],
                                           ),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              labelText: 'Status',
-                                              border: OutlineInputBorder(),
-                                            ),
+                                          child: DropdownField(
+                                            label: 'Current Status',
+                                            items: [
+                                              'Ongoing',
+                                              'Under Control',
+                                              'Resolved',
+                                              'Other(Specify)',
+                                            ],
                                           ),
                                         ),
                                       ],
@@ -279,6 +300,17 @@ class EvacuationManagement extends StatelessWidget {
                       width: 1.0,
                     ),
                   ),
+                  columnWidths: const {
+                    0: FixedColumnWidth(100.0),
+                    1: FlexColumnWidth(3),
+                    2: FlexColumnWidth(3), // More space for longer content
+                    3: FlexColumnWidth(2),
+                    4: FlexColumnWidth(2),
+                    5: FlexColumnWidth(3),
+                    6: FlexColumnWidth(3),
+                    7: FlexColumnWidth(2),
+                    8: FlexColumnWidth(2),
+                  },
                   children: [
                     // Table header row
                     TableRow(
@@ -296,6 +328,11 @@ class EvacuationManagement extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text('Type of Calamity',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Calamity Name',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         Padding(
@@ -344,6 +381,10 @@ class EvacuationManagement extends StatelessWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
+                              child: Text(data['Calamity Name']!),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(data['Security Level']!),
                             ),
                             Padding(
@@ -366,7 +407,7 @@ class EvacuationManagement extends StatelessWidget {
                           ],
                         );
                       },
-                    ).toList(),
+                    ),
                   ],
                 )),
           ],
