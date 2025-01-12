@@ -46,7 +46,7 @@ class EvacuationManagement extends StatelessWidget {
             Container(
               width: 300, // Adjust this value for the desired width
               margin: EdgeInsets.only(top: 50.0, left: 40.0, right: 40.0),
-              padding: EdgeInsets.only(bottom: 30),
+              padding: EdgeInsets.only(bottom: 40),
               child: TextField(
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 10.0),
@@ -57,7 +57,6 @@ class EvacuationManagement extends StatelessWidget {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: Colors.white.withOpacity(0.2),
                 ),
                 onChanged: (value) {
                   print('Search query: $value');
@@ -68,8 +67,12 @@ class EvacuationManagement extends StatelessWidget {
         ),
         actions: [
           Container(
+            width: 200.0, // Set the button width
+            height: 50.0, // Set the button height
             margin: EdgeInsets.only(
-                right: 40.0, left: 40.0), // Add your desired margin here
+                right: 70.0,
+                left: 40.0,
+                top: 10), // Add your desired margin here
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue, // Button color
@@ -77,10 +80,164 @@ class EvacuationManagement extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0), // Rectangle shape
                 ),
-                // padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
               ),
               onPressed: () {
-                print('Rectangle button pressed');
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            padding: EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 30.0),
+                                Text(
+                                  'CALAMITY INFORMATION',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 24.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 20.0),
+// Table with 2 rows and 3 columns
+                                Table(
+                                  border: TableBorder.all(
+                                    color: Colors.grey, // Table border color
+                                    width: 1.0, // Table border width
+                                  ),
+                                  columnWidths: const {
+                                    0: FlexColumnWidth(
+                                        1), // Adjust width for each column
+                                    1: FlexColumnWidth(1),
+                                    2: FlexColumnWidth(1),
+                                  },
+                                  children: [
+                                    // Row 1
+                                    TableRow(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              labelText: 'Type of Calamity',
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              labelText: 'Date & Time',
+                                              hintText: 'MM/DD/YY - HH:MM:SS',
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              labelText: 'Security Level',
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // Row 2
+                                    TableRow(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              labelText: 'Cause of Calamity',
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              labelText:
+                                                  'Evacuation Alert Level Issued',
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              labelText: 'Status',
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20.0),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors
+                                            .blue, // Set the background color to blue
+                                        foregroundColor: Colors
+                                            .white, // Set the text color to white
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              8.0), // Rectangular shape with rounded corners
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20.0,
+                                            vertical:
+                                                12.0), // Add padding for the rectangle size
+                                      ),
+                                      onPressed: () {
+                                        // Save logic here
+                                        print('Calamity information saved!');
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Save',
+                                          style: TextStyle(
+                                              fontSize:
+                                                  16.0)), // Set font size and text
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            top: 5.0,
+                            right: 5.0,
+                            child: IconButton(
+                              icon: Icon(Icons.close, color: Colors.grey),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
               },
               icon: Icon(Icons.add, size: 18.0), // Plus logo
               label: Text(
