@@ -1,47 +1,89 @@
 import 'package:flutter/material.dart';
-import '../context/dropDownField.dart';
 import '../context/dateField.dart';
 
-class EvacuationManagement extends StatelessWidget {
+class EvacuationManagement extends StatefulWidget {
+  @override
+  _EvacuationManagementState createState() => _EvacuationManagementState();
+}
+
+class _EvacuationManagementState extends State<EvacuationManagement> {
+  String? selectedCalamityType = 'Flood';
+  String? selectedSeverityLevel = 'Minor Flooding';
+  String? selectedCause = 'Heavy Rainfall';
+  String? selectedAlertLevel = 'Pre Evacuation';
+  String? currentStatus = 'Ongoing';
+  String? calamityName = '';
+  DateTime? selectedDate;
+  final List<Map<String, String>> tableData = [
+    {
+      'ID': '001',
+      'Date & Time': '01/01/24 - 11:11:11 AM',
+      'Type of Calamity': 'Flood',
+      'Calamity Name': 'Typhoon Odette',
+      'Security Level': 'Severe',
+      'Cause of Calamity': 'Heavy Rains',
+      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
+      'Status': 'Ongoing',
+      'Actions': 'Button',
+    },
+    {
+      'ID': '001',
+      'Date & Time': '01/01/24 - 11:11:11 AM',
+      'Type of Calamity': 'Flood',
+      'Calamity Name': 'Typhoon Odette',
+      'Security Level': 'Severe',
+      'Cause of Calamity': 'Heavy Rains',
+      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
+      'Status': 'Ongoing',
+      'Actions': 'Button',
+    },
+    {
+      'ID': '001',
+      'Date & Time': '01/01/24 - 11:11:11 AM',
+      'Type of Calamity': 'Flood',
+      'Calamity Name': 'Typhoon Odette',
+      'Security Level': 'Severe',
+      'Cause of Calamity': 'Heavy Rains',
+      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
+      'Status': 'Ongoing',
+      'Actions': 'Button',
+    },
+    // Add more data here
+  ];
+  void saveCalamityData() {
+    if (calamityName != null && selectedDate != null) {
+      Map<String, String> newCalamity = {
+        'ID': DateTime.now().millisecondsSinceEpoch.toString(), // Unique ID
+        'Date & Time': selectedDate != null
+            ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
+            : 'N/A',
+        'Type of Calamity': selectedCalamityType!,
+        'Calamity Name': calamityName!,
+        'Security Level': selectedSeverityLevel!,
+        'Cause of Calamity': selectedCause!,
+        'Evacuation Alert Level Issued': selectedAlertLevel!,
+        'Status': currentStatus!,
+        'Actions': 'Button',
+      };
+
+      setState(() {
+        tableData.add(newCalamity);
+
+        // Clear the input fields
+        // calamityName = '';
+        // selectedDate = null;
+        // selectedCalamityType = 'Flood';
+        // selectedSeverityLevel = 'Minor Flooding';
+        // selectedCause = 'Heavy Rainfall';
+        // selectedAlertLevel = 'Pre Evacuation';
+        // currentStatus = 'Ongoing';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Dummy data as a list of maps
-    final List<Map<String, String>> tableData = [
-      {
-        'ID': '001',
-        'Date & Time': '01/01/24 - 11:11:11 AM',
-        'Type of Calamity': 'Flood',
-        'Calamity Name': 'Typhoon Odette',
-        'Security Level': 'Severe',
-        'Cause of Calamity': 'Heavy Rains',
-        'Evacuation Alert Level Issued': 'Mandatory Evacuation',
-        'Status': 'Ongoing',
-        'Actions': 'Button',
-      },
-      {
-        'ID': '001',
-        'Date & Time': '01/01/24 - 11:11:11 AM',
-        'Type of Calamity': 'Flood',
-        'Calamity Name': 'Typhoon Odette',
-        'Security Level': 'Severe',
-        'Cause of Calamity': 'Heavy Rains',
-        'Evacuation Alert Level Issued': 'Mandatory Evacuation',
-        'Status': 'Ongoing',
-        'Actions': 'Button',
-      },
-      {
-        'ID': '001',
-        'Date & Time': '01/01/24 - 11:11:11 AM',
-        'Type of Calamity': 'Flood',
-        'Calamity Name': 'Typhoon Odette',
-        'Security Level': 'Severe',
-        'Cause of Calamity': 'Heavy Rains',
-        'Evacuation Alert Level Issued': 'Mandatory Evacuation',
-        'Status': 'Ongoing',
-        'Actions': 'Button',
-      },
-      // Add more data here
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -134,6 +176,11 @@ class EvacuationManagement extends StatelessWidget {
                                               labelText: 'Calamity Name',
                                               border: OutlineInputBorder(),
                                             ),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                calamityName = value;
+                                              });
+                                            },
                                           ),
                                         ),
                                         SizedBox(), // Empty cell
@@ -151,6 +198,11 @@ class EvacuationManagement extends StatelessWidget {
                                           child: DropdownField(
                                             label: 'Type of Calamity',
                                             items: ['Flood', 'Typhoon'],
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedCalamityType = value;
+                                              });
+                                            },
                                           ),
                                         ),
                                         Padding(
@@ -164,6 +216,11 @@ class EvacuationManagement extends StatelessWidget {
                                               'Severe Flooding',
                                               'Catastrophic Flooding',
                                             ],
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedSeverityLevel = value;
+                                              });
+                                            },
                                           ),
                                         ),
                                       ],
@@ -174,14 +231,18 @@ class EvacuationManagement extends StatelessWidget {
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: DropdownField(
-                                            label: 'Cause of Flood',
-                                            items: [
-                                              'Heavy Rainfall',
-                                              'River Overflow',
-                                              'Urban Drainage Overflow',
-                                              'Typhoon',
-                                            ],
-                                          ),
+                                              label: 'Cause of Flood',
+                                              items: [
+                                                'Heavy Rainfall',
+                                                'River Overflow',
+                                                'Urban Drainage Overflow',
+                                                'Typhoon',
+                                              ],
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  selectedCause = value;
+                                                });
+                                              }),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -192,6 +253,11 @@ class EvacuationManagement extends StatelessWidget {
                                               'Pre Evacuation',
                                               'Mandatory Evacuation',
                                             ],
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedAlertLevel = value;
+                                              });
+                                            },
                                           ),
                                         ),
                                         Padding(
@@ -204,6 +270,11 @@ class EvacuationManagement extends StatelessWidget {
                                               'Resolved',
                                               'Other(Specify)',
                                             ],
+                                            onChanged: (value) {
+                                              setState(() {
+                                                currentStatus = value;
+                                              });
+                                            },
                                           ),
                                         ),
                                       ],
@@ -230,7 +301,8 @@ class EvacuationManagement extends StatelessWidget {
                                                 12.0), // Add padding for the rectangle size
                                       ),
                                       onPressed: () {
-                                        // Save logic here
+                                        // Save logic here\
+                                        saveCalamityData();
                                         print('Calamity information saved!');
                                         Navigator.of(context).pop();
                                       },
@@ -413,6 +485,36 @@ class EvacuationManagement extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class DropdownField extends StatelessWidget {
+  final String label;
+  final List<String> items;
+  final ValueChanged<String?>? onChanged;
+
+  const DropdownField({
+    Key? key,
+    required this.label,
+    required this.items,
+    this.onChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
+      ),
+      items: items.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: onChanged,
     );
   }
 }
