@@ -7,84 +7,54 @@ class EvacuationManagement extends StatefulWidget {
 }
 
 class _EvacuationManagementState extends State<EvacuationManagement> {
-  String? selectedCalamityType = 'Flood';
-  String? selectedSeverityLevel = 'Minor Flooding';
-  String? selectedCause = 'Heavy Rainfall';
-  String? selectedAlertLevel = 'Pre Evacuation';
-  String? currentStatus = 'Ongoing';
-  String? calamityName = '';
+  int? id;
+  String? selectedCalamityType;
+  String? selectedSeverityLevel;
+  String? selectedCause;
+  String? selectedAlertLevel;
+  String? currentStatus;
+  String? calamityName;
   DateTime? selectedDate;
-  final List<Map<String, String>> tableData = [
-    {
-      'ID': '001',
-      'Date & Time': '01/01/24 - 11:11:11 AM',
-      'Type of Calamity': 'Flood',
-      'Calamity Name': 'Typhoon Odette',
-      'Security Level': 'Severe',
-      'Cause of Calamity': 'Heavy Rains',
-      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
-      'Status': 'Ongoing',
-      'Actions': 'Button',
-    },
-    {
-      'ID': '001',
-      'Date & Time': '01/01/24 - 11:11:11 AM',
-      'Type of Calamity': 'Flood',
-      'Calamity Name': 'Typhoon Odette',
-      'Security Level': 'Severe',
-      'Cause of Calamity': 'Heavy Rains',
-      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
-      'Status': 'Ongoing',
-      'Actions': 'Button',
-    },
-    {
-      'ID': '001',
-      'Date & Time': '01/01/24 - 11:11:11 AM',
-      'Type of Calamity': 'Flood',
-      'Calamity Name': 'Typhoon Odette',
-      'Security Level': 'Severe',
-      'Cause of Calamity': 'Heavy Rains',
-      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
-      'Status': 'Ongoing',
-      'Actions': 'Button',
-    },
-    // Add more data here
-  ];
+  final List<Map<String, String>> tableData = [];
+
   void saveCalamityData() {
-    if (calamityName != null && selectedDate != null) {
-      Map<String, String> newCalamity = {
-        'ID': DateTime.now().millisecondsSinceEpoch.toString(), // Unique ID
-        'Date & Time': selectedDate != null
-            ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-            : 'N/A',
-        'Type of Calamity': selectedCalamityType!,
-        'Calamity Name': calamityName!,
-        'Security Level': selectedSeverityLevel!,
-        'Cause of Calamity': selectedCause!,
-        'Evacuation Alert Level Issued': selectedAlertLevel!,
-        'Status': currentStatus!,
-        'Actions': 'Button',
-      };
+    int id = tableData.length;
+    // if (calamityName != null && selectedDate != null) {
+    Map<String, String> newCalamity = {
+      'ID': id.toString(), // Unique ID
+      'Date & Time': selectedDate != null
+          ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
+          : 'N/A',
+      'Type of Calamity': selectedCalamityType!,
+      'Calamity Name': calamityName!,
+      'Security Level': selectedSeverityLevel!,
+      'Cause of Calamity': selectedCause!,
+      'Evacuation Alert Level Issued': selectedAlertLevel!,
+      'Status': currentStatus!,
+      'Actions': 'Button',
+    };
 
-      setState(() {
-        tableData.add(newCalamity);
+    newCalamity.forEach((key, value) {
+      print('$key: $value');
+    });
 
-        // Clear the input fields
-        // calamityName = '';
-        // selectedDate = null;
-        // selectedCalamityType = 'Flood';
-        // selectedSeverityLevel = 'Minor Flooding';
-        // selectedCause = 'Heavy Rainfall';
-        // selectedAlertLevel = 'Pre Evacuation';
-        // currentStatus = 'Ongoing';
-      });
-    }
+    setState(() {
+      tableData.add(newCalamity);
+
+      // Clear the input fields
+      // calamityName = '';
+      // selectedDate = null;
+      // selectedCalamityType = 'Flood';
+      // selectedSeverityLevel = 'Minor Flooding';
+      // selectedCause = 'Heavy Rainfall';
+      // selectedAlertLevel = 'Pre Evacuation';
+      // currentStatus = 'Ongoing';
+    });
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Dummy data as a list of maps
-
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -303,6 +273,14 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                       onPressed: () {
                                         // Save logic here\
                                         saveCalamityData();
+                                        // print(selectedDate);
+                                        // print(selectedCalamityType);
+                                        // print(selectedSeverityLevel);
+                                        // print(selectedCause);
+                                        // print(selectedAlertLevel);
+                                        // print(currentStatus);
+                                        // print(calamityName);
+
                                         print('Calamity information saved!');
                                         Navigator.of(context).pop();
                                       },
