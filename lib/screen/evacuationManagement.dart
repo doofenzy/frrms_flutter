@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import '../context/dateField.dart';
 import '../context/dropDownField.dart';
 
+enum actionButton { edit, delete }
+
 class EvacuationManagement extends StatefulWidget {
   @override
   _EvacuationManagementState createState() => _EvacuationManagementState();
 }
 
 class _EvacuationManagementState extends State<EvacuationManagement> {
+  actionButton? selectedMenu;
   int? id;
   String? selectedCalamityType;
   String? selectedSeverityLevel;
@@ -32,7 +35,6 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
       'Cause of Calamity': selectedCause!,
       'Evacuation Alert Level Issued': selectedAlertLevel!,
       'Status': currentStatus!,
-      'Actions': 'Button',
     };
 
     newCalamity.forEach((key, value) {
@@ -444,8 +446,38 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                               child: Text(data['Status']!),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(data['Actions']!),
+                              padding: const EdgeInsets.all(2.0),
+                              child: MenuAnchor(
+                                builder: (BuildContext context,
+                                    MenuController controller, Widget? child) {
+                                  return IconButton(
+                                    onPressed: () {
+                                      if (controller.isOpen) {
+                                        controller.close();
+                                      } else {
+                                        controller.open();
+                                      }
+                                    },
+                                    icon: const Icon(Icons.more_horiz),
+                                    tooltip: 'Show menu',
+                                  );
+                                },
+                                menuChildren: List<MenuItemButton>.generate(
+                                  2,
+                                  (int index) => MenuItemButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        selectedMenu =
+                                            actionButton.values[index];
+                                        print(
+                                            'Selected Item: ${actionButton.values[index]}'); // Print the selected menu item
+                                      });
+                                    },
+                                    child: Text(
+                                        ' ${actionButton.values[index].toString().split('.').last}'),
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         );
@@ -459,33 +491,3 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     );
   }
 }
-
-// class DropdownField extends StatelessWidget {
-//   final String label;
-//   final List<String> items;
-//   final ValueChanged<String?>? onChanged;
-
-//   const DropdownField({
-//     Key? key,
-//     required this.label,
-//     required this.items,
-//     this.onChanged,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return DropdownButtonFormField<String>(
-//       decoration: InputDecoration(
-//         labelText: label,
-//         border: OutlineInputBorder(),
-//       ),
-//       items: items.map((String value) {
-//         return DropdownMenuItem<String>(
-//           value: value,
-//           child: Text(value),
-//         );
-//       }).toList(),
-//       onChanged: onChanged,
-//     );
-//   }
-// }
