@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class DatePickerField extends StatefulWidget {
+  final Function(DateTime?)? onDateTimeSelected; // Callback to parent
+
+  DatePickerField({this.onDateTimeSelected});
+
   @override
   _DatePickerFieldState createState() => _DatePickerFieldState();
 }
@@ -42,6 +46,11 @@ class _DatePickerFieldState extends State<DatePickerField> {
         // Update the text field
         _controller.text =
             "${finalDateTime.month}/${finalDateTime.day}/${finalDateTime.year} - ${finalDateTime.hour}:${finalDateTime.minute.toString().padLeft(2, '0')}";
+
+        // Notify parent widget of the selected date and time
+        if (widget.onDateTimeSelected != null) {
+          widget.onDateTimeSelected!(finalDateTime);
+        }
       }
     }
   }

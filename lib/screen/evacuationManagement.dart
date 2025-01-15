@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../context/dateField.dart';
+import '../context/dropDownField.dart';
 
 class EvacuationManagement extends StatefulWidget {
   @override
@@ -18,12 +19,12 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
   final List<Map<String, String>> tableData = [];
 
   void saveCalamityData() {
-    int id = tableData.length;
-    // if (calamityName != null && selectedDate != null) {
+    int id = tableData.length + 1; // to start the id at 1
+
     Map<String, String> newCalamity = {
-      'ID': id.toString(), // Unique ID
+      'ID': id.toString(), // id incrementation
       'Date & Time': selectedDate != null
-          ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
+          ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}/${selectedDate!.hour}:${selectedDate!.minute}'
           : 'N/A',
       'Type of Calamity': selectedCalamityType!,
       'Calamity Name': calamityName!,
@@ -40,17 +41,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
 
     setState(() {
       tableData.add(newCalamity);
-
-      // Clear the input fields
-      // calamityName = '';
-      // selectedDate = null;
-      // selectedCalamityType = 'Flood';
-      // selectedSeverityLevel = 'Minor Flooding';
-      // selectedCause = 'Heavy Rainfall';
-      // selectedAlertLevel = 'Pre Evacuation';
-      // currentStatus = 'Ongoing';
     });
-    // }
   }
 
   @override
@@ -162,7 +153,16 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                       children: [
                                         Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: DatePickerField()),
+                                            child: DatePickerField(
+                                                onDateTimeSelected: (DateTime?
+                                                    selectedDateTime) {
+                                              if (selectedDateTime != null) {
+                                                setState(() {
+                                                  selectedDate =
+                                                      selectedDateTime;
+                                                });
+                                              }
+                                            })),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: DropdownField(
@@ -181,8 +181,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                             label: 'Severity Level',
                                             items: [
                                               'Minor Flooding',
-                                              'Moderate Flooding'
-                                                  'Major Flooding',
+                                              'Moderate Flooding',
+                                              'Major Flooding',
                                               'Severe Flooding',
                                               'Catastrophic Flooding',
                                             ],
@@ -273,13 +273,6 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                       onPressed: () {
                                         // Save logic here\
                                         saveCalamityData();
-                                        // print(selectedDate);
-                                        // print(selectedCalamityType);
-                                        // print(selectedSeverityLevel);
-                                        // print(selectedCause);
-                                        // print(selectedAlertLevel);
-                                        // print(currentStatus);
-                                        // print(calamityName);
 
                                         print('Calamity information saved!');
                                         Navigator.of(context).pop();
@@ -467,32 +460,32 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
   }
 }
 
-class DropdownField extends StatelessWidget {
-  final String label;
-  final List<String> items;
-  final ValueChanged<String?>? onChanged;
+// class DropdownField extends StatelessWidget {
+//   final String label;
+//   final List<String> items;
+//   final ValueChanged<String?>? onChanged;
 
-  const DropdownField({
-    Key? key,
-    required this.label,
-    required this.items,
-    this.onChanged,
-  }) : super(key: key);
+//   const DropdownField({
+//     Key? key,
+//     required this.label,
+//     required this.items,
+//     this.onChanged,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(),
-      ),
-      items: items.map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      onChanged: onChanged,
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return DropdownButtonFormField<String>(
+//       decoration: InputDecoration(
+//         labelText: label,
+//         border: OutlineInputBorder(),
+//       ),
+//       items: items.map((String value) {
+//         return DropdownMenuItem<String>(
+//           value: value,
+//           child: Text(value),
+//         );
+//       }).toList(),
+//       onChanged: onChanged,
+//     );
+//   }
+// }

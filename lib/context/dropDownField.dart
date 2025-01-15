@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class DropdownField extends StatelessWidget {
   final String label;
   final List<String> items;
+  final ValueChanged<String?>? onChanged;
 
   const DropdownField({
     Key? key,
     required this.label,
     required this.items,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -23,11 +25,7 @@ class DropdownField extends StatelessWidget {
           child: Text(value),
         );
       }).toList(),
-      onChanged: (String? newValue) {
-        // Handle value change
-        print('$label selected: $newValue');
-      },
-      hint: Text('$label'),
+      onChanged: onChanged,
     );
   }
 }
