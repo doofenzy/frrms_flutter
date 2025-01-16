@@ -323,168 +323,184 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                 margin: EdgeInsets.only(
                     left: 40, right: 40), // Adds margin above the table
                 child: Table(
-                  border: TableBorder(
-                    left: BorderSide(
-                      color: Colors.grey, // Left border color
-                      width: 1.0, // Left border width
+                    border: TableBorder(
+                      left: BorderSide(
+                        color: Colors.grey, // Left border color
+                        width: 1.0, // Left border width
+                      ),
+                      right: BorderSide(
+                        color: Colors.grey, // Right border color
+                        width: 1.0, // Right border width
+                      ),
+                      horizontalInside: BorderSide(
+                        color: Colors.grey, // Horizontal line color
+                        width: 1.0, // Horizontal line width
+                      ),
+                      top: BorderSide(
+                        color: Colors.grey, // Top border
+                        width: 1.0,
+                      ),
+                      bottom: BorderSide(
+                        color: Colors.grey, // Bottom border
+                        width: 1.0,
+                      ),
                     ),
-                    right: BorderSide(
-                      color: Colors.grey, // Right border color
-                      width: 1.0, // Right border width
-                    ),
-                    horizontalInside: BorderSide(
-                      color: Colors.grey, // Horizontal line color
-                      width: 1.0, // Horizontal line width
-                    ),
-                    top: BorderSide(
-                      color: Colors.grey, // Top border
-                      width: 1.0,
-                    ),
-                    bottom: BorderSide(
-                      color: Colors.grey, // Bottom border
-                      width: 1.0,
-                    ),
-                  ),
-                  columnWidths: const {
-                    0: FixedColumnWidth(100.0),
-                    1: FlexColumnWidth(3),
-                    2: FlexColumnWidth(3), // More space for longer content
-                    3: FlexColumnWidth(2),
-                    4: FlexColumnWidth(2),
-                    5: FlexColumnWidth(3),
-                    6: FlexColumnWidth(3),
-                    7: FlexColumnWidth(2),
-                    8: FlexColumnWidth(2),
-                  },
-                  children: [
-                    // Table header row
-                    TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('ID',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Date & Time',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Type of Calamity',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Calamity Name',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Security Level',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Cause of Calamity',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Evacuation Alert Level Issued',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Status',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Actions',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                    // Map through the data and generate rows dynamically
-                    ...tableData.map(
-                      (data) {
-                        return TableRow(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(data['ID']!),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(data['Date & Time']!),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(data['Type of Calamity']!),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(data['Calamity Name']!),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(data['Security Level']!),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(data['Cause of Calamity']!),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child:
-                                  Text(data['Evacuation Alert Level Issued']!),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(data['Status']!),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: MenuAnchor(
-                                builder: (BuildContext context,
-                                    MenuController controller, Widget? child) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      if (controller.isOpen) {
-                                        controller.close();
-                                      } else {
-                                        controller.open();
-                                      }
-                                    },
-                                    icon: const Icon(Icons.more_horiz),
-                                    tooltip: 'Show menu',
-                                  );
-                                },
-                                menuChildren: List<MenuItemButton>.generate(
-                                  2,
-                                  (int index) => MenuItemButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        selectedMenu =
-                                            actionButton.values[index];
-                                        print(
-                                            'Selected Item: ${actionButton.values[index]}'); // Print the selected menu item
-                                      });
-                                    },
-                                    child: Text(
-                                        ' ${actionButton.values[index].toString().split('.').last}'),
+                    columnWidths: const {
+                      0: FixedColumnWidth(100.0),
+                      1: FlexColumnWidth(3),
+                      2: FlexColumnWidth(3), // More space for longer content
+                      3: FlexColumnWidth(2),
+                      4: FlexColumnWidth(2),
+                      5: FlexColumnWidth(3),
+                      6: FlexColumnWidth(3),
+                      7: FlexColumnWidth(2),
+                      8: FlexColumnWidth(2),
+                    },
+                    children: [
+                      // Table header row
+                      TableRow(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('ID',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Date & Time',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Type of Calamity',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Calamity Name',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Security Level',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Cause of Calamity',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Evacuation Alert Level Issued',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Status',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Actions',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                      // Map through the data and generate rows dynamically
+                      ...tableData.asMap().entries.map(
+                        (entry) {
+                          // final rowIndex =
+                          //     entry.key; // Get the index of the current row
+                          final data =
+                              entry.value; // Get the corresponding data
+
+                          return TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(data['ID']!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(data['Date & Time']!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(data['Type of Calamity']!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(data['Calamity Name']!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(data['Security Level']!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(data['Cause of Calamity']!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    data['Evacuation Alert Level Issued']!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(data['Status']!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: MenuAnchor(
+                                  builder: (BuildContext context,
+                                      MenuController controller,
+                                      Widget? child) {
+                                    return IconButton(
+                                      onPressed: () {
+                                        if (controller.isOpen) {
+                                          controller.close();
+                                        } else {
+                                          controller.open();
+                                        }
+                                      },
+                                      icon: const Icon(Icons.more_horiz),
+                                      tooltip: 'Show menu',
+                                    );
+                                  },
+                                  menuChildren: List<MenuItemButton>.generate(
+                                    2,
+                                    (int menuIndex) => MenuItemButton(
+                                      onPressed: () {
+                                        print('current id ${data['ID']}');
+                                        setState(() {
+                                          selectedMenu =
+                                              actionButton.values[menuIndex];
+                                          if (selectedMenu ==
+                                              actionButton.edit) {
+                                            print('0');
+                                          } else if (selectedMenu ==
+                                              actionButton.delete) {
+                                            int id = int.parse(data['ID']!);
+                                            print(id);
+                                            tableData.removeAt(id - 1);
+                                          }
+                                        });
+                                      },
+                                      child: Text(
+                                        ' ${actionButton.values[menuIndex].toString().split('.').last}',
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ],
-                )),
+                            ],
+                          );
+                        },
+                      ).toList(),
+                    ]
+                    //end
+                    )),
           ],
         ),
       ),
