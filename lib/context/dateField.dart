@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class DatePickerField extends StatefulWidget {
   final Function(DateTime?)? onDateTimeSelected; // Callback to parent
+  final DateTime? initialDateTime; // Accept initial DateTime
 
-  DatePickerField({this.onDateTimeSelected});
+  DatePickerField({this.onDateTimeSelected, this.initialDateTime});
 
   @override
   _DatePickerFieldState createState() => _DatePickerFieldState();
@@ -18,20 +19,29 @@ class _DatePickerFieldState extends State<DatePickerField> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialDateTime != null) {
+      // Format the initial DateTime and set it to the controller
+      _controller.text =
+          "${widget.initialDateTime!.month}/${widget.initialDateTime!.day}/${widget.initialDateTime!.year} - ${widget.initialDateTime!.hour}:${widget.initialDateTime!.minute.toString().padLeft(2, '0')}";
+    }
+  }
+
   Future<void> _selectDateTime(BuildContext context) async {
-    // Show date picker
     DateTime? selectedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: widget.initialDateTime ??
+          DateTime.now(), // Use initial value if available
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
 
     if (selectedDate != null) {
-      // Show time picker
       TimeOfDay? selectedTime = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay.now(),
+        initialTime: TimeOfDay.fromDateTime(selectedDate),
       );
 
       if (selectedTime != null) {
@@ -43,11 +53,9 @@ class _DatePickerFieldState extends State<DatePickerField> {
           selectedTime.minute,
         );
 
-        // Update the text field
         _controller.text =
             "${finalDateTime.month}/${finalDateTime.day}/${finalDateTime.year} - ${finalDateTime.hour}:${finalDateTime.minute.toString().padLeft(2, '0')}";
 
-        // Notify parent widget of the selected date and time
         if (widget.onDateTimeSelected != null) {
           widget.onDateTimeSelected!(finalDateTime);
         }
@@ -67,13 +75,11 @@ class _DatePickerFieldState extends State<DatePickerField> {
         suffixIcon: IconButton(
           icon: Icon(Icons.calendar_month),
           onPressed: () {
-            // Trigger date and time picker
             _selectDateTime(context);
           },
         ),
       ),
       onTap: () {
-        // Trigger date and time picker
         _selectDateTime(context);
       },
     );
