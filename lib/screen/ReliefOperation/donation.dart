@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Dashboard extends StatelessWidget {
+class Donation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
