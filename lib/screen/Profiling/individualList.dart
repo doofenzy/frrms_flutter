@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Profiling extends StatelessWidget {
+class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
       child:
-          Text('This is the profiling Screen', style: TextStyle(fontSize: 24)),
+          Text('This is the individual Screen', style: TextStyle(fontSize: 24)),
     );
   }
 }

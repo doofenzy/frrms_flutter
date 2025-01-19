@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class RiskManagement extends StatelessWidget {
+class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('This is the risk management Screen',
+      child: Text('This is the flood reports Screen',
           style: TextStyle(fontSize: 24)),
     );
   }
