@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'component/header.dart';
 import 'component/sidebar.dart';
-
 import 'screen/dashboard.dart'; // 0
-
 import 'screen/Profiling/householdList.dart'; //1
 import 'screen/Profiling/individualList.dart'; //2
-
 import 'screen/ReliefOperation/donation.dart'; //3
 import 'screen/ReliefOperation/inventory.dart'; //4
 import 'screen/ReliefOperation/reliefOperation.dart'; //5
-
 import 'screen/evacuationManagement.dart'; //6
-
 import 'screen/RiskAssessment/buenavistaMap.dart'; //7
 import 'screen/RiskAssessment/floodReports.dart'; //8
 import 'screen/RiskAssessment/sitrep.dart'; //9

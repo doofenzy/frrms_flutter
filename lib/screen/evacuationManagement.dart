@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../context/dateField.dart';
 import '../context/dropDownField.dart';
+import './evacuationCenter.dart';
 
 enum actionButton { edit, delete }
 
@@ -698,16 +699,26 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                       // Map through the data and generate rows dynamically
                       ...tableData.asMap().entries.map(
                         (entry) {
-                          // final rowIndex =
-                          //     entry.key; // Get the index of the current row
-                          final data =
-                              entry.value; // Get the corresponding data
+                          final data = entry.value;
 
                           return TableRow(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(data['ID']!),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CalamityDetailsScreen(
+                                        calamityData: data,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(data['ID']!),
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -785,7 +796,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                             ],
                           );
                         },
-                      ).toList(),
+                      ).toList()
                     ]
                     //end
                     )),
