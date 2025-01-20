@@ -20,7 +20,38 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
   String? currentStatus;
   String? calamityName;
   DateTime? selectedDate;
-  final List<Map<String, String>> tableData = [];
+  final List<Map<String, String>> tableData = [
+    {
+      'ID': '001',
+      'Date & Time': '01/01/24 - 11:11',
+      'Type of Calamity': 'Flood',
+      'Calamity Name': 'Typhoon Odette',
+      'Security Level': 'Severe',
+      'Cause of Calamity': 'Heavy Rains',
+      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
+      'Status': 'Ongoing',
+    },
+    {
+      'ID': '001',
+      'Date & Time': '01/01/24 - 11:11',
+      'Type of Calamity': 'Flood',
+      'Calamity Name': 'Typhoon Odette',
+      'Security Level': 'Severe',
+      'Cause of Calamity': 'Heavy Rains',
+      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
+      'Status': 'Ongoing',
+    },
+    {
+      'ID': '001',
+      'Date & Time': '01/01/24 - 11:11',
+      'Type of Calamity': 'Flood',
+      'Calamity Name': 'Typhoon Odette',
+      'Security Level': 'Severe',
+      'Cause of Calamity': 'Heavy Rains',
+      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
+      'Status': 'Ongoing',
+    },
+  ];
 
   void resetValue() {
     selectedCalamityType = null;
