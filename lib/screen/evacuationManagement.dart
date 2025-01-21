@@ -3,7 +3,7 @@ import '../context/dateField.dart';
 import '../context/dropDownField.dart';
 import './evacuationCenter.dart';
 
-enum actionButton { edit, delete }
+enum actionButton { edit, delete, view }
 
 class EvacuationManagement extends StatefulWidget {
   @override
@@ -753,22 +753,9 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
 
                           return TableRow(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          CalamityDetailsScreen(
-                                        calamityData: data,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(data['ID']!),
-                                ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(data['ID']!),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -818,7 +805,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                     );
                                   },
                                   menuChildren: List<MenuItemButton>.generate(
-                                    2,
+                                    3,
                                     (int menuIndex) => MenuItemButton(
                                       onPressed: () {
                                         print('current id ${data['ID']}');
@@ -835,6 +822,18 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                             tableData.removeAt(id - 1);
                                             updateSearch(
                                                 searchQuery); // Ensure the filtered table updates after deletion
+                                          } else if (selectedMenu ==
+                                              actionButton.view) {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CalamityDetailsScreen(
+                                                    calamityData: data,
+                                                  ),
+                                                ));
+                                          } else {
+                                            print('Invalid action');
                                           }
                                         });
                                       },
