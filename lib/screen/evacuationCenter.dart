@@ -110,11 +110,21 @@ class CalamityDetailsScreen extends StatelessWidget {
                 SizedBox(height: 20.0), // Space between the two boxes
                 Container(
                   height: 500.0, // Height of the second box
-                  color: Colors.green, // Background color for the second box
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Set background color to white
+                    border: Border.all(
+                      color: Colors.grey, // Set border color to gray
+                      width: 1.0, // Set border width
+                    ),
+                    borderRadius:
+                        BorderRadius.circular(10.0), // Rounded corners
+                  ),
                   child: Center(
                     child: Text(
                       'Second Box',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18), // Adjusted text color for contrast
                     ),
                   ),
                 )
