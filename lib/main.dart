@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: HeaderWidget(
-          imagePath: '../../assets/logo.png', // Adjust the path to your logo
+          imagePath: '../../assets/Logo.png', // Adjust the path to your logo
         ),
       ),
       drawer:

@@ -53,6 +53,27 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     },
   ];
 
+  List<Map<String, String>> filteredCalamities = [];
+  String searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    filteredCalamities = tableData; // Initially display all calamities
+  }
+
+  void updateSearch(String query) {
+    setState(() {
+      searchQuery = query;
+      print('Search query: $searchQuery');
+      filteredCalamities = tableData
+          .where((calamity) => calamity['Calamity Name']!
+              .toLowerCase()
+              .contains(searchQuery.toLowerCase()))
+          .toList();
+    });
+  }
+
   void resetValue() {
     selectedCalamityType = null;
     selectedSeverityLevel = null;
@@ -389,9 +410,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                   ),
                   filled: true,
                 ),
-                onChanged: (value) {
-                  print('Search query: $value');
-                },
+                onChanged: updateSearch,
               ),
             ),
           ],
@@ -728,7 +747,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                         ],
                       ),
                       // Map through the data and generate rows dynamically
-                      ...tableData.asMap().entries.map(
+                      ...filteredCalamities.asMap().entries.map(
                         (entry) {
                           final data = entry.value;
 
@@ -814,6 +833,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                             int id = int.parse(data['ID']!);
                                             print(id);
                                             tableData.removeAt(id - 1);
+                                            updateSearch(
+                                                searchQuery); // Ensure the filtered table updates after deletion
                                           }
                                         });
                                       },
