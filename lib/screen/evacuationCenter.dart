@@ -418,26 +418,25 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                       ),
                       Expanded(
                         child: GridView.builder(
-                          itemCount:
-                              datas.length, // Iterate based on available data
+                          itemCount: datas.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3, // Number of cards per row
-                            mainAxisSpacing: 8.0, // Spacing between rows
-                            crossAxisSpacing: 8.0, // Spacing between columns
+                            mainAxisSpacing: 20.0, // Spacing between rows
+                            crossAxisSpacing: 20.0, // Spacing between columns
                             childAspectRatio:
-                                1 / 2, // Aspect ratio for the cards
+                                2.9, // Adjust this for vertical length (smaller = taller cards)
                           ),
                           itemBuilder: (context, index) {
                             final data = datas[index];
                             return Card(
-                              margin: EdgeInsets.symmetric(vertical: 8.0),
+                              margin: EdgeInsets.all(15.0),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               elevation: 2.0,
                               child: Padding(
-                                padding: const EdgeInsets.all(16.0),
+                                padding: const EdgeInsets.all(12.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -445,40 +444,42 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        // Location at the top-left
                                         Text(
                                           data['location'] ?? '',
                                           style: TextStyle(
-                                            fontSize: 18.0,
+                                            fontSize: 16.0,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        // Three-dot button at the top-right
                                         IconButton(
-                                          onPressed: () {
-                                            // Handle button action
-                                          },
-                                          icon: Icon(Icons.more_vert),
+                                          onPressed: () {},
+                                          icon:
+                                              Icon(Icons.more_vert, size: 16.0),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 8.0), // Space between rows
-                                    // Display each key-value pair in the map except 'location'
-                                    ...data.entries
-                                        .where(
-                                            (entry) => entry.key != 'location')
-                                        .map((entry) => Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 4.0),
-                                              child: Text(
-                                                '${entry.key}: ${entry.value}',
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  color: Colors.grey[700],
-                                                ),
-                                              ),
-                                            ))
-                                        .toList(),
+                                    SizedBox(height: 8.0),
+                                    Expanded(
+                                      child: ListView(
+                                        padding: EdgeInsets.zero,
+                                        children: data.entries
+                                            .where((entry) =>
+                                                entry.key != 'location')
+                                            .map((entry) => Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 4.0),
+                                                  child: Text(
+                                                    '${entry.key}: ${entry.value}',
+                                                    style: TextStyle(
+                                                      fontSize: 14.0,
+                                                      color: Colors.grey[700],
+                                                    ),
+                                                  ),
+                                                ))
+                                            .toList(),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
