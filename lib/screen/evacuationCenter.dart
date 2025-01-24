@@ -521,10 +521,33 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon:
-                                              Icon(Icons.more_vert, size: 16.0),
+                                        PopupMenuButton<String>(
+                                          onSelected: (String result) {
+                                            switch (result) {
+                                              case 'ViewEvacuess':
+                                                print('View button pressed');
+                                                // Add your view logic here
+                                                break;
+                                              case 'ViewReliefInventory':
+                                                print('Edit button pressed');
+                                                // Add your edit logic here
+                                                break;
+                                            }
+                                          },
+                                          itemBuilder: (BuildContext context) =>
+                                              <PopupMenuEntry<String>>[
+                                            const PopupMenuItem<String>(
+                                              value: 'ViewEvacuess',
+                                              child: Text('View Evacuees'),
+                                            ),
+                                            const PopupMenuItem<String>(
+                                              value: 'ViewReliefInventory',
+                                              child:
+                                                  Text('View Relief Inventory'),
+                                            ),
+                                          ],
+                                          icon: Icon(Icons.more_horiz,
+                                              size: 16.0),
                                         ),
                                       ],
                                     ),
@@ -549,7 +572,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                 ))
                                             .toList(),
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
                               ),
