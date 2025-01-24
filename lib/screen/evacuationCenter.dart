@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../component/header.dart';
 import '../component/sidebar.dart';
 import '../context/dropDownField.dart';
+import '../screen/evacuees.dart';
 
 class CalamityDetailsScreen extends StatefulWidget {
   final Map<String, String> calamityData;
@@ -525,8 +526,12 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                           onSelected: (String result) {
                                             switch (result) {
                                               case 'ViewEvacuess':
-                                                print('View button pressed');
-                                                // Add your view logic here
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EvacueesPage()),
+                                                );
                                                 break;
                                               case 'ViewReliefInventory':
                                                 print('Edit button pressed');
