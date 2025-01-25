@@ -191,6 +191,198 @@ class EvacueesPage extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 16.0),
+            Container(
+                margin: EdgeInsets.only(
+                    left: 40, right: 40), // Adds margin above the table
+                child: Table(
+                    border: TableBorder(
+                      left: BorderSide(
+                        color: Colors.grey, // Left border color
+                        width: 1.0, // Left border width
+                      ),
+                      right: BorderSide(
+                        color: Colors.grey, // Right border color
+                        width: 1.0, // Right border width
+                      ),
+                      horizontalInside: BorderSide(
+                        color: Colors.grey, // Horizontal line color
+                        width: 1.0, // Horizontal line width
+                      ),
+                      top: BorderSide(
+                        color: Colors.grey, // Top border
+                        width: 1.0,
+                      ),
+                      bottom: BorderSide(
+                        color: Colors.grey, // Bottom border
+                        width: 1.0,
+                      ),
+                    ),
+                    // columnWidths: const {
+                    //   0: FixedColumnWidth(100.0),
+                    //   1: FlexColumnWidth(2),
+                    //   2: FlexColumnWidth(2), // More space for longer content
+                    //   3: FlexColumnWidth(2),
+                    //   4: FlexColumnWidth(2),
+                    //   5: FlexColumnWidth(2),
+                    //   6: FlexColumnWidth(2),
+                    //   7: FlexColumnWidth(2),
+                    //   8: FlexColumnWidth(2),
+                    // },
+                    children: [
+                      // Table header row
+                      TableRow(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('HH Id',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Name of Family Head',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Infant',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Toddlers',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Preschool',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('School Age',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Teen Age',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Adult',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Senior Citezens',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('# of Persons per Family',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Lactating Mothers',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Pregnant',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('PWD',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Solo Parent',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Actions',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                      // Map through the data and generate rows dynamically
+                      // ...filteredCalamities.asMap().entries.map(
+                      //   (entry) {
+                      //     final data = entry.value;
+
+                      //     return TableRow(
+                      //       children: [
+                      //         Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Text(data['ID']!),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Text(data['Date & Time']!),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Text(data['Type of Calamity']!),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Text(data['Calamity Name']!),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Text(data['Security Level']!),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Text(data['Cause of Calamity']!),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Text(
+                      //               data['Evacuation Alert Level Issued']!),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Text(data['Status']!),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.all(2.0),
+                      //           child: MenuAnchor(
+                      //             builder: (BuildContext context,
+                      //                 MenuController controller,
+                      //                 Widget? child) {
+                      //               return IconButton(
+                      //                 onPressed: () {
+                      //                   if (controller.isOpen) {
+                      //                     controller.close();
+                      //                   } else {
+                      //                     controller.open();
+                      //                   }
+                      //                 },
+                      //                 icon: const Icon(Icons.more_horiz),
+                      //                 tooltip: 'Show menu',
+                      //               );
+                      //             },
+                      //             menuChildren: List<MenuItemButton>.generate(
+                      //               3,
+                      //               (int menuIndex) => MenuItemButton(
+                      //                 onPressed: () {},
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     );
+                      //   },
+                      // ).toList()
+                    ]
+                    //end
+                    )),
           ],
         ),
       ),
