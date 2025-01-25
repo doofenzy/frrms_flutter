@@ -248,234 +248,248 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                 fontSize: 18,
                               ), // Text style for upper-left text
                             ),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.6,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.4,
-                                            padding: EdgeInsets.all(20.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(height: 30.0),
-                                                Text(
-                                                  'CALAMITY INFORMATION',
-                                                  style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontSize: 24.0,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                SizedBox(height: 20.0),
-                                                Table(
-                                                  border: TableBorder.all(
-                                                    color: Colors
-                                                        .transparent, // Table border color
-                                                  ),
-                                                  columnWidths: const {
-                                                    0: FlexColumnWidth(1),
-                                                    1: FlexColumnWidth(1),
-                                                  },
-                                                  children: [
-                                                    TableRow(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: TextField(
-                                                            decoration:
-                                                                InputDecoration(
-                                                              labelText:
-                                                                  'Name of Evacuation Center',
-                                                              border:
-                                                                  OutlineInputBorder(),
-                                                            ),
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                evacuationCenterName =
-                                                                    value;
-                                                              });
-                                                            },
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: TextField(
-                                                            decoration:
-                                                                InputDecoration(
-                                                              labelText: 'Zone',
-                                                              border:
-                                                                  OutlineInputBorder(),
-                                                            ),
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                zone = value;
-                                                              });
-                                                            },
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: DropdownField(
-                                                            label:
-                                                                'Evacuation Type',
-                                                            items: [
-                                                              'Private Evacuation Center',
-                                                              'Public Evacuation Center'
-                                                            ],
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                evacuationType =
-                                                                    value;
-                                                              });
-                                                            },
-                                                          ),
-                                                        ),
-                                                        // Empty cell
-                                                      ],
+                            Container(
+                              width: 250.0,
+                              height: 50.0,
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.6,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.4,
+                                              padding: EdgeInsets.all(20.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(height: 30.0),
+                                                  Text(
+                                                    'CALAMITY INFORMATION',
+                                                    style: TextStyle(
+                                                      color: Colors.blue,
+                                                      fontSize: 24.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
-                                                    // Row 1
-                                                    TableRow(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: TextField(
-                                                            decoration:
-                                                                InputDecoration(
-                                                              labelText:
-                                                                  'Name of Site Manager',
-                                                              border:
-                                                                  OutlineInputBorder(),
-                                                            ),
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                nameOfSiteManager =
-                                                                    value;
-                                                              });
-                                                            },
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: DropdownField(
-                                                            label:
-                                                                'Contact Information',
-                                                            items: [
-                                                              'Flood',
-                                                              'Typhoon'
-                                                            ],
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                contactInformation =
-                                                                    value;
-                                                              });
-                                                            },
-                                                          ),
-                                                        ),
-                                                        SizedBox()
-                                                      ],
+                                                  ),
+                                                  SizedBox(height: 20.0),
+                                                  Table(
+                                                    border: TableBorder.all(
+                                                      color: Colors
+                                                          .transparent, // Table border color
                                                     ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 20.0),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor: Colors
-                                                            .blue, // Set the background color to blue
-                                                        foregroundColor: Colors
-                                                            .white, // Set the text color to white
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  8.0), // Rectangular shape with rounded corners
-                                                        ),
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    20.0,
-                                                                vertical:
-                                                                    12.0), // Add padding for the rectangle size
+                                                    columnWidths: const {
+                                                      0: FlexColumnWidth(1),
+                                                      1: FlexColumnWidth(1),
+                                                    },
+                                                    children: [
+                                                      TableRow(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: TextField(
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                labelText:
+                                                                    'Name of Evacuation Center',
+                                                                border:
+                                                                    OutlineInputBorder(),
+                                                              ),
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  evacuationCenterName =
+                                                                      value;
+                                                                });
+                                                              },
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: TextField(
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                labelText:
+                                                                    'Zone',
+                                                                border:
+                                                                    OutlineInputBorder(),
+                                                              ),
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  zone = value;
+                                                                });
+                                                              },
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child:
+                                                                DropdownField(
+                                                              label:
+                                                                  'Evacuation Type',
+                                                              items: [
+                                                                'Private Evacuation Center',
+                                                                'Public Evacuation Center'
+                                                              ],
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  evacuationType =
+                                                                      value;
+                                                                });
+                                                              },
+                                                            ),
+                                                          ),
+                                                          // Empty cell
+                                                        ],
                                                       ),
-                                                      onPressed: () {
-                                                        // Save logic here\
-                                                        // saveCalamityData();
+                                                      // Row 1
+                                                      TableRow(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: TextField(
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                labelText:
+                                                                    'Name of Site Manager',
+                                                                border:
+                                                                    OutlineInputBorder(),
+                                                              ),
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  nameOfSiteManager =
+                                                                      value;
+                                                                });
+                                                              },
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child:
+                                                                DropdownField(
+                                                              label:
+                                                                  'Contact Information',
+                                                              items: [
+                                                                'Flood',
+                                                                'Typhoon'
+                                                              ],
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  contactInformation =
+                                                                      value;
+                                                                });
+                                                              },
+                                                            ),
+                                                          ),
+                                                          SizedBox()
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 20.0),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor: Colors
+                                                              .blue, // Set the background color to blue
+                                                          foregroundColor: Colors
+                                                              .white, // Set the text color to white
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0), // Rectangular shape with rounded corners
+                                                          ),
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      20.0,
+                                                                  vertical:
+                                                                      12.0), // Add padding for the rectangle size
+                                                        ),
+                                                        onPressed: () {
+                                                          // Save logic here\
+                                                          // saveCalamityData();
 
-                                                        print(
-                                                            'Calamity information saved!');
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Text('Save',
-                                                          style: TextStyle(
-                                                              fontSize:
-                                                                  16.0)), // Set font size and text
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
+                                                          print(
+                                                              'Calamity information saved!');
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: Text('Save',
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    16.0)), // Set font size and text
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Positioned(
-                                            top: 5.0,
-                                            right: 5.0,
-                                            child: IconButton(
-                                              icon: Icon(Icons.close,
-                                                  color: Colors.grey),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
+                                            Positioned(
+                                              top: 5.0,
+                                              right: 5.0,
+                                              child: IconButton(
+                                                icon: Icon(Icons.close,
+                                                    color: Colors.grey),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              icon: Icon(Icons.add,
-                                  color: Colors.white,
-                                  size: 16), // Example icon
-                              label:
-                                  Text('Add Evacuation Center'), // Button text
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue, // Button color
-                                foregroundColor:
-                                    Colors.white, // Text and icon color
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      4.0), // Rectangle shape
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: Icon(Icons.add,
+                                    color: Colors.white,
+                                    size: 16), // Example icon
+                                label: Text(
+                                    'Add Evacuation Center'), // Button text
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue, // Button color
+                                  foregroundColor:
+                                      Colors.white, // Text and icon color
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        4.0), // Rectangle shape
+                                  ),
                                 ),
                               ),
                             ),

@@ -24,8 +24,7 @@ class EvacueesPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.only(
-                  top: 16.0, left: 16.0), // Add margin to top and left
+              margin: const EdgeInsets.only(top: 16.0, left: 16.0),
               child: Text(
                 'PRIVATE EC - EDWARD MAGADAP',
                 style: TextStyle(
@@ -72,7 +71,107 @@ class EvacueesPage extends StatelessWidget {
                 }),
               ),
             ),
-            Container()
+            SizedBox(height: 16.0),
+            Container(
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 50.0), // Add margin to left and right
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 200.0, // Adjust the width of the container
+                    height: 100.0, // Adjust the height of the container
+                    color: Colors.grey[300],
+                    child: Center(
+                      child: Text(
+                        'Container Box',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      // Container(
+                      //   width: 200.0, // Adjust the width of the search bar
+                      //   height: 40.0, // Adjust the height of the search bar
+                      //   margin: EdgeInsets.only(
+                      //       right: 60.0), // Add margin to the right
+                      //   child: TextField(
+                      //     decoration: InputDecoration(
+                      //       prefix: Icon(Icons.search),
+                      //       hintText: 'Search',
+                      //       border: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(8.0),
+                      //       ),
+                      //       contentPadding:
+                      //           EdgeInsets.symmetric(horizontal: 8.0),
+                      //     ),
+                      //   ),
+                      // ),
+                      Container(
+                        width: 300, // Adjust this value for the desired width
+                        margin:
+                            EdgeInsets.only(top: 50.0, left: 40.0, right: 40.0),
+                        padding: EdgeInsets.only(bottom: 40),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(vertical: 10.0),
+                            prefixIcon: Icon(Icons.search),
+                            hintText: 'Search...',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 200.0, // Adjust the width of the button
+                        height: 50.0, // Adjust the height of the button
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Colors.blue, // Set the background color to blue
+                            foregroundColor:
+                                Colors.white, // Set the text color to white
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  8.0), // Rectangular shape with rounded corners
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                              vertical: 12.0,
+                            ), // Add padding for the rectangle size
+                          ),
+                          onPressed: () {
+                            // Save logic here
+                            print('Calamity information saved!');
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.add, size: 20.0), // Add icon
+                              SizedBox(
+                                  width: 8.0), // Space between icon and text
+                              Text(
+                                'Add Evacuee',
+                                style: TextStyle(
+                                    fontSize: 16.0), // Set font size and text
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
