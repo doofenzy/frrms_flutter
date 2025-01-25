@@ -79,38 +79,57 @@ class EvacueesPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: 200.0, // Adjust the width of the container
-                    height: 100.0, // Adjust the height of the container
-                    color: Colors.grey[300],
-                    child: Center(
-                      child: Text(
-                        'Container Box',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                        ),
+                    width: 300.0, // Adjust the width of the container
+                    height: 130.0, // Adjust the height of the container
+                    // color: Colors.white,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black, // Black border color
+                        width: 1.0, // Border width
                       ),
+                    ),
+                    padding: const EdgeInsets.all(
+                        8.0), // Add padding inside the container
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Essential Contacts:',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Divider(
+                          color: Colors.black, // Black line divider
+                          thickness: 1.0, // Thickness of the divider
+                        ),
+                        Text(
+                          'PNP:120-1212',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Ambulance: 09290284932',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Site Manager: 2930912832',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Row(
                     children: [
-                      // Container(
-                      //   width: 200.0, // Adjust the width of the search bar
-                      //   height: 40.0, // Adjust the height of the search bar
-                      //   margin: EdgeInsets.only(
-                      //       right: 60.0), // Add margin to the right
-                      //   child: TextField(
-                      //     decoration: InputDecoration(
-                      //       prefix: Icon(Icons.search),
-                      //       hintText: 'Search',
-                      //       border: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.circular(8.0),
-                      //       ),
-                      //       contentPadding:
-                      //           EdgeInsets.symmetric(horizontal: 8.0),
-                      //     ),
-                      //   ),
-                      // ),
                       Container(
                         width: 300, // Adjust this value for the desired width
                         margin:
