@@ -26,6 +26,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
   DateTime? selectedDate;
 
   // POST METHOD
+  // TODO: make the data fetch in real time no need to refresh the page
   Future<void> postData() async {
     final url = Uri.parse(
         'http://127.0.0.1:8000/api/calamities'); // Replace with your backend URL
@@ -45,7 +46,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
       if (response.statusCode == 200) {
         // Handle successful response
         print('Data posted successfully');
-        await fetchData();
+        updateFilteredCalamities();
       }
     } catch (e) {
       // Handle network or other errors
@@ -84,16 +85,61 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     }
   }
 
+  // DELETE METHOD
+  // TODO: make the data fetch in real time no need to refresh the page
   Future<void> deleteData(int id) async {
     final url = Uri.parse('http://127.0.0.1:8000/api/calamities/$id');
     try {
       final response = await http.delete(url);
       if (response.statusCode == 200) {
         print('Data deleted successfully');
-        await fetchData();
+        updateFilteredCalamities();
       }
     } catch (e) {
       print('Error deleting data: $e');
+    }
+  }
+
+  Future<void> updateCalamityData(int id) async {
+    final url = Uri.parse('http://127.0.0.1:8000/api/calamities/$id');
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({
+      'type': selectedCalamityType,
+      'severity_level': selectedSeverityLevel,
+      'cause': selectedCause,
+      'alert_level': selectedAlertLevel,
+      'status': currentStatus,
+      // 'calamityName': calamityName ,
+      'date': selectedDate?.toIso8601String(),
+    });
+
+    try {
+      final response = await http.patch(url, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        final updatedItem = jsonDecode(response.body);
+        setState(() {
+          final index =
+              tableData.indexWhere((item) => item['ID'] == id.toString());
+          if (index != -1) {
+            tableData[index] = {
+              'ID': updatedItem['id'].toString(),
+              'Date & Time': updatedItem['date'],
+              'Type of Calamity': updatedItem['type'],
+              'Calamity Name': updatedItem['name'] ?? 'N/A',
+              'Security Level': updatedItem['severity_level'],
+              'Cause of Calamity': updatedItem['cause'],
+              'Evacuation Alert Level Issued': updatedItem['alert_level'],
+              'Status': updatedItem['status'],
+            };
+            updateFilteredCalamities();
+          }
+        });
+        print('Data updated successfully');
+      } else {
+        print('Failed to update data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error updating data: $e');
     }
   }
 
@@ -172,34 +218,34 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
   //   resetValue();
   // }
 
-  void updateCalamityData(int id) {
-    int index = tableData.indexWhere((data) => int.parse(data['ID']!) == id);
+  // void updateCalamityData(int id) {
+  //   int index = tableData.indexWhere((data) => int.parse(data['ID']!) == id);
 
-    if (index != -1) {
-      Map<String, String> updatedCalamity = {
-        'ID': id.toString(),
-        'Date & Time': selectedDate != null
-            ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}/${selectedDate!.hour}:${selectedDate!.minute}'
-            : 'N/A',
-        'Type of Calamity': selectedCalamityType!,
-        'Calamity Name': calamityName!,
-        'Security Level': selectedSeverityLevel!,
-        'Cause of Calamity': selectedCause!,
-        'Evacuation Alert Level Issued': selectedAlertLevel!,
-        'Status': currentStatus!,
-      };
+  //   if (index != -1) {
+  //     Map<String, String> updatedCalamity = {
+  //       'ID': id.toString(),
+  //       'Date & Time': selectedDate != null
+  //           ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}/${selectedDate!.hour}:${selectedDate!.minute}'
+  //           : 'N/A',
+  //       'Type of Calamity': selectedCalamityType!,
+  //       'Calamity Name': calamityName!,
+  //       'Security Level': selectedSeverityLevel!,
+  //       'Cause of Calamity': selectedCause!,
+  //       'Evacuation Alert Level Issued': selectedAlertLevel!,
+  //       'Status': currentStatus!,
+  //     };
 
-      setState(() {
-        tableData[index] =
-            updatedCalamity; // Replace the entry and trigger rebuild
-      });
+  //     setState(() {
+  //       tableData[index] =
+  //           updatedCalamity; // Replace the entry and trigger rebuild
+  //     });
 
-      print('Calamity updated successfully!');
-    } else {
-      print('Calamity with ID $id not found!');
-    }
-    resetValue();
-  }
+  //     print('Calamity updated successfully!');
+  //   } else {
+  //     print('Calamity with ID $id not found!');
+  //   }
+  //   resetValue();
+  // }
 
   void updateModal(int id) {
     // Find the data associated with the passed ID
@@ -222,8 +268,6 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
       selectedAlertLevel = selectedData['Evacuation Alert Level Issued'];
       currentStatus = selectedData['Status'];
     });
-
-    print(selectedDate);
 
     showDialog(
       context: context,
@@ -420,6 +464,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                             // Update the table data
                             updateCalamityData(int.parse(selectedData[
                                 'ID']!)); // Update the specific calamity
+                            print(int.parse(selectedData['ID']!));
 
                             Navigator.of(context).pop();
                           },
