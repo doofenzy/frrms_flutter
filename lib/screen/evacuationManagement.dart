@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../context/dateField.dart';
 import '../context/dropDownField.dart';
 import './evacuationCenter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 enum actionButton { edit, delete, view }
 
@@ -20,46 +22,91 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
   String? currentStatus;
   String? calamityName;
   DateTime? selectedDate;
-  final List<Map<String, String>> tableData = [
-    {
-      'ID': '001',
-      'Date & Time': '01/01/24 - 11:11',
-      'Type of Calamity': 'Flood',
-      'Calamity Name': 'Typhoon Odette',
-      'Security Level': 'Severe',
-      'Cause of Calamity': 'Heavy Rains',
-      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
-      'Status': 'Ongoing',
-    },
-    {
-      'ID': '001',
-      'Date & Time': '01/01/24 - 11:11',
-      'Type of Calamity': 'Flood',
-      'Calamity Name': 'Typhoon Odette',
-      'Security Level': 'Severe',
-      'Cause of Calamity': 'Heavy Rains',
-      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
-      'Status': 'Ongoing',
-    },
-    {
-      'ID': '001',
-      'Date & Time': '01/01/24 - 11:11',
-      'Type of Calamity': 'Flood',
-      'Calamity Name': 'Typhoon Odette',
-      'Security Level': 'Severe',
-      'Cause of Calamity': 'Heavy Rains',
-      'Evacuation Alert Level Issued': 'Mandatory Evacuation',
-      'Status': 'Ongoing',
-    },
-  ];
+  final List<Map<String, String>> tableData = [];
+
+  Future<void> postData() async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/calamities'); // Replace with your backend URL
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({
+      'type': selectedCalamityType,
+      'severity_level': selectedSeverityLevel,
+      'cause': selectedCause,
+      'alert_level': selectedAlertLevel,
+      'status': currentStatus,
+      // 'calamityName': calamityName,
+      'date': selectedDate?.toIso8601String(),
+    });
+    print('Body: $body');
+
+    print(calamityName);
+    print(selectedDate);
+    print(selectedCalamityType);
+    print(selectedSeverityLevel);
+    print(selectedCause);
+    print(selectedAlertLevel);
+    print(currentStatus);
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        // Handle successful response
+        print('Data posted successfully');
+      }
+    } catch (e) {
+      // Handle network or other errors
+      print('Error posting data: $e');
+    }
+  }
+
+  Future<void> fetchData() async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/calamities'); // Replace with your backend URL
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          tableData.clear();
+          for (var item in data) {
+            tableData.add({
+              'ID': item['id'].toString(),
+              'Date & Time': item['date'],
+              'Type of Calamity': item['type'],
+              'Calamity Name': item['name'] ?? 'N/A',
+              'Security Level': item['severity_level'],
+              'Cause of Calamity': item['cause'],
+              'Evacuation Alert Level Issued': item['alert_level'],
+              'Status': item['status'],
+            });
+          }
+          updateFilteredCalamities();
+        });
+        print(data);
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
 
   List<Map<String, String>> filteredCalamities = [];
   String searchQuery = '';
 
+  void updateFilteredCalamities() {
+    setState(() {
+      filteredCalamities = tableData.where((calamity) {
+        return calamity.values.any((value) => value.contains(searchQuery));
+      }).toList();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    filteredCalamities = tableData; // Initially display all calamities
+    fetchData();
   }
 
   void updateSearch(String query) {
@@ -107,6 +154,14 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     setState(() {
       tableData.add(newCalamity);
     });
+
+    print(calamityName);
+    print(selectedDate);
+    print(selectedCalamityType);
+    print(selectedSeverityLevel);
+    print(selectedCause);
+    print(selectedAlertLevel);
+    print(currentStatus);
 
     resetValue();
   }
@@ -613,7 +668,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                       ),
                                       onPressed: () {
                                         // Save logic here\
-                                        saveCalamityData();
+                                        // saveCalamityData();
+                                        postData();
 
                                         print('Calamity information saved!');
                                         Navigator.of(context).pop();
