@@ -13,6 +13,8 @@ class EvacuationManagement extends StatefulWidget {
 }
 
 class _EvacuationManagementState extends State<EvacuationManagement> {
+  final List<Map<String, String>> tableData = [];
+
   actionButton? selectedMenu;
   int? id;
   String? selectedCalamityType;
@@ -22,8 +24,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
   String? currentStatus;
   String? calamityName;
   DateTime? selectedDate;
-  final List<Map<String, String>> tableData = [];
 
+  // POST METHOD
   Future<void> postData() async {
     final url = Uri.parse(
         'http://127.0.0.1:8000/api/calamities'); // Replace with your backend URL
@@ -37,21 +39,13 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
       // 'calamityName': calamityName,
       'date': selectedDate?.toIso8601String(),
     });
-    print('Body: $body');
-
-    print(calamityName);
-    print(selectedDate);
-    print(selectedCalamityType);
-    print(selectedSeverityLevel);
-    print(selectedCause);
-    print(selectedAlertLevel);
-    print(currentStatus);
 
     try {
       final response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 200) {
         // Handle successful response
         print('Data posted successfully');
+        await fetchData();
       }
     } catch (e) {
       // Handle network or other errors
@@ -59,10 +53,9 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     }
   }
 
+  // GET METHOD
   Future<void> fetchData() async {
-    final url = Uri.parse(
-        'http://127.0.0.1:8000/api/calamities'); // Replace with your backend URL
-
+    final url = Uri.parse('http://127.0.0.1:8000/api/calamities');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -83,7 +76,6 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
           }
           updateFilteredCalamities();
         });
-        print(data);
       } else {
         print('Failed to fetch data: ${response.statusCode}');
       }
@@ -92,6 +84,20 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     }
   }
 
+  Future<void> deleteData(int id) async {
+    final url = Uri.parse('http://127.0.0.1:8000/api/calamities/$id');
+    try {
+      final response = await http.delete(url);
+      if (response.statusCode == 200) {
+        print('Data deleted successfully');
+        await fetchData();
+      }
+    } catch (e) {
+      print('Error deleting data: $e');
+    }
+  }
+
+  // TODO: Implement the search functionality
   List<Map<String, String>> filteredCalamities = [];
   String searchQuery = '';
 
@@ -101,6 +107,16 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
         return calamity.values.any((value) => value.contains(searchQuery));
       }).toList();
     });
+  }
+
+  void resetValue() {
+    selectedCalamityType = null;
+    selectedSeverityLevel = null;
+    selectedCause = null;
+    selectedAlertLevel = null;
+    currentStatus = null;
+    calamityName = null;
+    selectedDate = null;
   }
 
   @override
@@ -121,50 +137,40 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     });
   }
 
-  void resetValue() {
-    selectedCalamityType = null;
-    selectedSeverityLevel = null;
-    selectedCause = null;
-    selectedAlertLevel = null;
-    currentStatus = null;
-    calamityName = null;
-    selectedDate = null;
-  }
+  // void saveCalamityData() {
+  //   int id = tableData.length + 1; // to start the id at 1
 
-  void saveCalamityData() {
-    int id = tableData.length + 1; // to start the id at 1
+  //   Map<String, String> newCalamity = {
+  //     'ID': id.toString(), // id incrementation
+  //     'Date & Time': selectedDate != null
+  //         ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}/${selectedDate!.hour}:${selectedDate!.minute}'
+  //         : 'N/A',
+  //     'Type of Calamity': selectedCalamityType!,
+  //     'Calamity Name': calamityName!,
+  //     'Security Level': selectedSeverityLevel!,
+  //     'Cause of Calamity': selectedCause!,
+  //     'Evacuation Alert Level Issued': selectedAlertLevel!,
+  //     'Status': currentStatus!,
+  //   };
 
-    Map<String, String> newCalamity = {
-      'ID': id.toString(), // id incrementation
-      'Date & Time': selectedDate != null
-          ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}/${selectedDate!.hour}:${selectedDate!.minute}'
-          : 'N/A',
-      'Type of Calamity': selectedCalamityType!,
-      'Calamity Name': calamityName!,
-      'Security Level': selectedSeverityLevel!,
-      'Cause of Calamity': selectedCause!,
-      'Evacuation Alert Level Issued': selectedAlertLevel!,
-      'Status': currentStatus!,
-    };
+  //   newCalamity.forEach((key, value) {
+  //     print('$key: $value');
+  //   });
 
-    newCalamity.forEach((key, value) {
-      print('$key: $value');
-    });
+  //   setState(() {
+  //     tableData.add(newCalamity);
+  //   });
 
-    setState(() {
-      tableData.add(newCalamity);
-    });
+  //   print(calamityName);
+  //   print(selectedDate);
+  //   print(selectedCalamityType);
+  //   print(selectedSeverityLevel);
+  //   print(selectedCause);
+  //   print(selectedAlertLevel);
+  //   print(currentStatus);
 
-    print(calamityName);
-    print(selectedDate);
-    print(selectedCalamityType);
-    print(selectedSeverityLevel);
-    print(selectedCause);
-    print(selectedAlertLevel);
-    print(currentStatus);
-
-    resetValue();
-  }
+  //   resetValue();
+  // }
 
   void updateCalamityData(int id) {
     int index = tableData.indexWhere((data) => int.parse(data['ID']!) == id);
@@ -874,7 +880,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                           } else if (selectedMenu ==
                                               actionButton.delete) {
                                             int id = int.parse(data['ID']!);
-                                            print(id);
+                                            deleteData(id);
                                             tableData.removeAt(id - 1);
                                             updateSearch(
                                                 searchQuery); // Ensure the filtered table updates after deletion
