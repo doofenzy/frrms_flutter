@@ -936,7 +936,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       CalamityDetailsScreen(
-                                                    calamityData: data,
+                                                    calamityID:
+                                                        int.parse(data['ID']!),
                                                   ),
                                                 ));
                                           } else {
