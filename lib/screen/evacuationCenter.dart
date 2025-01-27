@@ -3,11 +3,13 @@ import '../component/header.dart';
 import '../component/sidebar.dart';
 import '../context/dropDownField.dart';
 import '../screen/evacuees.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CalamityDetailsScreen extends StatefulWidget {
-  final Map<String, String> calamityData;
+  final int calamityID;
 
-  CalamityDetailsScreen({required this.calamityData});
+  CalamityDetailsScreen({required this.calamityID});
 
   @override
   _CalamityDetailsScreenState createState() => _CalamityDetailsScreenState();
@@ -20,36 +22,34 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
   String? nameOfSiteManager;
   String? contactInformation;
 
-  final List<Map<String, String>> datas = [
-    {
-      "location": "Location 1",
-      "zone": "Zone A",
-      "type": "Public",
-      "name": "Center Address 1",
-      "contact": "1234567890"
-    },
-    {
-      "location": "Location 2",
-      "zone": "Zone B",
-      "type": "Private",
-      "name": "Center Address 2",
-      "contact": "0987654321"
-    },
-    {
-      "location": "Location 1",
-      "zone": "Zone A",
-      "type": "Public",
-      "name": "Center Address 1",
-      "contact": "1234567890"
-    },
-    {
-      "location": "Location 2",
-      "zone": "Zone B",
-      "type": "Private",
-      "name": "Center Address 2",
-      "contact": "0987654321"
-    },
-  ];
+  final List<Map<String, String>> datas = [];
+
+  Future<void> postData() async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/evacuation-centers'); // Replace with your backend URL
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({
+      'name': evacuationCenterName,
+      'zone': zone,
+      'type': evacuationType,
+      'contact_person': nameOfSiteManager,
+      'contact_number': contactInformation,
+      // 'calamityName': calamityName,
+      'calamity_id': widget.calamityID.toInt(),
+    });
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        // Handle successful response
+        print('Data posted successfully');
+        // updateFilteredCalamities();
+      }
+    } catch (e) {
+      // Handle network or other errors
+      print('Error posting data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -443,7 +443,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                         ),
                                                         onPressed: () {
                                                           // Save logic here\
-                                                          // saveCalamityData();
+                                                          postData();
 
                                                           print(
                                                               'Calamity information saved!');
