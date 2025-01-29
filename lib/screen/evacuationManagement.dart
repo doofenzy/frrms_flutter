@@ -32,6 +32,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
         'http://127.0.0.1:8000/api/calamities'); // Replace with your backend URL
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
+      'calamity_name': calamityName,
       'type': selectedCalamityType,
       'severity_level': selectedSeverityLevel,
       'cause': selectedCause,
@@ -40,6 +41,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
       // 'calamityName': calamityName,
       'date': selectedDate?.toIso8601String(),
     });
+
+    print('Body: $body');
 
     try {
       final response = await http.post(url, headers: headers, body: body);
@@ -68,7 +71,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
               'ID': item['id'].toString(),
               'Date & Time': item['date'],
               'Type of Calamity': item['type'],
-              'Calamity Name': item['name'] ?? 'N/A',
+              'Calamity Name': item['calamity_name'],
               'Security Level': item['severity_level'],
               'Cause of Calamity': item['cause'],
               'Evacuation Alert Level Issued': item['alert_level'],
@@ -104,6 +107,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     final url = Uri.parse('http://127.0.0.1:8000/api/calamities/$id');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
+      'calamity_name': calamityName,
       'type': selectedCalamityType,
       'severity_level': selectedSeverityLevel,
       'cause': selectedCause,
@@ -125,7 +129,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
               'ID': updatedItem['id'].toString(),
               'Date & Time': updatedItem['date'],
               'Type of Calamity': updatedItem['type'],
-              'Calamity Name': updatedItem['name'] ?? 'N/A',
+              'Calamity Name': updatedItem['calamity_name'],
               'Security Level': updatedItem['severity_level'],
               'Cause of Calamity': updatedItem['cause'],
               'Evacuation Alert Level Issued': updatedItem['alert_level'],

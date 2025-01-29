@@ -5,6 +5,7 @@ import '../context/dropDownField.dart';
 import '../screen/evacuees.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 // add crud and nodify backend
 class CalamityDetailsScreen extends StatefulWidget {
   final int calamityID;
@@ -21,8 +22,6 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
   String? evacuationType;
   String? nameOfSiteManager;
   String? contactInformation;
-
-  final List<Map<String, String>> datas = [];
 
   Future<void> postData() async {
     final url = Uri.parse(
@@ -49,6 +48,43 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
       // Handle network or other errors
       print('Error posting data: $e');
     }
+  }
+
+  final List<Map<String, String>> datas = [];
+  // GET METHOD
+  Future<void> fetchData() async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/evacuation-centers/calamity/${widget.calamityID}');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        print(response.body); // Debugging: Print the API response
+        final List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          datas.clear(); // Clear the existing data
+          for (var item in data) {
+            datas.add({
+              'location': item['name'].toString(),
+              'Zone': item['zone'].toString(),
+              'Type': item['type'].toString(),
+              'Contact Person': item['contact_person'].toString(),
+              'Contact Number': item['contact_number'].toString(),
+            });
+          }
+        });
+        print(datas); // Debugging: Print the parsed data
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
   }
 
   @override
@@ -393,14 +429,14 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                             padding:
                                                                 const EdgeInsets
                                                                     .all(8.0),
-                                                            child:
-                                                                DropdownField(
-                                                              label:
-                                                                  'Contact Information',
-                                                              items: [
-                                                                'Flood',
-                                                                'Typhoon'
-                                                              ],
+                                                            child: TextField(
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                labelText:
+                                                                    'Contact Information',
+                                                                border:
+                                                                    OutlineInputBorder(),
+                                                              ),
                                                               onChanged:
                                                                   (value) {
                                                                 setState(() {
