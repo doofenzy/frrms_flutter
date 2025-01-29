@@ -113,7 +113,6 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
       'cause': selectedCause,
       'alert_level': selectedAlertLevel,
       'status': currentStatus,
-      // 'calamityName': calamityName ,
       'date': selectedDate?.toIso8601String(),
     });
 
@@ -283,8 +282,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
           child: Stack(
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.6,
-                height: MediaQuery.of(context).size.height * 0.4,
+                width: 900,
+                height: 400,
                 padding: EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -552,8 +551,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                       child: Stack(
                         children: [
                           Container(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            height: MediaQuery.of(context).size.height * 0.4,
+                            width: 900,
+                            height: 400,
                             padding: EdgeInsets.all(20.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -942,6 +941,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                                       CalamityDetailsScreen(
                                                     calamityID:
                                                         int.parse(data['ID']!),
+                                                    calamityName:
+                                                        data['Calamity Name']!,
                                                   ),
                                                 ));
                                           } else {
