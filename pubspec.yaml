@@ -37,6 +37,9 @@ dependencies:
 
 dev_dependencies:
   http: ^1.1.0
+  go_router: ^10.0.0
+  shared_preferences: ^2.2.2
+
   flutter_test:
     sdk: flutter
 
