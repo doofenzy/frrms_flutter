@@ -5,13 +5,13 @@ import 'component/sidebar.dart';
 import 'screen/dashboard.dart'; // 0
 import 'screen/Profiling/householdList.dart'; //1
 import 'screen/Profiling/individualList.dart'; //2
-import 'screen/ReliefOperation/donation.dart'; //3
-import 'screen/ReliefOperation/inventory.dart'; //4
+// import 'screen/ReliefOperation/donation.dart'; //3
+// import 'screen/ReliefOperation/inventory.dart'; //4
 import 'screen/ReliefOperation/reliefOperation.dart'; //5
 import 'screen/evacuationManagement.dart'; //6
-import 'screen/RiskAssessment/buenavistaMap.dart'; //7
-import 'screen/RiskAssessment/floodReports.dart'; //8
-import 'screen/RiskAssessment/sitrep.dart'; //9
+// import 'screen/RiskAssessment/buenavistaMap.dart'; //7
+// import 'screen/RiskAssessment/floodReports.dart'; //8
+// import 'screen/RiskAssessment/sitrep.dart'; //9
 
 void main() {
   runApp(MyApp());
@@ -36,32 +36,16 @@ class MyApp extends StatelessWidget {
         builder: (context, state) => HomeScreen(selectedIndex: 2),
       ),
       GoRoute(
-        path: '/relief-operation',
+        path: '/evacuation-management',
         builder: (context, state) => HomeScreen(selectedIndex: 3),
       ),
       GoRoute(
-        path: '/inventory',
+        path: '/relief-operation',
         builder: (context, state) => HomeScreen(selectedIndex: 4),
       ),
       GoRoute(
-        path: '/donation',
+        path: '/risk-assessment',
         builder: (context, state) => HomeScreen(selectedIndex: 5),
-      ),
-      GoRoute(
-        path: '/evacuation-management',
-        builder: (context, state) => HomeScreen(selectedIndex: 6),
-      ),
-      GoRoute(
-        path: '/buenavista-map',
-        builder: (context, state) => HomeScreen(selectedIndex: 7),
-      ),
-      GoRoute(
-        path: '/flood-reports',
-        builder: (context, state) => HomeScreen(selectedIndex: 8),
-      ),
-      GoRoute(
-        path: '/sitrep',
-        builder: (context, state) => HomeScreen(selectedIndex: 9),
       ),
     ],
   );
@@ -92,12 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Individuallist(),
     Householdlist(),
     Reliefoperation(),
-    Inventory(),
-    Donation(),
     EvacuationManagement(),
-    Buenavistamap(),
-    Floodreports(),
-    Sitrep()
   ];
 
   @override
