@@ -42,8 +42,6 @@ class _SidebarState extends State<Sidebar> {
             index: 3,
             subItems: [
               _buildSubItem(context, 'Evacuation Management', 3),
-              _buildSubItem(context, 'Relief Operations', 4),
-              _buildSubItem(context, 'Risk Assessment', 5),
             ],
           ),
         ],

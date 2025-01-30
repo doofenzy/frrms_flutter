@@ -7,7 +7,7 @@ import 'screen/Profiling/householdList.dart'; //1
 import 'screen/Profiling/individualList.dart'; //2
 // import 'screen/ReliefOperation/donation.dart'; //3
 // import 'screen/ReliefOperation/inventory.dart'; //4
-import 'screen/ReliefOperation/reliefOperation.dart'; //5
+// import 'screen/ReliefOperation/reliefOperation.dart'; //5
 import 'screen/evacuationManagement.dart'; //6
 // import 'screen/RiskAssessment/buenavistaMap.dart'; //7
 // import 'screen/RiskAssessment/floodReports.dart'; //8
@@ -39,14 +39,6 @@ class MyApp extends StatelessWidget {
         path: '/evacuation-management',
         builder: (context, state) => HomeScreen(selectedIndex: 3),
       ),
-      GoRoute(
-        path: '/relief-operation',
-        builder: (context, state) => HomeScreen(selectedIndex: 4),
-      ),
-      GoRoute(
-        path: '/risk-assessment',
-        builder: (context, state) => HomeScreen(selectedIndex: 5),
-      ),
     ],
   );
 
@@ -75,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Dashboard(),
     Individuallist(),
     Householdlist(),
-    Reliefoperation(),
     EvacuationManagement(),
   ];
 
@@ -102,25 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
         GoRouter.of(context).go('/household-list');
         break;
       case 3:
-        GoRouter.of(context).go('/relief-operation');
-        break;
-      case 4:
-        GoRouter.of(context).go('/inventory');
-        break;
-      case 5:
-        GoRouter.of(context).go('/donation');
-        break;
-      case 6:
         GoRouter.of(context).go('/evacuation-management');
-        break;
-      case 7:
-        GoRouter.of(context).go('/buenavista-map');
-        break;
-      case 8:
-        GoRouter.of(context).go('/flood-reports');
-        break;
-      case 9:
-        GoRouter.of(context).go('/sitrep');
         break;
     }
   }
