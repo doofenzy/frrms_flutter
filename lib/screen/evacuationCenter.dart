@@ -104,14 +104,14 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
         ),
         body: SingleChildScrollView(
           child: Container(
-              margin: EdgeInsets.all(16.0),
-              padding: EdgeInsets.all(16.0),
+              margin: EdgeInsets.all(12.0),
+              padding: EdgeInsets.all(12.0),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                        height: 300.0,
+                        height: 315.0,
                         padding: EdgeInsets.all(15.0),
                         decoration: BoxDecoration(
                           color: Colors.blue[
@@ -149,7 +149,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                       fontSize: 18,
                                     ),
                                   ),
-                                  SizedBox(height: 32.0), // Space for alignment
+                                  SizedBox(height: 10.0), // Space for alignment
                                   Align(
                                     alignment: Alignment
                                         .centerLeft, // Aligns horizontally at the center
@@ -158,28 +158,46 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                           top: 16.0,
                                           left:
                                               90), // Fine-tune vertical spacing
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment
-                                            .center, // Center the children horizontally
+                                      child: Stack(
+                                        alignment: Alignment.center,
                                         children: [
-                                          Text(
-                                            'Overall Total of Evacuees', // Label text
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.normal,
-                                              color: Colors.black,
+                                          SizedBox(
+                                            width: 150,
+                                            height: 150,
+                                            child: CircularProgressIndicator(
+                                              value: 0.2, // 20 percent
+                                              strokeWidth: 10.0,
+                                              backgroundColor: Colors.grey[300],
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.blue),
                                             ),
                                           ),
-                                          SizedBox(
-                                              height:
-                                                  4.0), // Space between the label and the number
-                                          Text(
-                                            '64', // The number to display
-                                            style: TextStyle(
-                                              fontSize: 40.0,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                            ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Overall Total\n of Evacuees', // Label text
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(
+                                                  height:
+                                                      2.0), // Space between the label and the number
+                                              Text(
+                                                '64', // The number to display
+                                                style: TextStyle(
+                                                  fontSize: 40.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -193,67 +211,87 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                             Align(
                               alignment: Alignment.centerRight,
                               child: Container(
-                                width: MediaQuery.of(context).size.width *
-                                    0.7, // Adjust width
-                                height: 300.0,
-                                margin: EdgeInsets.only(
-                                    left: 32.0,
-                                    right: 16.0), // Create space on the left
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: Offset(0, 3), // Shadow position
-                                    ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: GridView.builder(
-                                    itemCount: 12, // 4 rows * 3 columns
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4, // 3 items per row
-                                      childAspectRatio:
-                                          4, // Adjust the aspect ratio to make it look like rows
-                                      mainAxisSpacing:
-                                          1.0, // Reduce the spacing between rows
-                                      crossAxisSpacing:
-                                          2.0, // Reduce the spacing between columns
-                                    ),
-                                    itemBuilder: (context, index) {
-                                      return Row(
-                                        children: [
-                                          Text(
-                                            '${index + 1}', // Number on the left side
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
+                                  width: MediaQuery.of(context).size.width *
+                                      0.7, // Adjust width
+                                  height: 300.0,
+                                  margin: EdgeInsets.only(
+                                      left: 32.0,
+                                      right: 16.0), // Create space on the left
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: Offset(0, 3), // Shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: GridView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: 12, // 4 rows * 3 columns
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4, // 3 items per row
+                                        childAspectRatio:
+                                            3.5, // Balanced aspect ratio for layout
+                                        mainAxisSpacing:
+                                            8.0, // Space between rows
+                                        crossAxisSpacing:
+                                            8.0, // Space between columns
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        return Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: 50,
+                                                  height: 50,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: 0.2, // 20 percent
+                                                    strokeWidth: 6.0,
+                                                    backgroundColor:
+                                                        Colors.grey[300],
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(Colors.blue),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${index + 1}', // Number inside the circle
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                          SizedBox(
-                                              width:
-                                                  4.0), // Reduce the spacing between number and description
-                                          Expanded(
-                                            child: Text(
-                                              'Description ${index + 1}', // Description on the right side
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
+                                            SizedBox(width: 10.0),
+                                            Expanded(
+                                              child: Text(
+                                                'Description ${index + 1}', // Description outside the circle
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  )),
                             )
                           ],
                         )),
