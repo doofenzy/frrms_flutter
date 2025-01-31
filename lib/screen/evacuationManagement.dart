@@ -47,10 +47,29 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
 
     try {
       final response = await http.post(url, headers: headers, body: body);
-      if (response.statusCode == 200) {
-        // Handle successful response
+      if (response.statusCode == 201) {
+        // Parse the response body to get the new calamity data
+        final newItem = jsonDecode(response.body);
+
+        // Insert the new item into the tableData list
+        setState(() {
+          tableData.add({
+            'ID': newItem['id'].toString(),
+            'Date & Time': newItem['date'],
+            'Type of Calamity': newItem['type'],
+            'Calamity Name': newItem['calamity_name'],
+            'Security Level': newItem['severity_level'],
+            'Cause of Calamity': newItem['cause'],
+            'Evacuation Alert Level Issued': newItem['alert_level'],
+            'Status': newItem['status'],
+          });
+          updateFilteredCalamities();
+        });
+
         print('Data posted successfully');
-        updateFilteredCalamities();
+      } else {
+        // Handle error response
+        print('Failed to post data: ${response.statusCode}');
       }
     } catch (e) {
       // Handle network or other errors
@@ -95,9 +114,16 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     final url = Uri.parse('http://127.0.0.1:8000/api/calamities/$id');
     try {
       final response = await http.delete(url);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         print('Data deleted successfully');
-        updateFilteredCalamities();
+
+        // Remove the deleted item from the tableData list
+        setState(() {
+          tableData.removeWhere((item) => item['ID'] == id.toString());
+          updateFilteredCalamities();
+        });
+      } else {
+        print('Failed to delete data: ${response.statusCode}');
       }
     } catch (e) {
       print('Error deleting data: $e');

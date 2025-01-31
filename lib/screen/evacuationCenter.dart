@@ -54,7 +54,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
 
     try {
       final response = await http.post(url, headers: headers, body: body);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         // Handle successful response
         print('Data posted successfully');
         fetchData();
