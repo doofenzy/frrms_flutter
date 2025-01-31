@@ -22,6 +22,21 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
   String? evacuationType;
   String? nameOfSiteManager;
   String? contactInformation;
+  int? evacueesCount = 40;
+  final List<Map<String, dynamic>> evacueeData = [
+    {"description": "Infant\n(<1 yrs. old)", "count": 3},
+    {"description": "School Age\n(6-9 yrs. old)", "count": 8},
+    {"description": "Senior Citizen\n(>59 yrs. old)", "count": 5},
+    {"description": "Person with\ndisabilities", "count": 12},
+    {"description": "Todler\n(1-3 yrs. old)", "count": 20},
+    {"description": "Teenage\n(13-19 yrs. old)", "count": 7},
+    {"description": "Pregnant\nWomen", "count": 2},
+    {"description": "Single Headed", "count": 4},
+    {"description": "Pre-Schooler\n(4-5 yrs. old)", "count": 85},
+    {"description": "Adult\n(20-59 yrs. old)", "count": 6},
+    {"description": "Breastfeeding\nMothers", "count": 1},
+    {"description": "Person with\n Serious Illness", "count": 71},
+  ];
 
   Future<void> postData() async {
     final url = Uri.parse(
@@ -165,12 +180,17 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                             width: 150,
                                             height: 150,
                                             child: CircularProgressIndicator(
-                                              value: 0.2, // 20 percent
+                                              value: evacueesCount! / 100,
                                               strokeWidth: 10.0,
                                               backgroundColor: Colors.grey[300],
                                               valueColor:
                                                   AlwaysStoppedAnimation<Color>(
-                                                      Colors.blue),
+                                                evacueesCount! >= 85
+                                                    ? Colors.red
+                                                    : evacueesCount! >= 45
+                                                        ? Colors.yellow
+                                                        : Colors.green,
+                                              ),
                                             ),
                                           ),
                                           Column(
@@ -190,7 +210,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                   height:
                                                       2.0), // Space between the label and the number
                                               Text(
-                                                '64', // The number to display
+                                                '${evacueesCount!}', // The number to display
                                                 style: TextStyle(
                                                   fontSize: 40.0,
                                                   fontWeight: FontWeight.bold,
@@ -246,48 +266,66 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                             8.0, // Space between columns
                                       ),
                                       itemBuilder: (context, index) {
-                                        return Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Stack(
-                                              alignment: Alignment.center,
-                                              children: [
-                                                SizedBox(
-                                                  width: 50,
-                                                  height: 50,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    value: 0.2, // 20 percent
-                                                    strokeWidth: 6.0,
-                                                    backgroundColor:
-                                                        Colors.grey[300],
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(Colors.blue),
+                                        final data = evacueeData[index];
+                                        final count = data['count'];
+                                        return Container(
+                                          margin: EdgeInsets.only(
+                                              bottom:
+                                                  16.0), // Add margin at the bottom
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 50,
+                                                    height: 50,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      value: count /
+                                                          100, // Assuming count out of 100
+                                                      strokeWidth: 6.0,
+                                                      backgroundColor:
+                                                          Colors.grey[300],
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                              Color>(
+                                                        count >= 85
+                                                            ? Colors.red
+                                                            : count >= 45
+                                                                ? Colors.yellow
+                                                                : Colors.green,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                                Text(
-                                                  '${index + 1}', // Number inside the circle
+                                                  Text(
+                                                    '$count', // Number inside the circle
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                  width:
+                                                      10.0), // Space between the circle and the description
+                                              Expanded(
+                                                child: Text(
+                                                  data[
+                                                      'description'], // Description outside the circle
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(width: 10.0),
-                                            Expanded(
-                                              child: Text(
-                                                'Description ${index + 1}', // Description outside the circle
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         );
                                       },
                                     ),
