@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../context/dateField.dart';
 import '../context/dropDownField.dart';
-import './evacuationCenter.dart';
+// import './evacuationCenter.dart';
 import 'package:http/http.dart' as http;
+import 'package:go_router/go_router.dart';
 import 'dart:convert';
 
 enum actionButton { edit, delete, view }
@@ -934,17 +935,9 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                                 searchQuery); // Ensure the filtered table updates after deletion
                                           } else if (selectedMenu ==
                                               actionButton.view) {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CalamityDetailsScreen(
-                                                    calamityID:
-                                                        int.parse(data['ID']!),
-                                                    calamityName:
-                                                        data['Calamity Name']!,
-                                                  ),
-                                                ));
+                                            context.go(
+                                              '/calamityDetails/${data['ID']!}/${data['Calamity Name']!}',
+                                            );
                                           } else {
                                             print('Invalid action');
                                           }

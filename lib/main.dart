@@ -12,6 +12,7 @@ import 'screen/evacuationManagement.dart'; //6
 // import 'screen/RiskAssessment/buenavistaMap.dart'; //7
 // import 'screen/RiskAssessment/floodReports.dart'; //8
 // import 'screen/RiskAssessment/sitrep.dart'; //9
+import 'screen/evacuationCenter.dart'; //10
 
 void main() {
   runApp(MyApp());
@@ -38,6 +39,17 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/evacuation-management',
         builder: (context, state) => HomeScreen(selectedIndex: 3),
+      ),
+      GoRoute(
+        path: '/calamityDetails/:calamityID/:calamityName',
+        builder: (context, state) {
+          final calamityID = int.parse(state.pathParameters['calamityID']!);
+          final calamityName = state.pathParameters['calamityName']!;
+          return CalamityDetailsScreen(
+            calamityID: calamityID,
+            calamityName: calamityName,
+          );
+        },
       ),
     ],
   );
