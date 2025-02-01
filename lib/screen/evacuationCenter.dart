@@ -675,7 +675,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              EvacueesPage()),
+                                                              EvacueesScreen()),
                                                     );
                                                     break;
                                                   case 'ViewReliefInventory':

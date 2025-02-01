@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 import '../component/header.dart'; // Adjust the import path as needed
 import '../component/sidebar.dart'; // Adjust the import path as needed
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class EvacueesPage extends StatelessWidget {
+class EvacueesScreen extends StatefulWidget {
+  @override
+  _EvacueesScreenState createState() => _EvacueesScreenState();
+}
+
+class _EvacueesScreenState extends State<EvacueesScreen> {
+  List<Map<String, dynamic>> evacueesData = [];
+  List<Map<String, dynamic>> filteredEvacueesData = [];
+  String searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchEvacueesData();
+  }
+
   final List<Map<String, dynamic>> cardData = [
     {"number": 800, "label": "Total Population"},
     {"number": 232, "label": "Females"},
@@ -11,6 +28,72 @@ class EvacueesPage extends StatelessWidget {
     {"number": 50, "label": "Seniors"},
     {"number": 50, "label": "Underaged"},
   ];
+
+  Future<void> fetchEvacueesData() async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/evacuees'); // Replace with your backend URL
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          evacueesData = data
+              .map((item) => {
+                    'ID': item['id'].toString(),
+                    'Name': item['head_family'],
+                  })
+              .toList();
+          filteredEvacueesData = evacueesData;
+        });
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
+  void updateFilteredEvacuees() {
+    setState(() {
+      filteredEvacueesData = evacueesData.where((evacuees) {
+        return evacuees.values.any((value) {
+          if (value is String) {
+            return value.toLowerCase().contains(searchQuery.toLowerCase());
+          }
+          return false;
+        });
+      }).toList();
+    });
+  }
+
+  //   void updateFilteredCalamities() {
+  //   setState(() {
+  //     filteredCalamities = tableData.where((calamity) {
+  //       return calamity.values.any((value) => value.contains(searchQuery));
+  //     }).toList();
+  //   });
+  // }
+
+  void updateSearchQuery(String query) {
+    print('Search query: $query');
+    setState(() {
+      searchQuery = query;
+      updateFilteredEvacuees();
+    });
+  }
+
+  //   void updateSearch(String query) {
+  //   setState(() {
+  //     searchQuery = query;
+  //     print('Search query: $searchQuery');
+  //     filteredCalamities = tableData
+  //         .where((calamity) => calamity['Calamity Name']!
+  //             .toLowerCase()
+  //             .contains(searchQuery.toLowerCase()))
+  //         .toList();
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,67 +283,97 @@ class EvacueesPage extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Search'),
-                                  content: Container(
-                                    width: 400.0, // Set the desired width
-                                    height: 400.0, // Set the desired height
-                                    child: Column(
-                                      children: [
-                                        TextField(
-                                          decoration: InputDecoration(
-                                            hintText: 'Search...',
-                                            border: OutlineInputBorder(),
-                                          ),
-                                          onChanged: (value) {
-                                            // Handle search logic here
-                                            print('Search query: $value');
-                                          },
-                                        ),
-                                        SizedBox(
-                                            height:
-                                                16.0), // Space between the search bar and the table
-                                        Expanded(
-                                          child: ListView.builder(
-                                            itemCount: 90, // Number of rows
-                                            itemBuilder: (context, index) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
+                                return StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return AlertDialog(
+                                      title: Text('Search'),
+                                      content: Container(
+                                        width: 400.0, // Set the desired width
+                                        height: 400.0, // Set the desired height
+                                        child: Column(
+                                          children: [
+                                            TextField(
+                                              decoration: InputDecoration(
+                                                hintText: 'Search...',
+                                                border: OutlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 10.0),
+                                                prefixIcon: Icon(Icons.search),
+                                                filled: true,
+                                              ),
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  searchQuery = value;
+                                                  filteredEvacueesData =
+                                                      evacueesData
+                                                          .where((evacuees) {
+                                                    return evacuees.values
+                                                        .any((val) {
+                                                      if (val is String) {
+                                                        return val
+                                                            .toLowerCase()
+                                                            .contains(searchQuery
+                                                                .toLowerCase());
+                                                      }
+                                                      return false;
+                                                    });
+                                                  }).toList();
+                                                });
+                                              },
+                                            ),
+                                            SizedBox(
+                                                height:
+                                                    16.0), // Space between the search bar and the table
+                                            Expanded(
+                                              child: ListView.builder(
+                                                itemCount: filteredEvacueesData
+                                                    .length, // Number of rows
+                                                itemBuilder: (context, index) {
+                                                  final evacuee =
+                                                      filteredEvacueesData[
+                                                          index];
+                                                  return Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
                                                         vertical: 8.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text('ID $index'),
-                                                    Text('Name $index'),
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        // Handle add button logic here
-                                                        print(
-                                                            'Add button pressed for ID $index');
-                                                      },
-                                                      child: Text('Add'),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                            '${evacuee['ID']}'),
+                                                        Text(
+                                                            '${evacuee['Name']}'),
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            // Handle add button logic here
+                                                            print(
+                                                                'Add button pressed for ID ${evacuee['ID']}');
+                                                          },
+                                                          child: Text('Add'),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
+                                          },
+                                          child: Text('Close'),
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(); // Close the dialog
-                                      },
-                                      child: Text('Close'),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 );
                               },
                             );
