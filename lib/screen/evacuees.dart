@@ -66,13 +66,12 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     });
   }
 
-  //   void updateFilteredCalamities() {
-  //   setState(() {
-  //     filteredCalamities = tableData.where((calamity) {
-  //       return calamity.values.any((value) => value.contains(searchQuery));
-  //     }).toList();
-  //   });
-  // }
+  void resetSearch() {
+    setState(() {
+      searchQuery = '';
+      filteredEvacueesData = evacueesData;
+    });
+  }
 
   void updateSearchQuery(String query) {
     print('Search query: $query');
@@ -81,18 +80,6 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
       updateFilteredEvacuees();
     });
   }
-
-  //   void updateSearch(String query) {
-  //   setState(() {
-  //     searchQuery = query;
-  //     print('Search query: $searchQuery');
-  //     filteredCalamities = tableData
-  //         .where((calamity) => calamity['Calamity Name']!
-  //             .toLowerCase()
-  //             .contains(searchQuery.toLowerCase()))
-  //         .toList();
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -368,6 +355,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                           onPressed: () {
                                             Navigator.of(context)
                                                 .pop(); // Close the dialog
+                                            resetSearch();
                                           },
                                           child: Text('Close'),
                                         ),
