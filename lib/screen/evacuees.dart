@@ -197,8 +197,73 @@ class EvacueesPage extends StatelessWidget {
                             ), // Add padding for the rectangle size
                           ),
                           onPressed: () {
-                            // Save logic here
-                            print('Calamity information saved!');
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Search'),
+                                  content: Container(
+                                    width: 400.0, // Set the desired width
+                                    height: 400.0, // Set the desired height
+                                    child: Column(
+                                      children: [
+                                        TextField(
+                                          decoration: InputDecoration(
+                                            hintText: 'Search...',
+                                            border: OutlineInputBorder(),
+                                          ),
+                                          onChanged: (value) {
+                                            // Handle search logic here
+                                            print('Search query: $value');
+                                          },
+                                        ),
+                                        SizedBox(
+                                            height:
+                                                16.0), // Space between the search bar and the table
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: 90, // Number of rows
+                                            itemBuilder: (context, index) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text('ID $index'),
+                                                    Text('Name $index'),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        // Handle add button logic here
+                                                        print(
+                                                            'Add button pressed for ID $index');
+                                                      },
+                                                      child: Text('Add'),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Close the dialog
+                                      },
+                                      child: Text('Close'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
