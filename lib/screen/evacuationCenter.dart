@@ -73,12 +73,13 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        print(response.body); // Debugging: Print the API response
+        print(response.body);
         final List<dynamic> data = jsonDecode(response.body);
         setState(() {
           datas.clear(); // Clear the existing data
           for (var item in data) {
             datas.add({
+              'id': item['id'].toString(),
               'location': item['name'].toString(),
               'Zone': item['zone'].toString(),
               'Type': item['type'].toString(),
@@ -672,11 +673,14 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                 switch (result) {
                                                   case 'ViewEvacuess':
                                                     Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
+                                                        context,
+                                                        MaterialPageRoute(
                                                           builder: (context) =>
-                                                              EvacueesScreen()),
-                                                    );
+                                                              EvacueesScreen(
+                                                                  evacuationCenterID:
+                                                                      data['id']
+                                                                          .toString()),
+                                                        ));
                                                     break;
                                                   case 'ViewReliefInventory':
                                                     print(
@@ -712,7 +716,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                 NeverScrollableScrollPhysics(), // Prevent list scrolling inside grid
                                             children: data.entries
                                                 .where((entry) =>
-                                                    entry.key != 'location')
+                                                    entry.key != 'id')
                                                 .map((entry) => Padding(
                                                       padding:
                                                           const EdgeInsets.only(

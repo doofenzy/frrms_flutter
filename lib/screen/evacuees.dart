@@ -5,6 +5,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class EvacueesScreen extends StatefulWidget {
+  final String evacuationCenterID;
+  EvacueesScreen({required this.evacuationCenterID});
+
   @override
   _EvacueesScreenState createState() => _EvacueesScreenState();
 }
@@ -12,12 +15,15 @@ class EvacueesScreen extends StatefulWidget {
 class _EvacueesScreenState extends State<EvacueesScreen> {
   List<Map<String, dynamic>> evacueesData = [];
   List<Map<String, dynamic>> filteredEvacueesData = [];
+  List<Map<String, dynamic>> evacuees = [];
+  List<Map<String, dynamic>> filteredEvacuees = [];
   String searchQuery = '';
 
   @override
   void initState() {
     super.initState();
     fetchEvacueesData();
+    displayEvacuees(int.parse(widget.evacuationCenterID));
   }
 
   final List<Map<String, dynamic>> cardData = [
@@ -28,6 +34,44 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     {"number": 50, "label": "Seniors"},
     {"number": 50, "label": "Underaged"},
   ];
+
+  Future<void> displayEvacuees(int id) async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/evacuees?evacuation_center_id=$id');
+    print(url);
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          evacuees = data
+              .map((item) => {
+                    'ID': item['id'].toString(),
+                    'Name': item['head_family'],
+                    'Infant': item['infant'].toString(),
+                    'Toddlers': item['toddlers'].toString(),
+                    'Preschool': item['preschool'].toString(),
+                    'School Age': item['school_age'].toString(),
+                    'Teen Age': item['teen_age'].toString(),
+                    'Adult': item['adult'].toString(),
+                    'Senior Citizens': item['senior_citizen'].toString(),
+                    'Persons per Family': item['total_persons'].toString(),
+                    'Lactating Mothers': item['lactating_mothers'].toString(),
+                    'Pregnant': item['pregnant'].toString(),
+                    'PWD': item['pwd'].toString(),
+                    'Solo Parent': item['solo_parent'].toString(),
+                  })
+              .toList();
+          filteredEvacuees = evacuees;
+        });
+        print(filteredEvacuees);
+      } else {
+        print('Failed to update data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error updating data: $e');
+    }
+  }
 
   Future<void> fetchEvacueesData() async {
     final url = Uri.parse(
@@ -66,6 +110,38 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     });
   }
 
+  Future<void> addEvacueeToEvacuationCenter(int id) async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/evacuees/$id'); // Replace with your backend URL
+    final headers = {'Content-Type': 'application/json'};
+    final body =
+        jsonEncode({'evacuation_center_id': widget.evacuationCenterID});
+
+    try {
+      final response = await http.patch(url, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        // final dynamic data = jsonDecode(response.body);
+        // setState(() {
+        //   evacueesData = evacueesData.map((item) {
+        //     if (item['ID'] == id.toString()) {
+        //       return {
+        //         'ID': data['id'].toString(),
+        //         'Name': data['head_family'],
+        //       };
+        //     }
+        //     return item;
+        //   }).toList();
+        //   filteredEvacueesData = evacueesData;
+        // });
+        print('success');
+      } else {
+        print('Failed to update data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error updating data: $e');
+    }
+  }
+
   void resetSearch() {
     setState(() {
       searchQuery = '';
@@ -96,7 +172,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
           Navigator.pop(context); // Close the drawer
         },
       ), // Use the Sidebar widget here
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,6 +412,10 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                                         ElevatedButton(
                                                           onPressed: () {
                                                             // Handle add button logic here
+                                                            addEvacueeToEvacuationCenter(
+                                                                int.parse(
+                                                                    evacuee[
+                                                                        'ID']));
                                                             print(
                                                                 'Add button pressed for ID ${evacuee['ID']}');
                                                           },
@@ -413,17 +493,6 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                         width: 1.0,
                       ),
                     ),
-                    // columnWidths: const {
-                    //   0: FixedColumnWidth(100.0),
-                    //   1: FlexColumnWidth(2),
-                    //   2: FlexColumnWidth(2), // More space for longer content
-                    //   3: FlexColumnWidth(2),
-                    //   4: FlexColumnWidth(2),
-                    //   5: FlexColumnWidth(2),
-                    //   6: FlexColumnWidth(2),
-                    //   7: FlexColumnWidth(2),
-                    //   8: FlexColumnWidth(2),
-                    // },
                     children: [
                       // Table header row
                       TableRow(
@@ -505,79 +574,82 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                           ),
                         ],
                       ),
-                      // Map through the data and generate rows dynamically
-                      // ...filteredCalamities.asMap().entries.map(
-                      //   (entry) {
-                      //     final data = entry.value;
-
-                      //     return TableRow(
-                      //       children: [
-                      //         Padding(
-                      //           padding: const EdgeInsets.all(8.0),
-                      //           child: Text(data['ID']!),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.all(8.0),
-                      //           child: Text(data['Date & Time']!),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.all(8.0),
-                      //           child: Text(data['Type of Calamity']!),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.all(8.0),
-                      //           child: Text(data['Calamity Name']!),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.all(8.0),
-                      //           child: Text(data['Security Level']!),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.all(8.0),
-                      //           child: Text(data['Cause of Calamity']!),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.all(8.0),
-                      //           child: Text(
-                      //               data['Evacuation Alert Level Issued']!),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.all(8.0),
-                      //           child: Text(data['Status']!),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.all(2.0),
-                      //           child: MenuAnchor(
-                      //             builder: (BuildContext context,
-                      //                 MenuController controller,
-                      //                 Widget? child) {
-                      //               return IconButton(
-                      //                 onPressed: () {
-                      //                   if (controller.isOpen) {
-                      //                     controller.close();
-                      //                   } else {
-                      //                     controller.open();
-                      //                   }
-                      //                 },
-                      //                 icon: const Icon(Icons.more_horiz),
-                      //                 tooltip: 'Show menu',
-                      //               );
-                      //             },
-                      //             menuChildren: List<MenuItemButton>.generate(
-                      //               3,
-                      //               (int menuIndex) => MenuItemButton(
-                      //                 onPressed: () {},
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     );
-                      //   },
-                      // ).toList()
-                    ]
-                    //end
-                    )),
+                      ...filteredEvacuees.map((evacuee) {
+                        return TableRow(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['ID']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Name']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Infant']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Toddlers']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Preschool']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['School Age']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Teen Age']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Adult']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Senior Citizens']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Persons per Family']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Lactating Mothers']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Pregnant']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['PWD']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(evacuee['Solo Parent']),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Handle add button logic here
+                                  addEvacueeToEvacuationCenter(
+                                      int.parse(evacuee['ID']));
+                                  print(
+                                      'Add button pressed for ID ${evacuee['ID']}');
+                                },
+                                child: Text('Add'),
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ])),
           ],
         ),
       ),
