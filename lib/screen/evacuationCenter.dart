@@ -22,21 +22,65 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
   String? evacuationType;
   String? nameOfSiteManager;
   String? contactInformation;
-  int? evacueesCount = 40;
+  int? evacueesCount = 0;
   final List<Map<String, dynamic>> evacueeData = [
-    {"description": "Infant\n(<1 yrs. old)", "count": 3},
-    {"description": "School Age\n(6-9 yrs. old)", "count": 8},
-    {"description": "Senior Citizen\n(>59 yrs. old)", "count": 5},
-    {"description": "Person with\ndisabilities", "count": 12},
-    {"description": "Todler\n(1-3 yrs. old)", "count": 20},
-    {"description": "Teenage\n(13-19 yrs. old)", "count": 7},
-    {"description": "Pregnant\nWomen", "count": 2},
-    {"description": "Single Headed", "count": 4},
-    {"description": "Pre-Schooler\n(4-5 yrs. old)", "count": 85},
-    {"description": "Adult\n(20-59 yrs. old)", "count": 6},
-    {"description": "Breastfeeding\nMothers", "count": 1},
-    {"description": "Person with\n Serious Illness", "count": 71},
+    {"description": "Infant\n(<1 yrs. old)", "count": 0},
+    {"description": "School Age\n(6-9 yrs. old)", "count": 0},
+    {"description": "Senior Citizen\n(>59 yrs. old)", "count": 0},
+    {"description": "Person with\ndisabilities", "count": 0},
+    {"description": "Todler\n(1-3 yrs. old)", "count": 0},
+    {"description": "Teenage\n(13-19 yrs. old)", "count": 0},
+    {"description": "Pregnant\nWomen", "count": 0},
+    {"description": "Single Headed", "count": 0},
+    {"description": "Pre-Schooler\n(4-5 yrs. old)", "count": 0},
+    {"description": "Adult\n(20-59 yrs. old)", "count": 0},
+    {"description": "Breastfeeding\nMothers", "count": 0},
+    {"description": "Person with\n Serious Illness", "count": 0},
   ];
+
+  Future<void> fetchSumData() async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/evacuees/calamity/${widget.calamityID}');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        int totalEvacuees = 0;
+        setState(() {
+          // Reset counts
+          for (var item in evacueeData) {
+            item['count'] = 0;
+          }
+
+          // Sum the counts for each category, handling null values
+          for (var item in data) {
+            evacueeData[0]['count'] += item['infant'] ?? 0;
+            evacueeData[1]['count'] += item['school_age'] ?? 0;
+            evacueeData[2]['count'] += item['senior_citizen'] ?? 0;
+            evacueeData[3]['count'] += item['pwd'] ?? 0;
+            evacueeData[4]['count'] += item['toddlers'] ?? 0;
+            evacueeData[5]['count'] += item['teen_age'] ?? 0;
+            evacueeData[6]['count'] += item['pregnant'] ?? 0;
+            evacueeData[7]['count'] += item['solo_parent'] ?? 0;
+            evacueeData[8]['count'] += item['preschool'] ?? 0;
+            evacueeData[9]['count'] += item['adult'] ?? 0;
+            evacueeData[10]['count'] += item['lactating_mothers'] ?? 0;
+            evacueeData[11]['count'] += item['serious_illness'] ?? 0;
+          }
+
+          // Calculate total evacuees count
+          totalEvacuees =
+              evacueeData.fold(0, (sum, item) => sum + (item['count'] as int));
+          evacueesCount = totalEvacuees;
+        });
+        print('Total evacuees: $evacueesCount');
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
 
   Future<void> postData() async {
     final url = Uri.parse(
@@ -49,7 +93,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
       'contact_person': nameOfSiteManager,
       'contact_number': contactInformation,
       // 'calamityName': calamityName,
-      'calamity_id': widget.calamityID.toInt(),
+      'calamity_id': widget.calamityID,
     });
 
     try {
@@ -101,6 +145,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
   void initState() {
     super.initState();
     fetchData();
+    fetchSumData();
   }
 
   @override
@@ -677,9 +722,13 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                         MaterialPageRoute(
                                                           builder: (context) =>
                                                               EvacueesScreen(
-                                                                  evacuationCenterID:
-                                                                      data['id']
-                                                                          .toString()),
+                                                            evacuationCenterID:
+                                                                data['id']
+                                                                    .toString(),
+                                                            calamityID: widget
+                                                                .calamityID
+                                                                .toString(),
+                                                          ),
                                                         ));
                                                     break;
                                                   case 'ViewReliefInventory':

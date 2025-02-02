@@ -6,7 +6,8 @@ import 'dart:convert';
 
 class EvacueesScreen extends StatefulWidget {
   final String evacuationCenterID;
-  EvacueesScreen({required this.evacuationCenterID});
+  final String calamityID;
+  EvacueesScreen({required this.evacuationCenterID, required this.calamityID});
 
   @override
   _EvacueesScreenState createState() => _EvacueesScreenState();
@@ -114,8 +115,10 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     final url = Uri.parse(
         'http://127.0.0.1:8000/api/evacuees/$id'); // Replace with your backend URL
     final headers = {'Content-Type': 'application/json'};
-    final body =
-        jsonEncode({'evacuation_center_id': widget.evacuationCenterID});
+    final body = jsonEncode({
+      'evacuation_center_id': widget.evacuationCenterID,
+      'calamity_id': widget.calamityID
+    });
 
     try {
       final response = await http.patch(url, headers: headers, body: body);
