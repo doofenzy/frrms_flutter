@@ -47,12 +47,10 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
         final List<dynamic> data = jsonDecode(response.body);
         int totalEvacuees = 0;
         setState(() {
-          // Reset counts
           for (var item in evacueeData) {
             item['count'] = 0;
           }
 
-          // Sum the counts for each category, handling null values
           for (var item in data) {
             evacueeData[0]['count'] += item['infant'] ?? 0;
             evacueeData[1]['count'] += item['school_age'] ?? 0;
@@ -68,7 +66,6 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
             evacueeData[11]['count'] += item['serious_illness'] ?? 0;
           }
 
-          // Calculate total evacuees count
           totalEvacuees =
               evacueeData.fold(0, (sum, item) => sum + (item['count'] as int));
           evacueesCount = totalEvacuees;
@@ -83,8 +80,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
   }
 
   Future<void> postData() async {
-    final url = Uri.parse(
-        'http://127.0.0.1:8000/api/evacuation-centers'); // Replace with your backend URL
+    final url = Uri.parse('http://127.0.0.1:8000/api/evacuation-centers');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'name': evacuationCenterName,
@@ -99,18 +95,16 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
     try {
       final response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        // Handle successful response
         print('Data posted successfully');
         fetchData();
       }
     } catch (e) {
-      // Handle network or other errors
       print('Error posting data: $e');
     }
   }
 
   final List<Map<String, String>> datas = [];
-  // GET METHOD
+
   Future<void> fetchData() async {
     final url = Uri.parse(
         'http://127.0.0.1:8000/api/evacuation-centers/calamity/${widget.calamityID}');
@@ -132,7 +126,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
             });
           }
         });
-        print(datas); // Debugging: Print the parsed data
+        print(datas);
       } else {
         print('Failed to fetch data: ${response.statusCode}');
       }
@@ -154,13 +148,12 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: HeaderWidget(
-            imagePath: '../../assets/logo.png', // Path to your logo
+            imagePath: '../../assets/Logo.png',
           ),
         ),
         drawer: Sidebar(
           onItemTapped: (index) {
-            // Handle sidebar navigation
-            Navigator.pop(context); // Close the drawer
+            Navigator.pop(context);
           },
         ),
         body: SingleChildScrollView(
@@ -175,27 +168,23 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                         height: 315.0,
                         padding: EdgeInsets.all(15.0),
                         decoration: BoxDecoration(
-                          color: Colors.blue[
-                              50], // Background color for the main container
+                          color: Colors.blue[50],
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: Stack(
                           children: [
-                            // Light blue background
                             Container(
                               color: Color(0xFFEAF1FF),
                               width: double.infinity,
                               height: double.infinity,
                             ),
-
-                            // Typhoon name and description
                             Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${widget.calamityName}', // Typhoon name
+                                    '${widget.calamityName}',
                                     style: TextStyle(
                                       color: Colors.blue,
                                       fontSize: 30,
@@ -210,15 +199,12 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                       fontSize: 18,
                                     ),
                                   ),
-                                  SizedBox(height: 10.0), // Space for alignment
+                                  SizedBox(height: 10.0),
                                   Align(
-                                    alignment: Alignment
-                                        .centerLeft, // Aligns horizontally at the center
+                                    alignment: Alignment.centerLeft,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 16.0,
-                                          left:
-                                              90), // Fine-tune vertical spacing
+                                          top: 16.0, left: 90),
                                       child: Stack(
                                         alignment: Alignment.center,
                                         children: [
@@ -244,7 +230,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                'Overall Total\n of Evacuees', // Label text
+                                                'Overall Total\n of Evacuees',
                                                 style: TextStyle(
                                                   fontSize: 16.0,
                                                   fontWeight: FontWeight.normal,
@@ -252,11 +238,9 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                 ),
                                                 textAlign: TextAlign.center,
                                               ),
-                                              SizedBox(
-                                                  height:
-                                                      2.0), // Space between the label and the number
+                                              SizedBox(height: 2.0),
                                               Text(
-                                                '${evacueesCount!}', // The number to display
+                                                '${evacueesCount!}',
                                                 style: TextStyle(
                                                   fontSize: 40.0,
                                                   fontWeight: FontWeight.bold,
@@ -272,17 +256,14 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                 ],
                               ),
                             ),
-
-                            // White container, centered and shifted towards the right
                             Align(
                               alignment: Alignment.centerRight,
                               child: Container(
                                   width: MediaQuery.of(context).size.width *
                                       0.7, // Adjust width
                                   height: 300.0,
-                                  margin: EdgeInsets.only(
-                                      left: 32.0,
-                                      right: 16.0), // Create space on the left
+                                  margin:
+                                      EdgeInsets.only(left: 32.0, right: 16.0),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10.0),
@@ -300,24 +281,19 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                     child: GridView.builder(
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
-                                      itemCount: 12, // 4 rows * 3 columns
+                                      itemCount: 12,
                                       gridDelegate:
                                           SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 4, // 3 items per row
-                                        childAspectRatio:
-                                            3.5, // Balanced aspect ratio for layout
-                                        mainAxisSpacing:
-                                            8.0, // Space between rows
-                                        crossAxisSpacing:
-                                            8.0, // Space between columns
+                                        crossAxisCount: 4,
+                                        childAspectRatio: 3.5,
+                                        mainAxisSpacing: 8.0,
+                                        crossAxisSpacing: 8.0,
                                       ),
                                       itemBuilder: (context, index) {
                                         final data = evacueeData[index];
                                         final count = data['count'];
                                         return Container(
-                                          margin: EdgeInsets.only(
-                                              bottom:
-                                                  16.0), // Add margin at the bottom
+                                          margin: EdgeInsets.only(bottom: 16.0),
                                           child: Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
@@ -330,8 +306,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                     height: 50,
                                                     child:
                                                         CircularProgressIndicator(
-                                                      value: count /
-                                                          100, // Assuming count out of 100
+                                                      value: count / 100,
                                                       strokeWidth: 6.0,
                                                       backgroundColor:
                                                           Colors.grey[300],
@@ -347,7 +322,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    '$count', // Number inside the circle
+                                                    '$count',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 16,
@@ -357,13 +332,10 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
-                                                  width:
-                                                      10.0), // Space between the circle and the description
+                                              SizedBox(width: 10.0),
                                               Expanded(
                                                 child: Text(
-                                                  data[
-                                                      'description'], // Description outside the circle
+                                                  data['description'],
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 16,
@@ -379,34 +351,30 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                             )
                           ],
                         )),
-
-                    SizedBox(height: 20.0), // Space between the two boxes
+                    SizedBox(height: 20.0),
                     Container(
-                      height: 500.0, // Height of the second box
+                      height: 500.0,
                       decoration: BoxDecoration(
-                        color: Colors.white, // Set background color to white
+                        color: Colors.white,
                         border: Border.all(
-                          color: Colors.grey, // Set border color to gray
-                          width: 1.0, // Set border width
+                          color: Colors.grey,
+                          width: 1.0,
                         ),
-                        borderRadius:
-                            BorderRadius.circular(10.0), // Rounded corners
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(
-                                10.0), // Add padding around text and button
+                            padding: const EdgeInsets.all(10.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .spaceBetween, // Space between text and button
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   'Evacuation Center List',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 18,
-                                  ), // Text style for upper-left text
+                                  ),
                                 ),
                                 Container(
                                   width: 250.0,
@@ -446,7 +414,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                       Table(
                                                         border: TableBorder.all(
                                                           color: Colors
-                                                              .transparent, // Table border color
+                                                              .transparent,
                                                         ),
                                                         columnWidths: const {
                                                           0: FlexColumnWidth(1),
@@ -480,29 +448,28 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                                 ),
                                                               ),
                                                               Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                child:
-                                                                    TextField(
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    labelText:
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          8.0),
+                                                                  child:
+                                                                      DropdownField(
+                                                                    label:
                                                                         'Zone',
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                  ),
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    setState(
-                                                                        () {
-                                                                      zone =
-                                                                          value;
-                                                                    });
-                                                                  },
-                                                                ),
-                                                              ),
+                                                                    items: [
+                                                                      '1',
+                                                                      '2',
+                                                                      '3',
+                                                                    ],
+                                                                    onChanged:
+                                                                        (value) {
+                                                                      setState(
+                                                                          () {
+                                                                        zone =
+                                                                            value;
+                                                                      });
+                                                                    },
+                                                                  )),
                                                               Padding(
                                                                 padding:
                                                                     const EdgeInsets
@@ -596,39 +563,85 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                                 ElevatedButton
                                                                     .styleFrom(
                                                               backgroundColor:
-                                                                  Colors
-                                                                      .blue, // Set the background color to blue
+                                                                  Colors.blue,
                                                               foregroundColor:
-                                                                  Colors
-                                                                      .white, // Set the text color to white
+                                                                  Colors.white,
                                                               shape:
                                                                   RoundedRectangleBorder(
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
-                                                                            8.0), // Rectangular shape with rounded corners
+                                                                            8.0),
                                                               ),
                                                               padding: EdgeInsets
                                                                   .symmetric(
                                                                       horizontal:
                                                                           20.0,
                                                                       vertical:
-                                                                          12.0), // Add padding for the rectangle size
+                                                                          12.0),
                                                             ),
                                                             onPressed: () {
-                                                              // Save logic here\
-                                                              postData();
+                                                              //   updateCalamityData(int.parse(selectedData[
+                                                              //       'ID']!)); // Update the specific calamity
+                                                              //   print(int.parse(selectedData['ID']!));
 
-                                                              print(
-                                                                  'Calamity information saved!');
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
+                                                              //   Navigator.of(context).pop();
+                                                              // },onPressed: () {
+                                                              if ((evacuationCenterName == null || evacuationCenterName!.isEmpty) ||
+                                                                  (zone ==
+                                                                          null ||
+                                                                      zone!
+                                                                          .isEmpty) ||
+                                                                  (evacuationType ==
+                                                                          null ||
+                                                                      evacuationType!
+                                                                          .isEmpty) ||
+                                                                  (nameOfSiteManager ==
+                                                                          null ||
+                                                                      nameOfSiteManager!
+                                                                          .isEmpty) ||
+                                                                  (contactInformation ==
+                                                                          null ||
+                                                                      contactInformation!
+                                                                          .isEmpty)) {
+                                                                showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return AlertDialog(
+                                                                      title: Text(
+                                                                          'Incomplete Information'),
+                                                                      content: Text(
+                                                                          'Please fill out all fields before saving.'),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                          child:
+                                                                              Text('OK'),
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  },
+                                                                );
+                                                              } else {
+                                                                postData();
+
+                                                                print(
+                                                                    'Calamity information saved!');
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              }
                                                             },
                                                             child: Text('Save',
                                                                 style: TextStyle(
                                                                     fontSize:
-                                                                        16.0)), // Set font size and text
+                                                                        16.0)),
                                                           ),
                                                         ],
                                                       )
@@ -654,18 +667,14 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                       );
                                     },
                                     icon: Icon(Icons.add,
-                                        color: Colors.white,
-                                        size: 16), // Example icon
-                                    label: Text(
-                                        'Add Evacuation Center'), // Button text
+                                        color: Colors.white, size: 16),
+                                    label: Text('Add Evacuation Center'),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          Colors.blue, // Button color
-                                      foregroundColor:
-                                          Colors.white, // Text and icon color
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            4.0), // Rectangle shape
+                                        borderRadius:
+                                            BorderRadius.circular(4.0),
                                       ),
                                     ),
                                   ),
@@ -674,8 +683,8 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                             ),
                           ),
                           Divider(
-                            color: Colors.black, // Color of the divider line
-                            thickness: 1.0, // Thickness of the line
+                            color: Colors.black,
+                            thickness: 1.0,
                           ),
                           Expanded(
                             child: GridView.builder(
@@ -762,7 +771,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                             shrinkWrap: true,
                                             padding: EdgeInsets.zero,
                                             physics:
-                                                NeverScrollableScrollPhysics(), // Prevent list scrolling inside grid
+                                                NeverScrollableScrollPhysics(),
                                             children: data.entries
                                                 .where((entry) =>
                                                     entry.key != 'id')

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import '../context/dateField.dart';
 import '../context/dropDownField.dart';
-// import './evacuationCenter.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
 import 'dart:convert';
 
-enum actionButton { edit, delete, view }
+enum actionButton { View_Information, View_Information_Board }
 
 class EvacuationManagement extends StatefulWidget {
   @override
@@ -26,11 +25,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
   String? calamityName;
   DateTime? selectedDate;
 
-  // POST METHOD
-  // TODO: make the data fetch in real time no need to refresh the page
   Future<void> postData() async {
-    final url = Uri.parse(
-        'http://127.0.0.1:8000/api/calamities'); // Replace with your backend URL
+    final url = Uri.parse('http://127.0.0.1:8000/api/calamities');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'calamity_name': calamityName,
@@ -39,7 +35,6 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
       'cause': selectedCause,
       'alert_level': selectedAlertLevel,
       'status': currentStatus,
-      // 'calamityName': calamityName,
       'date': selectedDate?.toIso8601String(),
     });
 
@@ -48,10 +43,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     try {
       final response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        // Parse the response body to get the new calamity data
         final newItem = jsonDecode(response.body);
 
-        // Insert the new item into the tableData list
         setState(() {
           tableData.add({
             'ID': newItem['id'].toString(),
@@ -67,17 +60,14 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
         });
 
         print('Data posted successfully');
-      } else {
-        // Handle error response
+
         print('Failed to post data: ${response.statusCode}');
       }
     } catch (e) {
-      // Handle network or other errors
       print('Error posting data: $e');
     }
   }
 
-  // GET METHOD
   Future<void> fetchData() async {
     final url = Uri.parse('http://127.0.0.1:8000/api/calamities');
     try {
@@ -108,8 +98,6 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     }
   }
 
-  // DELETE METHOD
-  // TODO: make the data fetch in real time no need to refresh the page
   Future<void> deleteData(int id) async {
     final url = Uri.parse('http://127.0.0.1:8000/api/calamities/$id');
     try {
@@ -117,7 +105,6 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
       if (response.statusCode == 204) {
         print('Data deleted successfully');
 
-        // Remove the deleted item from the tableData list
         setState(() {
           tableData.removeWhere((item) => item['ID'] == id.toString());
           updateFilteredCalamities();
@@ -173,7 +160,6 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     }
   }
 
-  // TODO: Implement the search functionality
   List<Map<String, String>> filteredCalamities = [];
   String searchQuery = '';
 
@@ -186,13 +172,15 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
   }
 
   void resetValue() {
-    selectedCalamityType = null;
-    selectedSeverityLevel = null;
-    selectedCause = null;
-    selectedAlertLevel = null;
-    currentStatus = null;
-    calamityName = null;
-    selectedDate = null;
+    setState(() {
+      selectedCalamityType = null;
+      selectedSeverityLevel = null;
+      selectedCause = null;
+      selectedAlertLevel = null;
+      currentStatus = null;
+      calamityName = null;
+      selectedDate = null;
+    });
   }
 
   @override
@@ -213,72 +201,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
     });
   }
 
-  // void saveCalamityData() {
-  //   int id = tableData.length + 1; // to start the id at 1
-
-  //   Map<String, String> newCalamity = {
-  //     'ID': id.toString(), // id incrementation
-  //     'Date & Time': selectedDate != null
-  //         ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}/${selectedDate!.hour}:${selectedDate!.minute}'
-  //         : 'N/A',
-  //     'Type of Calamity': selectedCalamityType!,
-  //     'Calamity Name': calamityName!,
-  //     'Security Level': selectedSeverityLevel!,
-  //     'Cause of Calamity': selectedCause!,
-  //     'Evacuation Alert Level Issued': selectedAlertLevel!,
-  //     'Status': currentStatus!,
-  //   };
-
-  //   newCalamity.forEach((key, value) {
-  //     print('$key: $value');
-  //   });
-
-  //   setState(() {
-  //     tableData.add(newCalamity);
-  //   });
-
-  //   print(calamityName);
-  //   print(selectedDate);
-  //   print(selectedCalamityType);
-  //   print(selectedSeverityLevel);
-  //   print(selectedCause);
-  //   print(selectedAlertLevel);
-  //   print(currentStatus);
-
-  //   resetValue();
-  // }
-
-  // void updateCalamityData(int id) {
-  //   int index = tableData.indexWhere((data) => int.parse(data['ID']!) == id);
-
-  //   if (index != -1) {
-  //     Map<String, String> updatedCalamity = {
-  //       'ID': id.toString(),
-  //       'Date & Time': selectedDate != null
-  //           ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}/${selectedDate!.hour}:${selectedDate!.minute}'
-  //           : 'N/A',
-  //       'Type of Calamity': selectedCalamityType!,
-  //       'Calamity Name': calamityName!,
-  //       'Security Level': selectedSeverityLevel!,
-  //       'Cause of Calamity': selectedCause!,
-  //       'Evacuation Alert Level Issued': selectedAlertLevel!,
-  //       'Status': currentStatus!,
-  //     };
-
-  //     setState(() {
-  //       tableData[index] =
-  //           updatedCalamity; // Replace the entry and trigger rebuild
-  //     });
-
-  //     print('Calamity updated successfully!');
-  //   } else {
-  //     print('Calamity with ID $id not found!');
-  //   }
-  //   resetValue();
-  // }
-
   void updateModal(int id) {
-    // Find the data associated with the passed ID
     Map<String, String>? selectedData = tableData
         .firstWhere((item) => int.parse(item['ID']!) == id, orElse: () => {});
 
@@ -287,7 +210,6 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
       return;
     }
 
-    // Pre-fill the fields with the selected data
     setState(() {
       calamityName = selectedData['Calamity Name'];
       selectedDate = DateTime.tryParse(selectedData['Date & Time'] ?? '') ??
@@ -327,7 +249,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                     SizedBox(height: 20.0),
                     Table(
                       border: TableBorder.all(
-                        color: Colors.transparent, // Table border color
+                        color: Colors.transparent,
                       ),
                       columnWidths: const {
                         0: FlexColumnWidth(1),
@@ -364,8 +286,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: DatePickerField(
-                                  initialDateTime:
-                                      selectedDate, // Pass initial DateTime
+                                  initialDateTime: selectedDate,
                                   onDateTimeSelected:
                                       (DateTime? selectedDateTime) {
                                     if (selectedDateTime != null) {
@@ -382,8 +303,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                               child: DropdownField(
                                 label: 'Type of Calamity',
                                 items: ['Flood', 'Typhoon'],
-                                value:
-                                    selectedCalamityType, // Set initial value
+                                value: selectedCalamityType,
                                 onChanged: (value) {
                                   setState(() {
                                     selectedCalamityType = value;
@@ -402,8 +322,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                   'Severe Flooding',
                                   'Catastrophic Flooding',
                                 ],
-                                value:
-                                    selectedSeverityLevel, // Set initial value
+                                value: selectedSeverityLevel,
                                 onChanged: (value) {
                                   setState(() {
                                     selectedSeverityLevel = value;
@@ -426,7 +345,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                     'Urban Drainage Overflow',
                                     'Typhoon',
                                   ],
-                                  value: selectedCause, // Set initial value
+                                  value: selectedCause,
                                   onChanged: (value) {
                                     setState(() {
                                       selectedCause = value;
@@ -441,7 +360,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                   'Pre Evacuation',
                                   'Mandatory Evacuation',
                                 ],
-                                value: selectedAlertLevel, // Set initial value
+                                value: selectedAlertLevel,
                                 onChanged: (value) {
                                   setState(() {
                                     selectedAlertLevel = value;
@@ -459,7 +378,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                   'Resolved',
                                   'Other(Specify)',
                                 ],
-                                value: currentStatus, // Set initial value
+                                value: currentStatus,
                                 onChanged: (value) {
                                   setState(() {
                                     currentStatus = value;
@@ -477,30 +396,50 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Colors.blue, // Set the background color to blue
-                            foregroundColor:
-                                Colors.white, // Set the text color to white
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  8.0), // Rectangular shape with rounded corners
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
                             padding: EdgeInsets.symmetric(
-                                horizontal: 20.0,
-                                vertical:
-                                    12.0), // Add padding for the rectangle size
+                                horizontal: 20.0, vertical: 12.0),
                           ),
                           onPressed: () {
-                            // Update the table data
-                            updateCalamityData(int.parse(selectedData[
-                                'ID']!)); // Update the specific calamity
-                            print(int.parse(selectedData['ID']!));
+                            //   updateCalamityData(int.parse(selectedData[
+                            //       'ID']!)); // Update the specific calamity
+                            //   print(int.parse(selectedData['ID']!));
 
-                            Navigator.of(context).pop();
+                            //   Navigator.of(context).pop();
+                            // },onPressed: () {
+                            if (calamityName == null || calamityName!.isEmpty) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Incomplete Information'),
+                                    content: Text(
+                                        'Please fill out all fields before saving.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              updateCalamityData(int.parse(selectedData[
+                                  'ID']!)); // Update the specific calamity
+                              print(int.parse(selectedData['ID']!));
+                              resetValue();
+                              Navigator.of(context).pop();
+                            }
                           },
-                          child: Text('Update',
-                              style: TextStyle(
-                                  fontSize: 16.0)), // Set font size and text
+                          child:
+                              Text('Update', style: TextStyle(fontSize: 16.0)),
                         ),
                       ],
                     )
@@ -530,9 +469,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
       appBar: AppBar(
         title: Row(
           children: [
-            // Search input field with a limited width
             Container(
-              width: 300, // Adjust this value for the desired width
+              width: 300,
               margin: EdgeInsets.only(top: 50.0, left: 40.0, right: 40.0),
               padding: EdgeInsets.only(bottom: 40),
               child: TextField(
@@ -553,12 +491,9 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
         ),
         actions: [
           Container(
-            width: 200.0, // Set the button width
-            height: 50.0, // Set the button height
-            margin: EdgeInsets.only(
-                right: 70.0,
-                left: 40.0,
-                top: 10), // Add your desired margin here
+            width: 200.0,
+            height: 50.0,
+            margin: EdgeInsets.only(right: 70.0, left: 40.0, top: 10),
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue, // Button color
@@ -596,8 +531,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                 SizedBox(height: 20.0),
                                 Table(
                                   border: TableBorder.all(
-                                    color: Colors
-                                        .transparent, // Table border color
+                                    color: Colors.transparent,
                                   ),
                                   columnWidths: const {
                                     0: FlexColumnWidth(1),
@@ -621,8 +555,8 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                             },
                                           ),
                                         ),
-                                        SizedBox(), // Empty cell
-                                        SizedBox(), // Empty cell
+                                        SizedBox(),
+                                        SizedBox(),
                                       ],
                                     ),
                                     // Row 1
@@ -734,31 +668,60 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                   children: [
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors
-                                            .blue, // Set the background color to blue
-                                        foregroundColor: Colors
-                                            .white, // Set the text color to white
+                                        backgroundColor: Colors.blue,
+                                        foregroundColor: Colors.white,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              8.0), // Rectangular shape with rounded corners
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
                                         ),
                                         padding: EdgeInsets.symmetric(
-                                            horizontal: 20.0,
-                                            vertical:
-                                                12.0), // Add padding for the rectangle size
+                                            horizontal: 20.0, vertical: 12.0),
                                       ),
                                       onPressed: () {
-                                        // Save logic here\
-                                        // saveCalamityData();
-                                        postData();
-
-                                        print('Calamity information saved!');
-                                        Navigator.of(context).pop();
+                                        if ((calamityName == null ||
+                                                calamityName!.isEmpty) ||
+                                            selectedDate == null ||
+                                            (selectedCalamityType == null ||
+                                                selectedCalamityType!
+                                                    .isEmpty) ||
+                                            (selectedSeverityLevel == null ||
+                                                selectedSeverityLevel!
+                                                    .isEmpty) ||
+                                            (selectedCause == null ||
+                                                selectedCause!.isEmpty) ||
+                                            (selectedAlertLevel == null ||
+                                                selectedAlertLevel!.isEmpty) ||
+                                            (currentStatus == null ||
+                                                currentStatus!.isEmpty)) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    'Incomplete Information'),
+                                                content: Text(
+                                                    'Please fill out all fields before saving.'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text('OK'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        } else {
+                                          postData();
+                                          resetValue();
+                                          print('Calamity information saved!');
+                                          Navigator.of(context).pop();
+                                        }
                                       },
                                       child: Text('Save',
-                                          style: TextStyle(
-                                              fontSize:
-                                                  16.0)), // Set font size and text
+                                          style: TextStyle(fontSize: 16.0)),
                                     ),
                                   ],
                                 )
@@ -781,9 +744,9 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                   },
                 );
               },
-              icon: Icon(Icons.add, size: 18.0), // Plus logo
+              icon: Icon(Icons.add, size: 18.0),
               label: Text(
-                'Add Calamity', // Button text
+                'Add Calamity',
                 style: TextStyle(fontSize: 16.0),
               ),
             ),
@@ -791,40 +754,39 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(30.0), // Padding for the entire body
+        padding: const EdgeInsets.all(30.0),
         child: Column(
           children: [
             // Table widget with margin
             Container(
-                margin: EdgeInsets.only(
-                    left: 40, right: 40), // Adds margin above the table
+                margin: EdgeInsets.only(left: 40, right: 40),
                 child: Table(
                     border: TableBorder(
                       left: BorderSide(
-                        color: Colors.grey, // Left border color
-                        width: 1.0, // Left border width
+                        color: Colors.grey,
+                        width: 1.0,
                       ),
                       right: BorderSide(
-                        color: Colors.grey, // Right border color
-                        width: 1.0, // Right border width
+                        color: Colors.grey,
+                        width: 1.0,
                       ),
                       horizontalInside: BorderSide(
-                        color: Colors.grey, // Horizontal line color
-                        width: 1.0, // Horizontal line width
+                        color: Colors.grey,
+                        width: 1.0,
                       ),
                       top: BorderSide(
-                        color: Colors.grey, // Top border
+                        color: Colors.grey,
                         width: 1.0,
                       ),
                       bottom: BorderSide(
-                        color: Colors.grey, // Bottom border
+                        color: Colors.grey,
                         width: 1.0,
                       ),
                     ),
                     columnWidths: const {
                       0: FixedColumnWidth(100.0),
                       1: FlexColumnWidth(3),
-                      2: FlexColumnWidth(3), // More space for longer content
+                      2: FlexColumnWidth(3),
                       3: FlexColumnWidth(2),
                       4: FlexColumnWidth(2),
                       5: FlexColumnWidth(3),
@@ -883,7 +845,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                           ),
                         ],
                       ),
-                      // Map through the data and generate rows dynamically
+
                       ...filteredCalamities.asMap().entries.map(
                         (entry) {
                           final data = entry.value;
@@ -942,7 +904,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                     );
                                   },
                                   menuChildren: List<MenuItemButton>.generate(
-                                    3,
+                                    2,
                                     (int menuIndex) => MenuItemButton(
                                       onPressed: () {
                                         print('current id ${data['ID']}');
@@ -950,17 +912,11 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                           selectedMenu =
                                               actionButton.values[menuIndex];
                                           if (selectedMenu ==
-                                              actionButton.edit) {
+                                              actionButton.View_Information) {
                                             updateModal(int.parse(data['ID']!));
                                           } else if (selectedMenu ==
-                                              actionButton.delete) {
-                                            int id = int.parse(data['ID']!);
-                                            deleteData(id);
-                                            tableData.removeAt(id - 1);
-                                            updateSearch(
-                                                searchQuery); // Ensure the filtered table updates after deletion
-                                          } else if (selectedMenu ==
-                                              actionButton.view) {
+                                              actionButton
+                                                  .View_Information_Board) {
                                             context.go(
                                               '/calamityDetails/${data['ID']!}/${data['Calamity Name']!}',
                                             );
