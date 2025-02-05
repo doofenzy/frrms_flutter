@@ -396,7 +396,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Colors.blue[600],
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
@@ -471,22 +471,41 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
           children: [
             Container(
               width: 300,
-              margin: EdgeInsets.only(top: 50.0, left: 40.0, right: 40.0),
+              margin: EdgeInsets.only(
+                  top: 50.0, left: 40.0, right: 40.0, bottom: 2),
               padding: EdgeInsets.only(bottom: 40),
               child: TextField(
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                   prefixIcon: Icon(Icons.search),
                   hintText: 'Search...',
+                  fillColor: Colors.white, // Set the fill color to white
+                  filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(
+                      color: Colors.grey, // Set the border color to black
+                      width: 0.5,
+                    ),
                   ),
-                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey, // Set the border color to black
+                      width: 0.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey, // Set the border color to black
+                      width: 0.5,
+                    ),
+                  ),
                 ),
                 onChanged: updateSearch,
               ),
-            ),
+            )
           ],
         ),
         actions: [
@@ -496,7 +515,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
             margin: EdgeInsets.only(right: 70.0, left: 40.0, top: 10),
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, // Button color
+                backgroundColor: Colors.blue[600], // Button color
                 foregroundColor: Colors.white, // Text and icon color
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0), // Rectangle shape
@@ -668,7 +687,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                                   children: [
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blue,
+                                        backgroundColor: Colors.blue[600],
                                         foregroundColor: Colors.white,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -744,7 +763,7 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                   },
                 );
               },
-              icon: Icon(Icons.add, size: 18.0),
+              icon: Icon(Icons.add, size: 30.0, color: Colors.white),
               label: Text(
                 'Add Calamity',
                 style: TextStyle(fontSize: 16.0),

@@ -353,6 +353,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                         )),
                     SizedBox(height: 20.0),
                     Container(
+                      padding: EdgeInsets.all(20),
                       height: 500.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -563,7 +564,8 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                                 ElevatedButton
                                                                     .styleFrom(
                                                               backgroundColor:
-                                                                  Colors.blue,
+                                                                  Colors.blue[
+                                                                      600],
                                                               foregroundColor:
                                                                   Colors.white,
                                                               shape:
@@ -667,10 +669,10 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                       );
                                     },
                                     icon: Icon(Icons.add,
-                                        color: Colors.white, size: 16),
+                                        color: Colors.white, size: 30.0),
                                     label: Text('Add Evacuation Center'),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue,
+                                      backgroundColor: Colors.blue[600],
                                       foregroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -683,8 +685,8 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                             ),
                           ),
                           Divider(
-                            color: Colors.black,
-                            thickness: 1.0,
+                            color: Colors.grey,
+                            thickness: 0.5,
                           ),
                           Expanded(
                             child: GridView.builder(
@@ -705,93 +707,110 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   elevation: 2.0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              data['location'] ?? '',
-                                              style: TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors
+                                          .white, // Set the background color to white
+                                      border: Border.all(
+                                        color: Colors
+                                            .grey, // Set the border color to grey
+                                        width:
+                                            1.0, // Set the border thickness to 1.0
+                                      ),
+                                      borderRadius: BorderRadius.circular(
+                                          8.0), // Match the border radius of the card
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                data['location'] ?? '',
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                            ),
-                                            PopupMenuButton<String>(
-                                              onSelected: (String result) {
-                                                switch (result) {
-                                                  case 'ViewEvacuess':
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              EvacueesScreen(
-                                                            evacuationCenterID:
-                                                                data['id']
-                                                                    .toString(),
-                                                            calamityID: widget
-                                                                .calamityID
-                                                                .toString(),
-                                                          ),
-                                                        ));
-                                                    break;
-                                                  case 'ViewReliefInventory':
-                                                    print(
-                                                        'Edit button pressed');
-                                                    break;
-                                                }
-                                              },
-                                              itemBuilder:
-                                                  (BuildContext context) =>
-                                                      <PopupMenuEntry<String>>[
-                                                const PopupMenuItem<String>(
-                                                  value: 'ViewEvacuess',
-                                                  child: Text('View Evacuees'),
-                                                ),
-                                                const PopupMenuItem<String>(
-                                                  value: 'ViewReliefInventory',
-                                                  child: Text(
-                                                      'View Relief Inventory'),
-                                                ),
-                                              ],
-                                              icon: Icon(Icons.more_horiz,
-                                                  size: 16.0),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 8.0),
-                                        // Wrap content to avoid overflow
-                                        Expanded(
-                                          child: ListView(
-                                            shrinkWrap: true,
-                                            padding: EdgeInsets.zero,
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            children: data.entries
-                                                .where((entry) =>
-                                                    entry.key != 'id')
-                                                .map((entry) => Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 4.0),
-                                                      child: Text(
-                                                        '${entry.key}: ${entry.value}',
-                                                        style: TextStyle(
-                                                          fontSize: 14.0,
-                                                          color:
-                                                              Colors.grey[700],
-                                                        ),
-                                                      ),
-                                                    ))
-                                                .toList(),
+                                              PopupMenuButton<String>(
+                                                onSelected: (String result) {
+                                                  switch (result) {
+                                                    case 'ViewEvacuess':
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                EvacueesScreen(
+                                                              evacuationCenterID:
+                                                                  data['id']
+                                                                      .toString(),
+                                                              calamityID: widget
+                                                                  .calamityID
+                                                                  .toString(),
+                                                            ),
+                                                          ));
+                                                      break;
+                                                    case 'ViewReliefInventory':
+                                                      print(
+                                                          'Edit button pressed');
+                                                      break;
+                                                  }
+                                                },
+                                                itemBuilder: (BuildContext
+                                                        context) =>
+                                                    <PopupMenuEntry<String>>[
+                                                  const PopupMenuItem<String>(
+                                                    value: 'ViewEvacuess',
+                                                    child:
+                                                        Text('View Evacuees'),
+                                                  ),
+                                                  const PopupMenuItem<String>(
+                                                    value:
+                                                        'ViewReliefInventory',
+                                                    child: Text(
+                                                        'View Relief Inventory'),
+                                                  ),
+                                                ],
+                                                icon: Icon(Icons.more_horiz,
+                                                    size: 16.0),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(height: 8.0),
+                                          // Wrap content to avoid overflow
+                                          Expanded(
+                                            child: ListView(
+                                              shrinkWrap: true,
+                                              padding: EdgeInsets.zero,
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              children: data.entries
+                                                  .where((entry) =>
+                                                      entry.key != 'id')
+                                                  .map((entry) => Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                bottom: 4.0),
+                                                        child: Text(
+                                                          '${entry.key}: ${entry.value}',
+                                                          style: TextStyle(
+                                                            fontSize: 14.0,
+                                                            color: Colors
+                                                                .grey[700],
+                                                          ),
+                                                        ),
+                                                      ))
+                                                  .toList(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );

@@ -158,6 +158,8 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     });
   }
 
+  void deleteMemberEvacuee() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -205,10 +207,26 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                 children: List.generate(6, (index) {
                   return Card(
                     elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          15.0), // Add border radius to the card
+                    ),
                     child: Container(
-                      color: const Color.fromARGB(255, 106, 153, 236),
                       width: 240.0,
                       height: 130.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                            15.0), // Add border radius to the container
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color.fromARGB(255, 27, 82, 235), // Light blue
+
+                            Color.fromARGB(255, 217, 228, 242), // Lighter blue
+                          ],
+                        ),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -306,12 +324,35 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                 EdgeInsets.symmetric(vertical: 10.0),
                             prefixIcon: Icon(Icons.search),
                             hintText: 'Search...',
+                            fillColor:
+                                Colors.white, // Set the fill color to white
+                            filled: true,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20.0),
-                              borderSide: BorderSide.none,
+                              borderSide: BorderSide(
+                                color: Colors
+                                    .grey, // Set the border color to black
+                                width: 0.5,
+                              ),
                             ),
-                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                color: Colors
+                                    .grey, // Set the border color to black
+                                width: 0.5,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                color: Colors
+                                    .grey, // Set the border color to black
+                                width: 0.5,
+                              ),
+                            ),
                           ),
+                          onChanged: (value) {},
                         ),
                       ),
                       Container(
@@ -450,186 +491,365 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
             ),
             SizedBox(height: 16.0),
             Container(
-                margin: EdgeInsets.only(left: 40, right: 40),
-                child: Table(
-                    border: TableBorder(
-                      left: BorderSide(
-                        color: Colors.grey,
-                        width: 1.0,
-                      ),
-                      right: BorderSide(
-                        color: Colors.grey,
-                        width: 1.0,
-                      ),
-                      horizontalInside: BorderSide(
-                        color: Colors.grey,
-                        width: 1.0,
-                      ),
-                      top: BorderSide(
-                        color: Colors.grey,
-                        width: 1.0,
-                      ),
-                      bottom: BorderSide(
-                        color: Colors.grey,
-                        width: 1.0,
-                      ),
-                    ),
+              margin: EdgeInsets.only(left: 40, right: 40),
+              child: Table(
+                border: TableBorder(
+                  left: BorderSide(
+                    color: Colors.grey,
+                    width: 1.0,
+                  ),
+                  right: BorderSide(
+                    color: Colors.grey,
+                    width: 1.0,
+                  ),
+                  horizontalInside: BorderSide(
+                    color: Colors.grey,
+                    width: 1.0,
+                  ),
+                  top: BorderSide(
+                    color: Colors.grey,
+                    width: 1.0,
+                  ),
+                  bottom: BorderSide(
+                    color: Colors.grey,
+                    width: 1.0,
+                  ),
+                ),
+                columnWidths: {
+                  0: FlexColumnWidth(0.5),
+                  1: FlexColumnWidth(2.0),
+                  8: FlexColumnWidth(1.5),
+                  9: FlexColumnWidth(1.5), // Name of Family Head
+                },
+                children: [
+                  // Table header row
+                  TableRow(
                     children: [
-                      // Table header row
-                      TableRow(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('HH Id',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Name of Family Head',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Infant',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Toddlers',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Preschool',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('School Age',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Teen Age',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Adult',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Senior Citezens',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('# of Persons per Family',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Lactating Mothers',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Pregnant',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('PWD',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Solo Parent',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Actions',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('HH Id',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12)),
                       ),
-                      ...filteredEvacuees.map((evacuee) {
-                        return TableRow(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['ID']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Name']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Infant']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Toddlers']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Preschool']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['School Age']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Teen Age']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Adult']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Senior Citizens']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Persons per Family']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Lactating Mothers']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Pregnant']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['PWD']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(evacuee['Solo Parent']),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  addEvacueeToEvacuationCenter(
-                                      int.parse(evacuee['ID']));
-                                  print(
-                                      'Add button pressed for ID ${evacuee['ID']}');
-                                },
-                                child: Text('Add'),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: Text('Name of Family Head',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Infant\n',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
                               ),
+                              TextSpan(
+                                text: '> 1 y/o',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize:
+                                      10, // Set the font size for the non-bold text
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Toddlers\n',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '> 1-3 y/o',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize:
+                                      10, // Set the font size for the non-bold text
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Preschool\n',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '4-5 y/o',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize:
+                                      10, // Set the font size for the non-bold text
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'School Age\n',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '6-12 y/o',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize:
+                                      10, // Set the font size for the non-bold text
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Teen Age\n',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '13-19 y/o',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize:
+                                      10, // Set the font size for the non-bold text
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Adult\n',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '20-59 y/o',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize:
+                                      10, // Set the font size for the non-bold text
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Senior Citizens\n',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '<60 and above',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize:
+                                      10, // Set the font size for the non-bold text
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('# of Persons per Family',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Lactating Mothers',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: Text('Pregnant',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: Text('PWD',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: Text('Solo Parent',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: Text('Actions',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12)),
+                      ),
+                    ],
+                  ),
+                  ...filteredEvacuees.map((evacuee) {
+                    return TableRow(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['ID']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Name']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Infant']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Toddlers']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Preschool']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['School Age']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Teen Age']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Adult']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Senior Citizens']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Persons per Family']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Lactating Mothers']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Pregnant']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['PWD']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Solo Parent']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 100,
+                            height: 40,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                print(
+                                    'Add button pressed for ID ${evacuee['ID']}');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16.0,
+                                    vertical: 8.0), // Adjust padding if needed
+                                textStyle: TextStyle(
+                                    fontSize:
+                                        12.0), // Set the font size to a smaller value
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      8.0), // Set the border radius
+                                  side: BorderSide(
+                                      color:
+                                          Colors.blue), // Set the outline color
+                                ),
+                                backgroundColor:
+                                    Colors.white, // Set the background color
+                                foregroundColor:
+                                    Colors.blue, // Set the text color
+                              ).copyWith(
+                                overlayColor:
+                                    MaterialStateProperty.resolveWith((states) {
+                                  if (states.contains(MaterialState.hovered)) {
+                                    return Colors.blue
+                                        .withOpacity(0.2); // Hover color
+                                  }
+                                  return null;
+                                }),
+                              ),
+                              child: Text('Update'),
                             ),
-                          ],
-                        );
-                      }).toList(),
-                    ])),
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ],
+              ),
+            ),
           ],
         ),
       ),

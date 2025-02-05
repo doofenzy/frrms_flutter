@@ -38,10 +38,11 @@ class _SidebarState extends State<Sidebar> {
           _buildDropdownSidebarItem(
             context,
             icon: Icons.warning,
-            title: 'Evacuation Management',
+            title: 'Calamity',
             index: 3,
             subItems: [
               _buildSubItem(context, 'Evacuation Management', 3),
+              _buildSubItem(context, 'Risk Assessment', 3),
             ],
           ),
         ],
@@ -80,10 +81,10 @@ class _SidebarState extends State<Sidebar> {
       children: [
         HoverContainer(
           child: ListTile(
-            leading: Icon(icon, color: Colors.teal),
+            leading: Icon(icon, color: Colors.black),
             title: Text(
               title,
-              style: TextStyle(color: Colors.teal),
+              style: TextStyle(color: Colors.black),
             ),
             trailing: Icon(
               isExpanded ? Icons.expand_less : Icons.expand_more,
@@ -108,7 +109,7 @@ class _SidebarState extends State<Sidebar> {
         child: ListTile(
           title: Text(
             title,
-            style: TextStyle(color: Colors.teal),
+            style: TextStyle(color: Colors.black),
           ),
           onTap: () {
             Navigator.pop(context); // Close the drawer
@@ -139,7 +140,7 @@ class _HoverContainerState extends State<HoverContainer> {
       onExit: (_) => setState(() => _isHovered = false),
       child: Container(
         color: _isHovered
-            ? Colors.grey[300]
+            ? Colors.blue[600]
             : Colors.transparent, // Change color on hover
         child: widget.child,
       ),
