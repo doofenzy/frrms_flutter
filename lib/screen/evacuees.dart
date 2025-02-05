@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../component/header.dart'; // Adjust the import path as needed
-import '../component/sidebar.dart'; // Adjust the import path as needed
+import '../component/header.dart';
+import '../component/sidebar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -75,8 +75,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
   }
 
   Future<void> fetchEvacueesData() async {
-    final url = Uri.parse(
-        'http://127.0.0.1:8000/api/evacuees'); // Replace with your backend URL
+    final url = Uri.parse('http://127.0.0.1:8000/api/evacuees');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -112,8 +111,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
   }
 
   Future<void> addEvacueeToEvacuationCenter(int id) async {
-    final url = Uri.parse(
-        'http://127.0.0.1:8000/api/evacuees/$id'); // Replace with your backend URL
+    final url = Uri.parse('http://127.0.0.1:8000/api/evacuees/$id');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'evacuation_center_id': widget.evacuationCenterID,
@@ -166,15 +164,14 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: HeaderWidget(
-          imagePath: '../assets/Logo.png', // Adjust the image path as needed
+          imagePath: '../assets/Logo.png',
         ),
       ),
       drawer: Sidebar(
         onItemTapped: (index) {
-          // Handle sidebar navigation
-          Navigator.pop(context); // Close the drawer
+          Navigator.pop(context);
         },
-      ), // Use the Sidebar widget here
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -192,8 +189,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(
-                  left: 16.0), // Add margin to top and left
+              margin: const EdgeInsets.only(left: 16.0),
               child: Text(
                 'An Overview of Evacuees',
                 style: TextStyle(
@@ -203,8 +199,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(
-                  left: 16.0, top: 16.0), // Add margin to top and left
+              margin: const EdgeInsets.only(left: 16.0, top: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(6, (index) {
@@ -212,28 +207,23 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                     elevation: 4.0,
                     child: Container(
                       color: const Color.fromARGB(255, 106, 153, 236),
-                      width: 240.0, // Adjust the width of each card
-                      height: 130.0, // Adjust the height of each card
+                      width: 240.0,
+                      height: 130.0,
                       child: Padding(
-                        padding: const EdgeInsets.all(
-                            16.0), // Add padding to the container
+                        padding: const EdgeInsets.all(16.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment
-                              .start, // Align text to the left
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '${cardData[index]["number"]}', // Display the number
+                              '${cardData[index]["number"]}',
                               style: TextStyle(
-                                fontSize:
-                                    40.0, // Larger font size for the number
+                                fontSize: 40.0,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(
-                                height:
-                                    8.0), // Space between the number and the label
+                            SizedBox(height: 8.0),
                             Text(
                               cardData[index]["label"], // Display the label
                               style: TextStyle(
@@ -251,23 +241,20 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
             ),
             SizedBox(height: 16.0),
             Container(
-              margin: const EdgeInsets.symmetric(
-                  horizontal: 50.0), // Add margin to left and right
+              margin: const EdgeInsets.symmetric(horizontal: 50.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: 300.0, // Adjust the width of the container
-                    height: 130.0, // Adjust the height of the container
-                    // color: Colors.white,
+                    width: 300.0,
+                    height: 130.0,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Colors.black, // Black border color
-                        width: 1.0, // Border width
+                        color: Colors.black,
+                        width: 1.0,
                       ),
                     ),
-                    padding: const EdgeInsets.all(
-                        8.0), // Add padding inside the container
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -309,7 +296,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                   Row(
                     children: [
                       Container(
-                        width: 300, // Adjust this value for the desired width
+                        width: 300,
                         margin:
                             EdgeInsets.only(top: 50.0, left: 40.0, right: 40.0),
                         padding: EdgeInsets.only(bottom: 40),
@@ -328,22 +315,19 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                         ),
                       ),
                       Container(
-                        width: 200.0, // Adjust the width of the button
-                        height: 50.0, // Adjust the height of the button
+                        width: 200.0,
+                        height: 50.0,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Colors.blue, // Set the background color to blue
-                            foregroundColor:
-                                Colors.white, // Set the text color to white
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  8.0), // Rectangular shape with rounded corners
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
                             padding: EdgeInsets.symmetric(
                               horizontal: 20.0,
                               vertical: 12.0,
-                            ), // Add padding for the rectangle size
+                            ),
                           ),
                           onPressed: () {
                             showDialog(
@@ -354,8 +338,8 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                     return AlertDialog(
                                       title: Text('Search'),
                                       content: Container(
-                                        width: 400.0, // Set the desired width
-                                        height: 400.0, // Set the desired height
+                                        width: 400.0,
+                                        height: 400.0,
                                         child: Column(
                                           children: [
                                             TextField(
@@ -388,9 +372,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                                 });
                                               },
                                             ),
-                                            SizedBox(
-                                                height:
-                                                    16.0), // Space between the search bar and the table
+                                            SizedBox(height: 16.0),
                                             Expanded(
                                               child: ListView.builder(
                                                 itemCount: filteredEvacueesData
@@ -414,7 +396,6 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                                             '${evacuee['Name']}'),
                                                         ElevatedButton(
                                                           onPressed: () {
-                                                            // Handle add button logic here
                                                             addEvacueeToEvacuationCenter(
                                                                 int.parse(
                                                                     evacuee[
@@ -453,12 +434,10 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(Icons.add, size: 20.0), // Add icon
-                              SizedBox(
-                                  width: 8.0), // Space between icon and text
+                              SizedBox(width: 8.0),
                               Text(
                                 'Add Evacuee',
-                                style: TextStyle(
-                                    fontSize: 16.0), // Set font size and text
+                                style: TextStyle(fontSize: 16.0),
                               ),
                             ],
                           ),
@@ -471,28 +450,27 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
             ),
             SizedBox(height: 16.0),
             Container(
-                margin: EdgeInsets.only(
-                    left: 40, right: 40), // Adds margin above the table
+                margin: EdgeInsets.only(left: 40, right: 40),
                 child: Table(
                     border: TableBorder(
                       left: BorderSide(
-                        color: Colors.grey, // Left border color
-                        width: 1.0, // Left border width
+                        color: Colors.grey,
+                        width: 1.0,
                       ),
                       right: BorderSide(
-                        color: Colors.grey, // Right border color
-                        width: 1.0, // Right border width
+                        color: Colors.grey,
+                        width: 1.0,
                       ),
                       horizontalInside: BorderSide(
-                        color: Colors.grey, // Horizontal line color
-                        width: 1.0, // Horizontal line width
+                        color: Colors.grey,
+                        width: 1.0,
                       ),
                       top: BorderSide(
-                        color: Colors.grey, // Top border
+                        color: Colors.grey,
                         width: 1.0,
                       ),
                       bottom: BorderSide(
-                        color: Colors.grey, // Bottom border
+                        color: Colors.grey,
                         width: 1.0,
                       ),
                     ),
@@ -640,7 +618,6 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  // Handle add button logic here
                                   addEvacueeToEvacuationCenter(
                                       int.parse(evacuee['ID']));
                                   print(
