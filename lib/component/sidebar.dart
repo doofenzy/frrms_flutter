@@ -54,10 +54,10 @@ class _SidebarState extends State<Sidebar> {
       {required IconData icon, required String title, required int index}) {
     return HoverContainer(
       child: ListTile(
-        leading: Icon(icon, color: Colors.teal),
+        leading: Icon(icon, color: Colors.grey[600]),
         title: Text(
           title,
-          style: TextStyle(color: Colors.teal),
+          style: TextStyle(color: Colors.grey[600]),
         ),
         onTap: () {
           Navigator.pop(context); // Close the drawer
@@ -81,10 +81,10 @@ class _SidebarState extends State<Sidebar> {
       children: [
         HoverContainer(
           child: ListTile(
-            leading: Icon(icon, color: Colors.black),
+            leading: Icon(icon, color: Colors.grey[600]),
             title: Text(
               title,
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.grey[600]),
             ),
             trailing: Icon(
               isExpanded ? Icons.expand_less : Icons.expand_more,
@@ -109,7 +109,7 @@ class _SidebarState extends State<Sidebar> {
         child: ListTile(
           title: Text(
             title,
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.grey[600]),
           ),
           onTap: () {
             Navigator.pop(context); // Close the drawer
@@ -140,7 +140,7 @@ class _HoverContainerState extends State<HoverContainer> {
       onExit: (_) => setState(() => _isHovered = false),
       child: Container(
         color: _isHovered
-            ? Colors.blue[600]
+            ? Colors.grey[400]
             : Colors.transparent, // Change color on hover
         child: widget.child,
       ),
