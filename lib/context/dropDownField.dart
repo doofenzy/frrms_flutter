@@ -7,12 +7,11 @@ class DropdownField extends StatelessWidget {
   final String? value;
 
   const DropdownField(
-      {Key? key,
+      {super.key,
       required this.label,
       required this.items,
       this.onChanged,
-      this.value})
-      : super(key: key);
+      this.value});
 
   @override
   Widget build(BuildContext context) {

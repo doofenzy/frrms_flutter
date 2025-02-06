@@ -19,11 +19,15 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
   List<Map<String, dynamic>> evacuees = [];
   List<Map<String, dynamic>> filteredEvacuees = [];
   String searchQuery = '';
+  String evacuationCenterName = '';
+  String evacuationCenterStatus = '';
 
   @override
   void initState() {
     super.initState();
     fetchEvacueesData();
+    getEvacuationCenter();
+    print(widget.evacuationCenterID);
     displayEvacuees(int.parse(widget.evacuationCenterID));
   }
 
@@ -36,10 +40,30 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     {"number": 50, "label": "Underaged"},
   ];
 
+  Future<void> getEvacuationCenter() async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/evacuation-centers/${widget.evacuationCenterID}');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final dynamic data = jsonDecode(response.body);
+        setState(() {
+          evacuationCenterName = data['name'];
+          evacuationCenterStatus = data['type'] == 'Private Evacuation Center'
+              ? 'PRIVATE EC'
+              : 'PUBLIC EC';
+        });
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
   Future<void> displayEvacuees(int id) async {
     final url = Uri.parse(
         'http://127.0.0.1:8000/api/evacuees?evacuation_center_id=$id');
-    print(url);
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -182,7 +206,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
             Container(
               margin: const EdgeInsets.only(top: 16.0, left: 16.0),
               child: Text(
-                'PRIVATE EC - EDWARD MAGADAP',
+                '${evacuationCenterStatus} - ${evacuationCenterName}',
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
