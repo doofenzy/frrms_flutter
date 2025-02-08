@@ -614,15 +614,27 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
                                                                           context) {
                                                                     return AlertDialog(
                                                                       title: Text(
-                                                                          'Incomplete Information'),
+                                                                          'Error!'),
                                                                       content: Text(
-                                                                          'Please fill out all fields before saving.'),
+                                                                          'Please fill in all fields.'),
                                                                       actions: [
-                                                                        TextButton(
+                                                                        OutlinedButton(
                                                                           onPressed:
                                                                               () {
                                                                             Navigator.of(context).pop();
                                                                           },
+                                                                          style:
+                                                                              OutlinedButton.styleFrom(
+                                                                            side:
+                                                                                BorderSide(
+                                                                              color: Colors.blue,
+                                                                              width: 1.0, // Set the border color and thickness
+                                                                            ),
+                                                                            shape:
+                                                                                RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.circular(5), // Remove the border radius
+                                                                            ),
+                                                                          ),
                                                                           child:
                                                                               Text('OK'),
                                                                         ),

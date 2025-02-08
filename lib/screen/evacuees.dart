@@ -498,7 +498,11 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.add, size: 20.0), // Add icon
+                              Icon(
+                                Icons.add,
+                                size: 30.0,
+                                color: Colors.white,
+                              ), // Add icon
                               SizedBox(width: 8.0),
                               Text(
                                 'Add Evacuee',
@@ -833,8 +837,164 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                             height: 40,
                             child: ElevatedButton(
                               onPressed: () {
-                                print(
-                                    'Add button pressed for ID ${evacuee['ID']}');
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return StatefulBuilder(
+                                      builder: (context, setState) {
+                                        return AlertDialog(
+                                          contentPadding: EdgeInsets.zero,
+                                          content: Container(
+                                            width:
+                                                1000.0, // Set the desired width
+                                            height:
+                                                800.0, // Set the desired height
+                                            child: Column(
+                                              children: [
+                                                // Header with "X" button
+                                                Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 16.0,
+                                                      vertical: 8.0),
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                          color: Colors.grey,
+                                                          width: 1.0),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        'Household Information',
+                                                        style: TextStyle(
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(Icons.close),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop(); // Close the dialog
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                // Dialog content
+                                                Expanded(
+                                                  child: SingleChildScrollView(
+                                                    padding:
+                                                        EdgeInsets.all(16.0),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'HOUSEHOLD INFORMATION',
+                                                          style: TextStyle(
+                                                            fontSize: 30.0,
+                                                            color: Colors.blue,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 16.0),
+                                                        Container(
+                                                          width: 1000.0,
+                                                          height: 600,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .black,
+                                                                width: 1.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    16.0),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .person,
+                                                                      size:
+                                                                          100.0, // Adjust the size as needed
+                                                                      color: Colors
+                                                                          .grey,
+                                                                    ),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0),
+                                                                    Expanded(
+                                                                      child:
+                                                                          Table(
+                                                                        border:
+                                                                            TableBorder.all(
+                                                                          color:
+                                                                              Colors.grey,
+                                                                          width:
+                                                                              1.0,
+                                                                        ),
+                                                                        children: List.generate(
+                                                                            5,
+                                                                            (rowIndex) {
+                                                                          return TableRow(
+                                                                            children:
+                                                                                List.generate(5, (colIndex) {
+                                                                              return Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: TextField(
+                                                                                  readOnly: true,
+                                                                                  decoration: InputDecoration(
+                                                                                    border: InputBorder.none,
+                                                                                    contentPadding: EdgeInsets.all(8.0),
+                                                                                    hintText: 'Field ${rowIndex + 1}-${colIndex + 1}',
+                                                                                  ),
+                                                                                ),
+                                                                              );
+                                                                            }),
+                                                                          );
+                                                                        }),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Divider(
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  thickness:
+                                                                      1.0,
+                                                                ),
+                                                                // Add more content as needed
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.symmetric(
