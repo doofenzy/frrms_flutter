@@ -843,47 +843,56 @@ class _EvacuationManagementState extends State<EvacuationManagement> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('ID',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('Date & Time',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('Type of Calamity',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('Calamity Name',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('Security Level',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('Cause of Calamity',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('Evacuation Alert Level Issued',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('Status',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text('Actions',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12)),
                           ),
                         ],
                       ),

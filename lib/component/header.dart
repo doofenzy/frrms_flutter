@@ -62,10 +62,13 @@ class HeaderWidget extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.blue,
-                      size: 30.0,
+                    Padding(
+                      padding: EdgeInsets.zero, // Add padding around the icon
+                      child: Icon(
+                        Icons.account_circle_rounded,
+                        color: Colors.blue,
+                        size: 30.0,
+                      ),
                     ),
                     SizedBox(width: 8.0),
                     Text(

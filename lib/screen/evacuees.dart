@@ -18,6 +18,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
   List<Map<String, dynamic>> filteredEvacueesData = [];
   List<Map<String, dynamic>> evacuees = [];
   List<Map<String, dynamic>> filteredEvacuees = [];
+  List<Map<String, dynamic>> headFamilyData = [];
   String searchQuery = '';
   String evacuationCenterName = '';
   String evacuationCenterStatus = '';
@@ -29,6 +30,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     getEvacuationCenter();
     print(widget.evacuationCenterID);
     displayEvacuees(int.parse(widget.evacuationCenterID));
+    fetchHeadFamilyData();
   }
 
   final List<Map<String, dynamic>> cardData = [
@@ -164,6 +166,26 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
       }
     } catch (e) {
       print('Error updating data: $e');
+    }
+  }
+
+  Future<void> fetchHeadFamilyData() async {
+    final url = Uri.parse('http://127.0.0.1:8000/api/head-family/');
+    print(url);
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        print('Head Family Data: $data');
+        setState(() {
+          headFamilyData =
+              data.map((item) => item as Map<String, dynamic>).toList();
+        });
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
     }
   }
 
@@ -837,6 +859,8 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                             height: 40,
                             child: ElevatedButton(
                               onPressed: () {
+                                print(headFamilyData[
+                                    int.parse(evacuee['ID']) - 1]);
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -846,7 +870,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                           contentPadding: EdgeInsets.zero,
                                           content: Container(
                                             width:
-                                                1000.0, // Set the desired width
+                                                1300.0, // Set the desired width
                                             height:
                                                 800.0, // Set the desired height
                                             child: Column(
@@ -907,16 +931,18 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                                         ),
                                                         SizedBox(height: 16.0),
                                                         Container(
-                                                          width: 1000.0,
+                                                          width: 1300.0,
                                                           height: 600,
                                                           decoration:
                                                               BoxDecoration(
                                                             border: Border.all(
-                                                                color: Colors
-                                                                    .black,
-                                                                width: 1.0),
+                                                              color:
+                                                                  Colors.black,
+                                                              width: 1.0,
+                                                            ),
                                                           ),
-                                                          child: Padding(
+                                                          child:
+                                                              SingleChildScrollView(
                                                             padding:
                                                                 EdgeInsets.all(
                                                                     16.0),
@@ -929,45 +955,80 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                                                   children: [
                                                                     Icon(
                                                                       Icons
-                                                                          .person,
+                                                                          .account_circle_rounded,
                                                                       size:
-                                                                          100.0, // Adjust the size as needed
+                                                                          200.0, // Adjust the size as needed
                                                                       color: Colors
                                                                           .grey,
                                                                     ),
                                                                     SizedBox(
                                                                         width:
-                                                                            16.0),
+                                                                            40.0),
                                                                     Expanded(
                                                                       child:
                                                                           Table(
-                                                                        border:
-                                                                            TableBorder.all(
-                                                                          color:
-                                                                              Colors.grey,
-                                                                          width:
-                                                                              1.0,
-                                                                        ),
-                                                                        children: List.generate(
-                                                                            5,
-                                                                            (rowIndex) {
-                                                                          return TableRow(
-                                                                            children:
-                                                                                List.generate(5, (colIndex) {
-                                                                              return Padding(
-                                                                                padding: const EdgeInsets.all(8.0),
-                                                                                child: TextField(
-                                                                                  readOnly: true,
-                                                                                  decoration: InputDecoration(
-                                                                                    border: InputBorder.none,
-                                                                                    contentPadding: EdgeInsets.all(8.0),
-                                                                                    hintText: 'Field ${rowIndex + 1}-${colIndex + 1}',
+                                                                        border: TableBorder.all(
+                                                                            style:
+                                                                                BorderStyle.none), // Remove the outline of the table
+                                                                        children:
+                                                                            List.generate(
+                                                                          5,
+                                                                          (rowIndex) {
+                                                                            return TableRow(
+                                                                              children: List.generate(4, (colIndex) {
+                                                                                // Calculate the actual index in the fields list
+                                                                                int actualIndex = rowIndex * 4 + colIndex;
+
+                                                                                // Get the corresponding data from headFamilyData using evacuee['ID']
+                                                                                final headFamily = headFamilyData[int.parse(evacuee['ID']) - 1];
+
+                                                                                // Define the fields to display in the table (excluding last item)
+                                                                                final allFields = [
+                                                                                  headFamily['fname'],
+                                                                                  headFamily['lname'],
+                                                                                  headFamily['mname'],
+                                                                                  headFamily['suffix'],
+                                                                                  headFamily['zone'],
+                                                                                  headFamily['lot'],
+                                                                                  headFamily['status'],
+                                                                                  headFamily['phone_number'],
+                                                                                  headFamily['religion'],
+                                                                                  headFamily['birthdate'],
+                                                                                  headFamily['age'],
+                                                                                  headFamily['gender'],
+                                                                                  headFamily['occupation'],
+                                                                                  headFamily['group'],
+                                                                                  headFamily['four_p'],
+                                                                                  headFamily['gov_id'],
+                                                                                  headFamily['brgy'],
+                                                                                  headFamily['relationship'],
+                                                                                  headFamily['evacuation_type']
+                                                                                ]; // Now contains exactly 19 items
+
+                                                                                // Prevent out-of-bounds errors by stopping when actualIndex exceeds fields length
+                                                                                if (actualIndex >= allFields.length) {
+                                                                                  return SizedBox(); // Remove input field
+                                                                                }
+
+                                                                                String value = allFields[actualIndex]?.toString() ?? '';
+
+                                                                                print(actualIndex); // Now prints 0-18 (only 19 items)
+
+                                                                                return Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: TextField(
+                                                                                    readOnly: true,
+                                                                                    decoration: InputDecoration(
+                                                                                      contentPadding: EdgeInsets.all(8.0),
+                                                                                      border: OutlineInputBorder(),
+                                                                                      hintText: value,
+                                                                                    ),
                                                                                   ),
-                                                                                ),
-                                                                              );
-                                                                            }),
-                                                                          );
-                                                                        }),
+                                                                                );
+                                                                              }),
+                                                                            );
+                                                                          },
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ],
@@ -978,7 +1039,89 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                                                   thickness:
                                                                       1.0,
                                                                 ),
-                                                                // Add more content as needed
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .account_circle_rounded,
+                                                                          size:
+                                                                              200.0, // Adjust the size as needed
+                                                                          color:
+                                                                              Colors.grey,
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                40.0),
+                                                                        Expanded(
+                                                                          child:
+                                                                              Table(
+                                                                            border:
+                                                                                TableBorder.all(style: BorderStyle.none), // Remove the outline of the table
+                                                                            children:
+                                                                                List.generate(4, (rowIndex) {
+                                                                              return TableRow(
+                                                                                children: List.generate(4, (colIndex) {
+                                                                                  return Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: TextField(
+                                                                                      enabled: false, // Disables the field completely
+                                                                                      decoration: InputDecoration(
+                                                                                        contentPadding: EdgeInsets.all(8.0),
+                                                                                        border: OutlineInputBorder(), // Default border
+                                                                                        disabledBorder: OutlineInputBorder(
+                                                                                          // Border when the field is disabled
+                                                                                          borderSide: BorderSide(color: Colors.grey),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  );
+                                                                                }),
+                                                                              );
+                                                                            }),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            20.0),
+                                                                    Align(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerRight,
+                                                                      child: ElevatedButton
+                                                                          .icon(
+                                                                        onPressed:
+                                                                            () {
+                                                                          // Define delete action here
+                                                                        },
+                                                                        icon: Icon(
+                                                                            Icons.delete),
+                                                                        label: Text(
+                                                                            "Delete"),
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          backgroundColor:
+                                                                              Colors.redAccent,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            10.0),
+                                                                    Divider(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      thickness:
+                                                                          1.0,
+                                                                    ),
+                                                                  ],
+                                                                )
                                                               ],
                                                             ),
                                                           ),
