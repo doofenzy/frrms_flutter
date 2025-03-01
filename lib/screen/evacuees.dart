@@ -28,7 +28,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     super.initState();
     fetchEvacueesData();
     getEvacuationCenter();
-    print(widget.evacuationCenterID);
+    // print(widget.evacuationCenterID);
     displayEvacuees(int.parse(widget.evacuationCenterID));
     fetchHeadFamilyData();
   }
@@ -65,33 +65,34 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
 
   Future<void> displayEvacuees(int id) async {
     final url = Uri.parse(
-        'http://127.0.0.1:8000/api/evacuees?evacuation_center_id=$id');
+        'http://127.0.0.1:8000/api/members/$id');
     try {
       final response = await http.get(url);
+      print(response.body);
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-        setState(() {
-          evacuees = data
-              .map((item) => {
-                    'ID': item['id'].toString(),
-                    'Name': item['head_family'],
-                    'Infant': item['infant'].toString(),
-                    'Toddlers': item['toddlers'].toString(),
-                    'Preschool': item['preschool'].toString(),
-                    'School Age': item['school_age'].toString(),
-                    'Teen Age': item['teen_age'].toString(),
-                    'Adult': item['adult'].toString(),
-                    'Senior Citizens': item['senior_citizen'].toString(),
-                    'Persons per Family': item['total_persons'].toString(),
-                    'Lactating Mothers': item['lactating_mothers'].toString(),
-                    'Pregnant': item['pregnant'].toString(),
-                    'PWD': item['pwd'].toString(),
-                    'Solo Parent': item['solo_parent'].toString(),
-                  })
-              .toList();
-          filteredEvacuees = evacuees;
-        });
-        print(filteredEvacuees);
+              setState(() {
+                  evacuees = data
+                      .map((item) => {
+                            'ID': item['id'].toString(),
+                            'Name': item['name'],
+                            'Infant': item['infant'].toString(),
+                            'Toddlers': item['toddlers'].toString(),
+                            'Preschool': item['preschool'].toString(),
+                            'School Age': item['schoolAge'].toString(),
+                            'Teen Age': item['teenAge'].toString(),
+                            'Adult': item['adult'].toString(),
+                            'Senior Citizens': item['seniorCitizen'].toString(),
+                            'Lactating Mothers': item['lactatingMothers'].toString(),
+                            'Pregnant': item['pregnant'].toString(),
+                            'PWD': item['pwd'].toString(),
+                            'Solo Parent': item['soloParent'].toString(),
+                            'Persons per Family': item['totalMembers'].toString(),
+                          })
+                      .toList();
+                  filteredEvacuees = evacuees;
+                });
+        // print(filteredEvacuees);
       } else {
         print('Failed to update data: ${response.statusCode}');
       }
@@ -136,16 +137,48 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     });
   }
 
-  Future<void> addEvacueeToEvacuationCenter(int id) async {
-    final url = Uri.parse('http://127.0.0.1:8000/api/evacuees/$id');
+  // Future<void> addEvacueeToEvacuationCenter(int id) async {
+  //   final url = Uri.parse('http://127.0.0.1:8000/api/evacuees/$id');
+  //   final headers = {'Content-Type': 'application/json'};
+  //   final body = jsonEncode({
+  //     'evacuation_center_id': widget.evacuationCenterID,
+  //     'calamity_id': widget.calamityID
+  //   });
+
+  //   try {
+  //     final response = await http.patch(url, headers: headers, body: body);
+  //     if (response.statusCode == 200) {
+  //       // final dynamic data = jsonDecode(response.body);
+  //       // setState(() {
+  //       //   evacueesData = evacueesData.map((item) {
+  //       //     if (item['ID'] == id.toString()) {
+  //       //       return {
+  //       //         'ID': data['id'].toString(),
+  //       //         'Name': data['head_family'],
+  //       //       };
+  //       //     }
+  //       //     return item;
+  //       //   }).toList();
+  //       //   filteredEvacueesData = evacueesData;
+  //       // });
+  //       print('success');
+  //     } else {
+  //       print('Failed to update data: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     print('Error updating data: $e');
+  //   }
+  // }
+
+    Future<void> addEvacueeToEvacuationCenter(int id) async {
+    final url = Uri.parse('http://127.0.0.1:8000/api/members/update-evacuation-center/$id');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'evacuation_center_id': widget.evacuationCenterID,
-      'calamity_id': widget.calamityID
     });
 
     try {
-      final response = await http.patch(url, headers: headers, body: body);
+      final response = await http.put(url, headers: headers, body: body);
       if (response.statusCode == 200) {
         // final dynamic data = jsonDecode(response.body);
         // setState(() {
@@ -176,7 +209,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-        print('Head Family Data: $data');
+        // print('Head Family Data: $data');
         setState(() {
           headFamilyData =
               data.map((item) => item as Map<String, dynamic>).toList();
@@ -755,12 +788,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('# of Persons per Family',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12)),
-                      ),
+                      
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text('Lactating Mothers',
@@ -782,6 +810,12 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         child: Text('Solo Parent',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('# of Persons per Family',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 12)),
                       ),
@@ -832,10 +866,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(evacuee['Senior Citizens']),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(evacuee['Persons per Family']),
-                        ),
+                        
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(evacuee['Lactating Mothers']),
@@ -851,6 +882,10 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(evacuee['Solo Parent']),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(evacuee['Persons per Family']),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
