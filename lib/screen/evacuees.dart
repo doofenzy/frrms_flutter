@@ -158,6 +158,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'evacuation_center_id': widget.evacuationCenterID,
+      'calamity_id': widget.calamityID,
     });
 
     try {
