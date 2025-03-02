@@ -19,6 +19,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
   List<Map<String, dynamic>> evacuees = [];
   List<Map<String, dynamic>> filteredEvacuees = [];
   List<Map<String, dynamic>> headFamilyData = [];
+  List<Map<String, dynamic>> cardData = [];
   String searchQuery = '';
   String evacuationCenterName = '';
   String evacuationCenterStatus = '';
@@ -28,19 +29,11 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     super.initState();
     fetchEvacueesData();
     getEvacuationCenter();
-    // print(widget.evacuationCenterID);
+    getEvacueeStats();
+    print(widget.evacuationCenterID);
     displayEvacuees(int.parse(widget.evacuationCenterID));
     fetchHeadFamilyData();
   }
-
-  final List<Map<String, dynamic>> cardData = [
-    {"number": 800, "label": "Total Population"},
-    {"number": 232, "label": "Females"},
-    {"number": 568, "label": "Males"},
-    {"number": 120, "label": "Number of Families"},
-    {"number": 50, "label": "Seniors"},
-    {"number": 50, "label": "Underaged"},
-  ];
 
   Future<void> getEvacuationCenter() async {
     final url = Uri.parse(
@@ -64,34 +57,33 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
   }
 
   Future<void> displayEvacuees(int id) async {
-    final url = Uri.parse(
-        'http://127.0.0.1:8000/api/members/$id');
+    final url = Uri.parse('http://127.0.0.1:8000/api/members/$id');
     try {
       final response = await http.get(url);
       print(response.body);
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-              setState(() {
-                  evacuees = data
-                      .map((item) => {
-                            'ID': item['id'].toString(),
-                            'Name': item['name'],
-                            'Infant': item['infant'].toString(),
-                            'Toddlers': item['toddlers'].toString(),
-                            'Preschool': item['preschool'].toString(),
-                            'School Age': item['schoolAge'].toString(),
-                            'Teen Age': item['teenAge'].toString(),
-                            'Adult': item['adult'].toString(),
-                            'Senior Citizens': item['seniorCitizen'].toString(),
-                            'Lactating Mothers': item['lactatingMothers'].toString(),
-                            'Pregnant': item['pregnant'].toString(),
-                            'PWD': item['pwd'].toString(),
-                            'Solo Parent': item['soloParent'].toString(),
-                            'Persons per Family': item['totalMembers'].toString(),
-                          })
-                      .toList();
-                  filteredEvacuees = evacuees;
-                });
+        setState(() {
+          evacuees = data
+              .map((item) => {
+                    'ID': item['id'].toString(),
+                    'Name': item['name'],
+                    'Infant': item['infant'].toString(),
+                    'Toddlers': item['toddlers'].toString(),
+                    'Preschool': item['preschool'].toString(),
+                    'School Age': item['schoolAge'].toString(),
+                    'Teen Age': item['teenAge'].toString(),
+                    'Adult': item['adult'].toString(),
+                    'Senior Citizens': item['seniorCitizen'].toString(),
+                    'Lactating Mothers': item['lactatingMothers'].toString(),
+                    'Pregnant': item['pregnant'].toString(),
+                    'PWD': item['pwd'].toString(),
+                    'Solo Parent': item['soloParent'].toString(),
+                    'Persons per Family': item['totalMembers'].toString(),
+                  })
+              .toList();
+          filteredEvacuees = evacuees;
+        });
         // print(filteredEvacuees);
       } else {
         print('Failed to update data: ${response.statusCode}');
@@ -137,41 +129,32 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     });
   }
 
-  // Future<void> addEvacueeToEvacuationCenter(int id) async {
-  //   final url = Uri.parse('http://127.0.0.1:8000/api/evacuees/$id');
-  //   final headers = {'Content-Type': 'application/json'};
-  //   final body = jsonEncode({
-  //     'evacuation_center_id': widget.evacuationCenterID,
-  //     'calamity_id': widget.calamityID
-  //   });
+  Future<void> getEvacueeStats() async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/members/getEvacueeStats/${widget.evacuationCenterID}');
+    print(url);
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final dynamic data = jsonDecode(response.body);
+      print(data);
+      setState(() {
+        cardData = [
+          {"number": data['totalPopulation'], "label": "Total Population"},
+          {"number": data['totalFemales'], "label": "Females"},
+          {"number": data['totalMales'], "label": "Males"},
+          {"number": data['totalFamilies'], "label": "Number of Families"},
+          {"number": data['totalSeniors'], "label": "Seniors"},
+          {"number": data['totalUnderaged'], "label": "Underaged"},
+        ];
+      });
+    } else {
+      print('Failed to fetch data: ${response.statusCode}');
+    }
+  }
 
-  //   try {
-  //     final response = await http.patch(url, headers: headers, body: body);
-  //     if (response.statusCode == 200) {
-  //       // final dynamic data = jsonDecode(response.body);
-  //       // setState(() {
-  //       //   evacueesData = evacueesData.map((item) {
-  //       //     if (item['ID'] == id.toString()) {
-  //       //       return {
-  //       //         'ID': data['id'].toString(),
-  //       //         'Name': data['head_family'],
-  //       //       };
-  //       //     }
-  //       //     return item;
-  //       //   }).toList();
-  //       //   filteredEvacueesData = evacueesData;
-  //       // });
-  //       print('success');
-  //     } else {
-  //       print('Failed to update data: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     print('Error updating data: $e');
-  //   }
-  // }
-
-    Future<void> addEvacueeToEvacuationCenter(int id) async {
-    final url = Uri.parse('http://127.0.0.1:8000/api/members/update-evacuation-center/$id');
+  Future<void> addEvacueeToEvacuationCenter(int id) async {
+    final url = Uri.parse(
+        'http://127.0.0.1:8000/api/members/update-evacuation-center/$id');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'evacuation_center_id': widget.evacuationCenterID,
@@ -788,7 +771,6 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                           ),
                         ),
                       ),
-                      
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text('Lactating Mothers',
@@ -866,7 +848,6 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(evacuee['Senior Citizens']),
                         ),
-                        
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(evacuee['Lactating Mothers']),
