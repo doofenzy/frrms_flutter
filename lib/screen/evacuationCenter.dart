@@ -23,7 +23,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
   String? nameOfSiteManager;
   String? contactInformation;
   int? evacueesCount = 0;
-  final List<Map<String, dynamic>> evacueeData = [
+  List<Map<String, dynamic>> evacueeData = [
     {"description": "Infant\n(<1 yrs. old)", "count": 0},
     {"description": "School Age\n(6-9 yrs. old)", "count": 0},
     {"description": "Senior Citizen\n(>59 yrs. old)", "count": 0},
@@ -38,44 +38,73 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
     {"description": "Person with\n Serious Illness", "count": 0},
   ];
 
-  Future<void> fetchSumData() async {
+  Future<void> getEvacueeStats() async {
     final url = Uri.parse(
-        'http://127.0.0.1:8000/api/evacuees/calamity/${widget.calamityID}');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        int totalEvacuees = 0;
-        setState(() {
-          for (var item in evacueeData) {
-            item['count'] = 0;
-          }
+        'http://127.0.0.1:8000/api/members/getMembersStats/${widget.calamityID}');
+    final response = await http.get(url);
 
-          for (var item in data) {
-            evacueeData[0]['count'] += item['infant'] ?? 0;
-            evacueeData[1]['count'] += item['school_age'] ?? 0;
-            evacueeData[2]['count'] += item['senior_citizen'] ?? 0;
-            evacueeData[3]['count'] += item['pwd'] ?? 0;
-            evacueeData[4]['count'] += item['toddlers'] ?? 0;
-            evacueeData[5]['count'] += item['teen_age'] ?? 0;
-            evacueeData[6]['count'] += item['pregnant'] ?? 0;
-            evacueeData[7]['count'] += item['solo_parent'] ?? 0;
-            evacueeData[8]['count'] += item['preschool'] ?? 0;
-            evacueeData[9]['count'] += item['adult'] ?? 0;
-            evacueeData[10]['count'] += item['lactating_mothers'] ?? 0;
-            evacueeData[11]['count'] += item['serious_illness'] ?? 0;
-          }
+    if (response.statusCode == 200) {
+      final dynamic data = jsonDecode(response.body);
+      int? totalMembers = data['totalMembers'];
+      print(totalMembers);
+      print('Raw API Response: $data');
 
-          totalEvacuees =
-              evacueeData.fold(0, (sum, item) => sum + (item['count'] as int));
-          evacueesCount = totalEvacuees;
-        });
-        print('Total evacuees: $evacueesCount');
-      } else {
-        print('Failed to fetch data: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error fetching data: $e');
+      setState(() {
+        evacueesCount = int.tryParse(data['totalMembers'].toString()) ?? 0;
+
+        evacueeData = [
+          {
+            "description": "Infant\n(<1 yrs. old)",
+            "count": int.tryParse(data['infant'].toString()) ?? 0
+          },
+          {
+            "description": "Todler\n(1-3 yrs. old)",
+            "count": int.tryParse(data['toddlers'].toString()) ?? 0
+          },
+          {
+            "description": "Pre-Schooler\n(4-5 yrs. old)",
+            "count": int.tryParse(data['preschool'].toString()) ?? 0
+          },
+          {
+            "description": "School Age\n(6-9 yrs. old)",
+            "count": int.tryParse(data['schoolAge'].toString()) ?? 0
+          },
+          {
+            "description": "Teenage\n(13-19 yrs. old)",
+            "count": int.tryParse(data['teenAge'].toString()) ?? 0
+          },
+          {
+            "description": "Adult\n(20-59 yrs. old)",
+            "count": int.tryParse(data['adult'].toString()) ?? 0
+          },
+          {
+            "description": "Senior Citizen\n(>59 yrs. old)",
+            "count": int.tryParse(data['seniorCitizen'].toString()) ?? 0
+          },
+          {
+            "description": "Breastfeeding\nMothers",
+            "count": int.tryParse(data['lactatingMothers'].toString()) ?? 0
+          },
+          {
+            "description": "Pregnant\nWomen",
+            "count": int.tryParse(data['pregnant'].toString()) ?? 0
+          },
+          {
+            "description": "Person with\ndisabilities",
+            "count": int.tryParse(data['pwd'].toString()) ?? 0
+          },
+          {
+            "description": "Single Headed",
+            "count": int.tryParse(data['soloParent'].toString()) ?? 0
+          },
+          {
+            "description": "Person with\n Serious Illness",
+            "count": 0
+          }, // Defaulting to 0
+        ];
+      });
+    } else {
+      print('Failed to fetch data: ${response.statusCode}');
     }
   }
 
@@ -139,7 +168,7 @@ class _CalamityDetailsScreenState extends State<CalamityDetailsScreen> {
   void initState() {
     super.initState();
     fetchData();
-    fetchSumData();
+    getEvacueeStats();
   }
 
   @override
