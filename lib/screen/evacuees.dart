@@ -20,6 +20,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
   List<Map<String, dynamic>> filteredEvacuees = [];
   List<Map<String, dynamic>> headFamilyData = [];
   List<Map<String, dynamic>> cardData = [];
+  List<Map<String, dynamic>> familyMembers = [];
   String searchQuery = '';
   String evacuationCenterName = '';
   String evacuationCenterStatus = '';
@@ -152,6 +153,21 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
     }
   }
 
+  Future<void> getHeadFamily(int id) async {
+    final url =
+        Uri.parse('http://127.0.0.1:8000/api/members/getHeadFamily/$id');
+    print(url);
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final dynamic data = jsonDecode(response.body);
+      setState(() {
+        familyMembers = List<Map<String, dynamic>>.from(data);
+      });
+    } else {
+      print('Failed to fetch data: ${response.statusCode}');
+    }
+  }
+
   Future<void> addEvacueeToEvacuationCenter(int id) async {
     final url = Uri.parse(
         'http://127.0.0.1:8000/api/members/update-evacuation-center/$id');
@@ -183,6 +199,16 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
       }
     } catch (e) {
       print('Error updating data: $e');
+    }
+  }
+
+  Future<void> deleteMember(int id) async {
+    final url = Uri.parse('http://127.0.0.1:8000/api/members/deleteMember/$id');
+    final response = await http.delete(url);
+    if (response.statusCode == 200) {
+      print('Member deleted');
+    } else {
+      print('Failed to delete member: ${response.statusCode}');
     }
   }
 
@@ -876,8 +902,8 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                             height: 40,
                             child: ElevatedButton(
                               onPressed: () {
-                                print(headFamilyData[
-                                    int.parse(evacuee['ID']) - 1]);
+                                print(familyMembers);
+                                getHeadFamily(int.parse(evacuee['ID']));
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -1029,7 +1055,7 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
 
                                                                                 String value = allFields[actualIndex]?.toString() ?? '';
 
-                                                                                print(actualIndex); // Now prints 0-18 (only 19 items)
+                                                                                // print(actualIndex); // Now prints 0-18 (only 19 items)
 
                                                                                 return Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
@@ -1060,85 +1086,93 @@ class _EvacueesScreenState extends State<EvacueesScreen> {
                                                                   crossAxisAlignment:
                                                                       CrossAxisAlignment
                                                                           .start,
-                                                                  children: [
-                                                                    Row(
+                                                                  children: familyMembers
+                                                                      .asMap()
+                                                                      .entries
+                                                                      .map(
+                                                                          (entry) {
+                                                                    final data =
+                                                                        entry
+                                                                            .value;
+                                                                    return Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
                                                                       children: [
-                                                                        Icon(
-                                                                          Icons
-                                                                              .account_circle_rounded,
-                                                                          size:
-                                                                              200.0, // Adjust the size as needed
-                                                                          color:
-                                                                              Colors.grey,
-                                                                        ),
-                                                                        SizedBox(
-                                                                            width:
-                                                                                40.0),
-                                                                        Expanded(
-                                                                          child:
-                                                                              Table(
-                                                                            border:
-                                                                                TableBorder.all(style: BorderStyle.none), // Remove the outline of the table
-                                                                            children:
-                                                                                List.generate(4, (rowIndex) {
-                                                                              return TableRow(
-                                                                                children: List.generate(4, (colIndex) {
-                                                                                  return Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: TextField(
-                                                                                      enabled: false, // Disables the field completely
-                                                                                      decoration: InputDecoration(
-                                                                                        contentPadding: EdgeInsets.all(8.0),
-                                                                                        border: OutlineInputBorder(), // Default border
-                                                                                        disabledBorder: OutlineInputBorder(
-                                                                                          // Border when the field is disabled
-                                                                                          borderSide: BorderSide(color: Colors.grey),
+                                                                        Row(
+                                                                          children: [
+                                                                            Icon(
+                                                                              Icons.account_circle_rounded,
+                                                                              size: 200.0,
+                                                                              color: Colors.grey,
+                                                                            ),
+                                                                            SizedBox(width: 40.0),
+                                                                            Expanded(
+                                                                              child: Table(
+                                                                                border: TableBorder.all(style: BorderStyle.none),
+                                                                                children: List.generate(4, (rowIndex) {
+                                                                                  return TableRow(
+                                                                                    children: List.generate(4, (colIndex) {
+                                                                                      List<String> keys = data.keys.where((key) => key != "id").toList();
+                                                                                      int index = rowIndex * 4 + colIndex;
+                                                                                      if (index >= keys.length) {
+                                                                                        return SizedBox();
+                                                                                      }
+                                                                                      String key = keys[index];
+                                                                                      return Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: TextField(
+                                                                                          enabled: true,
+                                                                                          decoration: InputDecoration(
+                                                                                            contentPadding: EdgeInsets.all(8.0),
+                                                                                            border: OutlineInputBorder(),
+                                                                                            disabledBorder: OutlineInputBorder(
+                                                                                              borderSide: BorderSide(color: Colors.grey),
+                                                                                            ),
+                                                                                            hintText: data[key].toString(),
+                                                                                          ),
                                                                                         ),
-                                                                                      ),
-                                                                                    ),
+                                                                                      );
+                                                                                    }),
                                                                                   );
                                                                                 }),
-                                                                              );
-                                                                            }),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        SizedBox(
+                                                                            height:
+                                                                                20.0),
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.centerRight,
+                                                                          child:
+                                                                              ElevatedButton.icon(
+                                                                            onPressed:
+                                                                                () {
+                                                                              deleteMember(data['id']);
+                                                                            },
+                                                                            icon:
+                                                                                Icon(Icons.delete),
+                                                                            label:
+                                                                                Text("Delete"),
+                                                                            style:
+                                                                                ElevatedButton.styleFrom(
+                                                                              backgroundColor: Colors.redAccent,
+                                                                            ),
                                                                           ),
                                                                         ),
+                                                                        SizedBox(
+                                                                            height:
+                                                                                10.0),
+                                                                        Divider(
+                                                                            color:
+                                                                                Colors.grey,
+                                                                            thickness: 1.0),
                                                                       ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                        height:
-                                                                            20.0),
-                                                                    Align(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .centerRight,
-                                                                      child: ElevatedButton
-                                                                          .icon(
-                                                                        onPressed:
-                                                                            () {
-                                                                          // Define delete action here
-                                                                        },
-                                                                        icon: Icon(
-                                                                            Icons.delete),
-                                                                        label: Text(
-                                                                            "Delete"),
-                                                                        style: ElevatedButton
-                                                                            .styleFrom(
-                                                                          backgroundColor:
-                                                                              Colors.redAccent,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(
-                                                                        height:
-                                                                            10.0),
-                                                                    Divider(
-                                                                      color: Colors
-                                                                          .grey,
-                                                                      thickness:
-                                                                          1.0,
-                                                                    ),
-                                                                  ],
-                                                                )
+                                                                    );
+                                                                  }).toList(),
+                                                                ),
                                                               ],
                                                             ),
                                                           ),
